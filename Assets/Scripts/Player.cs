@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         _Move();
 
         if(GrazeCounter >= 500){
-            Debug.Log("Attack!");
+            PrimaryAttack();
             GrazeCounter -= 500;
         }
     }
@@ -120,6 +120,12 @@ public class Player : MonoBehaviour
     public void DestroyMyself()
     {
         Destroy(this.gameObject);
+    }
+
+    //通常攻撃
+    public void PrimaryAttack()
+    {
+        Debug.Log("Attack");
     }
 
     //変形入力を受ける関数

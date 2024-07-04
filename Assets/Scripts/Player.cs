@@ -49,10 +49,13 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
 
+    private int GrazeCounter;
+
     // Start is called before the first frame update
     void Start()
     {
         MyShapeNumber = 0;
+        GrazeCounter = 0;
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -63,6 +66,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         _Move();
+
+        if(GrazeCounter >= 100){
+            
+        }
     }
 
     // 方向入力を受ける関数

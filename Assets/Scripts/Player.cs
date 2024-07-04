@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         _Move();
 
         if(GrazeCounter >= 100){
-            Debug.log("Attack!");
+            Debug.Log("Attack!");
             GrazeCounter -= 100;
         }
     }

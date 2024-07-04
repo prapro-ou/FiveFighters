@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
 
-    private int GrazeCounter;
+    public int GrazeCounter;
 
     // Start is called before the first frame update
     void Start()
@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         _Move();
 
         if(GrazeCounter >= 100){
-            
+
         }
     }
 

@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
     //通常攻撃
     public void PrimaryAttack()
     {
-        Debug.Log("Attack");
+        Debug.Log($"Attack {_myShapeNumber}");
     }
 
     //変形入力を受ける関数

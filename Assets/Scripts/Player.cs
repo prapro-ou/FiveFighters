@@ -17,7 +17,15 @@ public class Player : MonoBehaviour
     private Vector3[] _corners;
 
     [SerializeField]
-    private Sprite[] _sprites;
+    private List<PlayerShape> _ownShapes;
+
+    private int _myShapeNumber;
+
+    public int MyShapeNumber
+    {
+        get {return _myShapeNumber;}
+        set {_myShapeNumber = value;}
+    }
 
     private Vector2 _direction;
 
@@ -44,6 +52,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MyShapeNumber = 0;
+
         //プレイエリアの角を取得
         _corners = new Vector3[4];
         _playArea.GetWorldCorners(_corners);
@@ -80,17 +90,16 @@ public class Player : MonoBehaviour
 
     private void _Move()
     {
-        // if(IsSlowingDown == false)
-        // {
-        //     transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime));
-        // }
-        // else
-        // {
-        //     transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime * _slowDownRate)); 
-        // }
-
         //Directionから次の位置に移動
-        transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime * (IsSlowingDown ? _slowDownRate : 1)));
+        if(IsSlowingDown == false)
+        {
+            transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime));
+        }
+        else
+        {
+            transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime * _slowDownRate)); 
+        }
+        // transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime * (IsSlowingDown ? _slowDownRate : 1)));
 
         //移動範囲を制限
         float clampedX = Mathf.Clamp(transform.position.x, _corners[0].x, _corners[2].x);
@@ -106,38 +115,55 @@ public class Player : MonoBehaviour
     }
 
     //変形入力を受ける関数
-    public void OnChangeShape0(InputAction.CallbackContext context)
+    public void OnShiftShape0(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            _ChangeShape(0);
+            _ShiftShape(0);
         }
     }
 
-    public void OnChangeShape1(InputAction.CallbackContext context)
+    public void OnShiftShape1(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            _ChangeShape(1);
+            _ShiftShape(1);
         }
     }
 
-    public void OnChangeShape2(InputAction.CallbackContext context)
+    public void OnShiftShape2(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
-            _ChangeShape(2);
+            _ShiftShape(2);
         }
     }
 
     //0~2の値に応じて変形
-    private void _ChangeShape(int mode)
+    private void _ShiftShape(int mode)
     {
         //[TODO]アニメーションを入れる？
         //[TODO]形ごとの無敵技処理を入れる
 
-        Debug.Log($"ChangeShape {mode}");
-        _damageCollider.GetComponent<SpriteRenderer>().sprite = _sprites[mode];
-        _grazeCollider.GetComponent<SpriteRenderer>().sprite = _sprites[mode];
+        Debug.Log($"ShiftShape {mode}");
+
+        MyShapeNumber = mode;
+
+        _ownShapes[MyShapeNumber].ShiftSkill();
+        _ShiftShapeOfColliders(_ownShapes[MyShapeNumber]);
+    }
+
+    private void _ShiftShapeOfColliders(PlayerShape pShape)
+    {
+        SpriteRenderer dcSpriteRenderer = _damageCollider.GetComponent<SpriteRenderer>();
+        SpriteRenderer gcSpriteRenderer = _grazeCollider.GetComponent<SpriteRenderer>();
+
+        dcSpriteRenderer.sprite = pShape.MySprite;
+        gcSpriteRenderer.sprite = pShape.MySprite;
+
+        Color grazeColor = new Color(pShape.MyColor.r, pShape.MyColor.g, pShape.MyColor.b, (pShape.MyColor.a/3));
+
+        dcSpriteRenderer.color = pShape.MyColor;
+        gcSpriteRenderer.color = grazeColor;
     }
 }

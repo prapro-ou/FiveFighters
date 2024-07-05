@@ -22,6 +22,15 @@ public abstract class PlayerShape : MonoBehaviour
         set {_myColor = value;}
     }
 
+    [SerializeField]
+    private int _primaryAttackCost;
+
+    public int PrimaryAttackCost
+    {
+        get {return _primaryAttackCost;}
+        set {_primaryAttackCost = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {

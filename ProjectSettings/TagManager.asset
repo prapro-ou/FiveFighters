@@ -13,9 +13,9 @@ TagManager:
   - UI
   - GrazeCollider
   - DamageCollider
-  - 
-  - 
-  - 
+  - DestroyField
+  - PlayerBullet
+  - EnemyBullet
   - 
   - 
   - 

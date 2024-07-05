@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mySprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   _myColor: {r: 0.8726415, g: 0.67753124, b: 0, a: 1}
+  _primaryAttackCost: 50

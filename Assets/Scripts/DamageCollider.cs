@@ -15,6 +15,7 @@ public class DamageCollider : MonoBehaviour
         set {_inInvincible = value;}
     }
 
+    [SerializeField]
     private float _invincibleTime;
 
     public float InvincibleTime
@@ -26,7 +27,7 @@ public class DamageCollider : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        InInvincible = false;
     }
 
     // Update is called once per frame

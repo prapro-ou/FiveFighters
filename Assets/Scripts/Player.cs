@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
     }    
 
     [SerializeField]
-    public int _hitPoint;
+    private int _hitPoint;
 
     public int HitPoint
     {

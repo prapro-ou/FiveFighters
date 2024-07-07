@@ -19,6 +19,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
+    [SerializeField]
+    private int _hitPoint;
+
+    public int HitPoint
+    {
+        get {return _hitPoint;}
+        set {_hitPoint = Mathf.Clamp(value,0,100);}
+    }
+
     private int _myShapeNumber;
 
     public int MyShapeNumber
@@ -48,15 +57,6 @@ public class Player : MonoBehaviour
         get {return _isSlowingDown;}
         set {_isSlowingDown = value;}
     }    
-
-    [SerializeField]
-    private int _hitPoint;
-
-    public int HitPoint
-    {
-        get {return _hitPoint;}
-        set {_hitPoint = Mathf.Clamp(value,0,100);}
-    }
 
     // Start is called before the first frame update
     void Start()

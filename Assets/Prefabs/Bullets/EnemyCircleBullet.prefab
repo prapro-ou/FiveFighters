@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8955160986580730134}
   - component: {fileID: 5277513684888263422}
   - component: {fileID: 7025472455355567281}
+  - component: {fileID: -6450398580459616629}
   m_Layer: 10
   m_Name: EnemyCircleBullet
   m_TagString: Untagged
@@ -148,3 +149,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-6450398580459616629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700161908002525583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79901b7ecb95a164687e4116afd6c292, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageValue: 10

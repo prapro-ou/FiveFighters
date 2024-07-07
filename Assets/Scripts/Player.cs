@@ -124,6 +124,13 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(clampedX, clampedY, transform.position.z);
     }
 
+    public void TakeDamage(int value)
+    {
+        HitPoint -= value;
+        
+        Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
+    }
+
     //自機消滅
     public void DestroyMyself()
     {

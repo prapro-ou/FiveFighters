@@ -25,7 +25,7 @@ public class PlayerHpBar : MonoBehaviour
         DamageTest();
     }
 
-    private void UpdateHp()
+    public void UpdateHp()
     {
         _hpBar.value = (float)_player.HitPoint/(float)100;
     }

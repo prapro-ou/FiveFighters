@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DamageCollider : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
-    [SerializeField]
-    private Player _player;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -17,10 +14,5 @@ public class DamageCollider : MonoBehaviour
     void Update()
     {
         
-    }
-
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        EnemyBullet enemyBullet = collider.gameObject.GetComponent<EnemyBullet>();
     }
 }

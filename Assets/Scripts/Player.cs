@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
+    [SerializeField]
+    private PlayerHpBar _playerHpBar;
+
     private Vector3[] _corners;
 
     [SerializeField]

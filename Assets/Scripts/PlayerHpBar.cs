@@ -8,14 +8,14 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField]
     private Player _player;
 
-    private Slider hpBar;
+    private Slider _hpBar;
 
     private int clk = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        hpBar = GameObject.Find("PlayerHpBar").GetComponent<Slider>();
+        _hpBar = GameObject.Find("PlayerHpBar").GetComponent<Slider>();
         UpdateHp();
     }
 
@@ -27,7 +27,7 @@ public class PlayerHpBar : MonoBehaviour
 
     private void UpdateHp()
     {
-        hpBar.value = (float)_player._hitPoint/(float)100;
+        _hpBar.value = (float)_player._hitPoint/(float)100;
     }
 
     private void DamageTest()
@@ -35,7 +35,7 @@ public class PlayerHpBar : MonoBehaviour
         if(clk > 70)
         {
             Debug.Log("damage");
-            hpBar.value -= 0.05f;
+            _hpBar.value -= 0.05f;
             clk = 0;
         }
         else

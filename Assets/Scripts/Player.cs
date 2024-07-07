@@ -25,7 +25,10 @@ public class Player : MonoBehaviour
     public int HitPoint
     {
         get {return _hitPoint;}
-        set {_hitPoint = Mathf.Clamp(value,0,100);}
+        set
+        {
+            _hitPoint = Mathf.Clamp(value, 0, 100);
+        }
     }
 
     private int _myShapeNumber;

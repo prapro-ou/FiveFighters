@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         set
         {
             _hitPoint = Mathf.Clamp(value, 0, 100);
+            _playerHpBar.UpdateHp();
         }
     }
 

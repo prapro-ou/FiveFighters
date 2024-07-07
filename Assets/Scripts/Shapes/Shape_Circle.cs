@@ -30,6 +30,7 @@ public class Shape_Circle : PlayerShape
 
     public override void ShiftSkill()
     {
+        Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity);
         Debug.Log($"ShiftSkill {name}");
     }
 }

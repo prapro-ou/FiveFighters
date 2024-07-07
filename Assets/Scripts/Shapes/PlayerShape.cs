@@ -31,6 +31,9 @@ public abstract class PlayerShape : MonoBehaviour
         set {_primaryAttackCost = value;}
     }
 
+    [SerializeField]
+    public DestroyField _destroyField;
+
     // Start is called before the first frame update
     void Start()
     {

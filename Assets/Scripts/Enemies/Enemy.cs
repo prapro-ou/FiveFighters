@@ -27,4 +27,20 @@ public class Enemy : MonoBehaviour
     {
         
     }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
+
+        TakeDamage(bullet.DamageValue);
+
+        Destroy(bullet.gameObject);
+    }
+
+    public void TakeDamage(int value)
+    {
+        HitPoint -= value;
+        
+        Debug.Log($"Enemy::TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
+    }
 }

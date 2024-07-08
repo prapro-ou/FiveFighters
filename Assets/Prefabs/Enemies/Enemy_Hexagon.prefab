@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2697673246650818187}
   - component: {fileID: 4301353868142021463}
   - component: {fileID: 1617547175024454870}
+  - component: {fileID: -8352821498467316285}
   m_Layer: 11
   m_Name: Enemy_Hexagon
   m_TagString: Untagged
@@ -158,3 +159,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-8352821498467316285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6813297178434750579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b119b93a4d83e4282d166b8672216a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

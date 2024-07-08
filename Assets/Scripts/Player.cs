@@ -35,12 +35,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    private int _myShapeNumber;
+    private PlayerShape _myShape;
 
-    public int MyShapeNumber
+    public PlayerShape MyShape
     {
-        get {return _myShapeNumber;}
-        set {_myShapeNumber = value;}
+        get {return _myShape;}
+        set 
+        {
+            _myShape = value;
+            _ShiftShapeOfColliders(MyShape);
+        }
     }
 
     private Enemy _currentEnemy;
@@ -76,7 +80,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MyShapeNumber = 0;
+        MyShape = _ownShapes[0];
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -178,10 +182,9 @@ public class Player : MonoBehaviour
 
         Debug.Log($"ShiftShape {mode}");
 
-        MyShapeNumber = mode;
+        MyShape = _ownShapes[mode];
 
-        _ownShapes[MyShapeNumber].ShiftSkill();
-        _ShiftShapeOfColliders(_ownShapes[MyShapeNumber]);
+        MyShape.ShiftSkill();
     }
 
     private void _ShiftShapeOfColliders(PlayerShape pShape)

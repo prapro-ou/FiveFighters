@@ -43,6 +43,14 @@ public class Player : MonoBehaviour
         set {_myShapeNumber = value;}
     }
 
+    private Enemy _currentEnemy;
+
+    public Enemy CurrentEnemy
+    {
+        get {return _currentEnemy;}
+        set {_currentEnemy = value;}
+    }
+
     private Vector2 _direction;
 
     public Vector2 Direction

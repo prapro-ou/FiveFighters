@@ -47,4 +47,5 @@ MonoBehaviour:
   _mySprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   _myColor: {r: 0.8726415, g: 0.67753124, b: 0, a: 1}
   _primaryAttackCost: 50
+  _primaryAttackDamage: 2
   _destroyField: {fileID: 8351723773996737352, guid: 7dca6a5add47f924496ddc68f1536db7, type: 3}

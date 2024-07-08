@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2697673246650818187}
   - component: {fileID: 4301353868142021463}
   - component: {fileID: 1617547175024454870}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Enemy_Hexagon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

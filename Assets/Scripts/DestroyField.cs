@@ -16,8 +16,9 @@ public class DestroyField : MonoBehaviour
         
     }
 
+    //触れてきた弾を破壊
     void OnTriggerEnter2D(Collider2D collider)
     {
-        //ここに破壊する処理を書く
+        Destroy(collider.gameObject);
     }
 }

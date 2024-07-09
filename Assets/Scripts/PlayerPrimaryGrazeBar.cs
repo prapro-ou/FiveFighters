@@ -14,7 +14,7 @@ public class PlayerPrimaryGrazeBar : MonoBehaviour
     void Start()
     {
         _primaryGrazeBar = GameObject.Find("PlayerPrimaryGrazeBar").GetComponent<Slider>();
-        UpdateGrazeCount();
+        UpdatePrimaryGrazeCount();
     }
 
     // Update is called once per frame
@@ -23,7 +23,7 @@ public class PlayerPrimaryGrazeBar : MonoBehaviour
 
     }
 
-    public void UpdateGrazeCount()
+    public void UpdatePrimaryGrazeCount()
     {
         _primaryGrazeBar.value = (float)100/*_player.PrimaryGrazeCount*//(float)_player.MyShape.PrimaryAttackCost;
     }

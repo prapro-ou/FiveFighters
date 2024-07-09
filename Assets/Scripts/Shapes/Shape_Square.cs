@@ -5,6 +5,7 @@ using UnityEngine;
 public class Shape_Square : PlayerShape
 {
     private Player _player;
+    private GameObject _squareDestroyField;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,8 @@ public class Shape_Square : PlayerShape
 
     public override void ShiftSkill()
     {
-        Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
+        _squareDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
+        Destroy(_squareDestroyField, 3.0f);
         Debug.Log($"ShiftSkill {name}");
     }
 }

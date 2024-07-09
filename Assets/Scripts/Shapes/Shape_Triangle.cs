@@ -5,6 +5,7 @@ using UnityEngine;
 public class Shape_Triangle : PlayerShape
 {
     private Player _player;
+    private GameObject _triangleDestroyField;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,8 @@ public class Shape_Triangle : PlayerShape
 
     public override void ShiftSkill()
     {
-        Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
+        _triangleDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
+        Destroy(_triangleDestroyField, 3.0f);
         Debug.Log($"ShiftSkill {name}");
     }
 }

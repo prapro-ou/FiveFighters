@@ -59,7 +59,7 @@ public class Player : MonoBehaviour
 
     private int _PrimaryAttackCost;
 
-    public int PrimaryAttackCost;
+    public int PrimaryAttackCost
     {
         get {return _PrimaryAttackCost;}
         set {_PrimaryAttackCost = value;}

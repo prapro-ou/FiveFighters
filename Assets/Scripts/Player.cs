@@ -67,6 +67,23 @@ public class Player : MonoBehaviour
     private float _speed;
 
     [SerializeField]
+    private float _shiftCooldown;
+
+    public float ShiftCooldown
+    {
+        get {return _shiftCooldown;}
+        set {_shiftCooldown = value;}
+    }
+
+    private bool _isInShiftCooldown;
+
+    public bool IsInShiftCooldown
+    {
+        get {return _isInShiftCooldown;}
+        set {_isInShiftCooldown = value;}
+    }   
+
+    [SerializeField]
     private float _slowDownRate;
 
     private bool _isSlowingDown;
@@ -81,6 +98,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         MyShape = _ownShapes[0];
+
+        CurrentEnemy = null;
+
+        Direction = Vector2.zero;
+
+        IsInShiftCooldown = false;
+        IsSlowingDown = false;
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -182,9 +206,33 @@ public class Player : MonoBehaviour
 
         Debug.Log($"ShiftShape {mode}");
 
+        if(MyShape == _ownShapes[mode])
+        {
+            Debug.Log("Shifting to same shape");
+            return;
+        }
+
+        if(IsInShiftCooldown)
+        {
+            return;
+        }
+
         MyShape = _ownShapes[mode];
 
         MyShape.ShiftSkill();
+
+        StartCoroutine(StartShiftCooldown());
+    }
+
+    private IEnumerator StartShiftCooldown()
+    {
+        Debug.Log("Start ShiftCooldown");
+        IsInShiftCooldown = true;
+
+        yield return new WaitForSeconds(ShiftCooldown);
+
+        Debug.Log("Finish ShiftCooldown");
+        IsInShiftCooldown = false;
     }
 
     private void _ShiftShapeOfColliders(PlayerShape pShape)

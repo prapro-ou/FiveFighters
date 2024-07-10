@@ -49,7 +49,13 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
 
-    public int GrazeCounter;
+    private int _GrazeCounter;
+
+    public int GrazeCounter
+    {
+        get {return _GrazeCounter;}
+        set {_GrazeCounter = value;}
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -71,6 +77,7 @@ public class Player : MonoBehaviour
             PrimaryAttack();
             GrazeCounter -= 500;
         }
+    
     }
 
     // 方向入力を受ける関数
@@ -125,7 +132,7 @@ public class Player : MonoBehaviour
     //通常攻撃
     public void PrimaryAttack()
     {
-        Debug.Log($"Attack {_myShapeNumber}");
+        Debug.Log($"Attack {MyShapeNumber}");
     }
 
     //変形入力を受ける関数

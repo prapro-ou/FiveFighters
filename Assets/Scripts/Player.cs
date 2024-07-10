@@ -57,11 +57,21 @@ public class Player : MonoBehaviour
         set {_GrazeCounter = value;}
     }
 
+    private int _PrimaryAttackCost;
+
+    public int PrimaryAttackCost;
+    {
+        get {return _PrimaryAttackCost;}
+        set {_PrimaryAttackCost = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        MyShapeNumber = 0;
+        MyShapeNumber = 1;
         GrazeCounter = 0;
+
+        PrimaryAttackCost = 500;
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -73,9 +83,8 @@ public class Player : MonoBehaviour
     {
         _Move();
 
-        if(GrazeCounter >= 100){
+        if(GrazeCounter >= PrimaryAttackCost){
             PrimaryAttack();
-            GrazeCounter -= 100;
         }
     
     }
@@ -133,6 +142,7 @@ public class Player : MonoBehaviour
     public void PrimaryAttack()
     {
         Debug.Log($"Attack {MyShapeNumber}");
+        GrazeCounter -= PrimaryAttackCost;
     }
 
     //変形入力を受ける関数
@@ -141,6 +151,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(0);
+            PrimaryAttackCost = 100;
         }
     }
 
@@ -149,6 +160,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(1);
+            PrimaryAttackCost = 500;
         }
     }
 
@@ -157,6 +169,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(2);
+            PrimaryAttackCost = 1000;
         }
     }
 

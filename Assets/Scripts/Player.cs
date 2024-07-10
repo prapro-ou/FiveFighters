@@ -102,6 +102,24 @@ public class Player : MonoBehaviour
         set {_money = value;}
     }
 
+    [SerializeField]
+    private float _powerMultiplier;
+
+    public float PowerMultiplier
+    {
+        get {return _powerMultiplier;}
+        set {_powerMultiplier = value;}
+    }
+
+    [SerializeField]
+    private float _hpMultiplier;
+
+    public float HpMultiplier
+    {
+        get {return _hpMultiplier;}
+        set {_hpMultiplier = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {

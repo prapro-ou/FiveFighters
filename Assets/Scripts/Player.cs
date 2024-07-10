@@ -73,9 +73,9 @@ public class Player : MonoBehaviour
     {
         _Move();
 
-        if(GrazeCounter >= 500){
+        if(GrazeCounter >= 100){
             PrimaryAttack();
-            GrazeCounter -= 500;
+            GrazeCounter -= 100;
         }
     
     }

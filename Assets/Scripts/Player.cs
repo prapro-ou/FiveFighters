@@ -284,4 +284,14 @@ public class Player : MonoBehaviour
     {
         Money -= cost;
     }
+
+    private void EnhanceHp()
+    {
+        HitPoint =(int)(HitPoint * HpMultiplier);
+    }
+
+    private void EnhancePower()
+    {
+        // Power(?) = (int)(Power * PowerMultiplier);
+    }
 }

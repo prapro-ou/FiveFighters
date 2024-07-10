@@ -887,6 +887,7 @@ MonoBehaviour:
   - {fileID: 159084274}
   _hitPoint: 100
   _speed: 5
+  _shiftCooldown: 5
   _slowDownRate: 0.5
 --- !u!1 &907236227
 GameObject:

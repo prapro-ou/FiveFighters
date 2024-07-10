@@ -259,11 +259,11 @@ public class Player : MonoBehaviour
 
     private void AddMoney(int reward)
     {
-        _money += reward;
+        Money += reward;
     }
 
     private void UseMoney(int cost)
     {
-        _money -= cost;
+        Money -= cost;
     }
 }

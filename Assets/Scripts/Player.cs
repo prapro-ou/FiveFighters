@@ -94,6 +94,14 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
 
+    private int _money = 0;
+
+    public int Money
+    {
+        get {return _money;}
+        set {_money = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -247,5 +255,15 @@ public class Player : MonoBehaviour
 
         dcSpriteRenderer.color = pShape.MyColor;
         gcSpriteRenderer.color = grazeColor;
+    }
+
+    private void AddMoney(int reward)
+    {
+        Money += reward;
+    }
+
+    private void UseMoney(int cost)
+    {
+        Money -= cost;
     }
 }

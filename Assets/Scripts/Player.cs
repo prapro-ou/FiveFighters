@@ -261,4 +261,9 @@ public class Player : MonoBehaviour
     {
         _money += reward;
     }
+
+    private void UseMoney(int cost)
+    {
+        _money -= cost;
+    }
 }

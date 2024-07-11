@@ -93,16 +93,8 @@ public class Player : MonoBehaviour
         get {return _isSlowingDown;}
         set {_isSlowingDown = value;}
     }    
-
-    private int _GrazeCounter;
-
-    public int GrazeCounter
-    {
-        get {return _GrazeCounter;}
-        set {_GrazeCounter = value;}
-    }
-
-    private int _PrimaryAttackCost;
+    
+        private int _PrimaryAttackCost;
 
     public int PrimaryAttackCost
     {
@@ -115,6 +107,14 @@ public class Player : MonoBehaviour
     {
         get {return _money;}
         set {_money = value;}
+    }
+
+    private int _grazeCounter;
+
+    public int GrazeCounter
+    {
+        get {return _grazeCounter;}
+        set {_grazeCounter = value;}
     }
 
     // Start is called before the first frame update

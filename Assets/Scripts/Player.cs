@@ -93,6 +93,29 @@ public class Player : MonoBehaviour
         get {return _isSlowingDown;}
         set {_isSlowingDown = value;}
     }    
+    
+        private int _PrimaryAttackCost;
+
+    public int PrimaryAttackCost
+    {
+        get {return _PrimaryAttackCost;}
+        set {_PrimaryAttackCost = value;}
+    }
+    private int _money = 0;
+
+    public int Money
+    {
+        get {return _money;}
+        set {_money = value;}
+    }
+
+    private int _grazeCounter;
+
+    public int GrazeCounter
+    {
+        get {return _grazeCounter;}
+        set {_grazeCounter = value;}
+    }
 
     private float _expansionValue;
 
@@ -108,6 +131,9 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GrazeCounter = 0;
+
+        PrimaryAttackCost = 500;
         MyShape = _ownShapes[0];
 
         CurrentEnemy = null;
@@ -126,6 +152,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         _Move();
+
+        if(GrazeCounter >= PrimaryAttackCost){
+            PrimaryAttack();
+        }
+    
     }
 
     // 方向入力を受ける関数
@@ -184,12 +215,20 @@ public class Player : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    //通常攻撃
+    public void PrimaryAttack()
+    {
+        // Debug.Log($"Attack {MyShapeNumber}");
+        GrazeCounter -= PrimaryAttackCost;
+    }
+
     //変形入力を受ける関数
     public void OnShiftShape0(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
             _ShiftShape(0);
+            PrimaryAttackCost = 100;
         }
     }
 
@@ -198,6 +237,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(1);
+            PrimaryAttackCost = 500;
         }
     }
 
@@ -206,6 +246,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(2);
+            PrimaryAttackCost = 1000;
         }
     }
 
@@ -263,5 +304,15 @@ public class Player : MonoBehaviour
     private void _UpdateGrazeCollider()
     {
         _grazeCollider.transform.localScale = MyShape.GrazeColliderSize * ExpansionValue;
+    }
+
+    private void AddMoney(int reward)
+    {
+        Money += reward;
+    }
+
+    private void UseMoney(int cost)
+    {
+        Money -= cost;
     }
 }

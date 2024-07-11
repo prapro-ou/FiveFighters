@@ -25,6 +25,6 @@ public class PlayerHpBar : MonoBehaviour
 
     public void UpdateHp()
     {
-        _hpBar.value = (float)_player.HitPoint/(float)_player.MaxHitPoint;
+        // _hpBar.value = (float)(_player.HitPoint)/(float)(_player.MaxHitPoint);
     }
 }

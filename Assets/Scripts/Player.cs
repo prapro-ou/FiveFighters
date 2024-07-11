@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
-    [SerializeField]
     private PlayerHpBar _playerHpBar;
 
     private Vector3[] _corners;
@@ -93,7 +92,7 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
     
-        private int _PrimaryAttackCost;
+    private int _PrimaryAttackCost;
 
     public int PrimaryAttackCost
     {
@@ -124,7 +123,7 @@ public class Player : MonoBehaviour
         get {return _maxHitPoint;}
         set {_maxHitPoint = value;}
     }
-    
+
     private int _grazeCounter;
 
     public int GrazeCounter
@@ -147,6 +146,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
+
         GrazeCounter = 0;
 
         PrimaryAttackCost = 500;

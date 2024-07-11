@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
         get {return _maxHitPoint;}
         set {_maxHitPoint = value;}
     }
-    
+
     private int _grazeCounter;
 
     public int GrazeCounter
@@ -144,6 +144,17 @@ public class Player : MonoBehaviour
             }
     }
 
+    [SerializeField]
+    private PlayerSpecialGrazeBar _playerSpecialGrazeBar;
+
+    private int _specialGrazeCount;
+
+    public int SpecialGrazeCount
+    {
+        get {return _specialGrazeCount;}
+        set {_specialGrazeCount = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -161,6 +172,8 @@ public class Player : MonoBehaviour
 
         PowerMultiplier = 1;
         HitPoint = MaxHitPoint;
+
+        _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];

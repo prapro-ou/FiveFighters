@@ -25,6 +25,6 @@ public class PlayerSpecialGrazeBar : MonoBehaviour
 
     public void UpdateSpecialGrazeCount()
     {
-        _specialGrazeBar.value = (float)100/*_player.SpecialGrazeCount*//(float)100/*_player.MyShape.SpecialSkillCost*/;
+        _specialGrazeBar.value = (float)_player.SpecialGrazeCount/(float)100/*_player.MyShape.SpecialSkillCost*/;
     }
 }

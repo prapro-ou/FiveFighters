@@ -29,6 +29,8 @@ public class Shape_Circle : PlayerShape
     {
         Vector3 vec = _player.transform.position;
         Instantiate(PlayerCircleBullet,vec,Quaternion.identity);
+
+        
     }
 
     public override void SpecialSkill()

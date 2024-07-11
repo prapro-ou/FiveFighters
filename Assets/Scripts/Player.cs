@@ -102,6 +102,14 @@ public class Player : MonoBehaviour
         set {_money = value;}
     }
 
+    private int _grazeCounter;
+
+    public int GrazeCounter
+    {
+        get {return _GrazeCounter;}
+        set {GrazeCounter = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {

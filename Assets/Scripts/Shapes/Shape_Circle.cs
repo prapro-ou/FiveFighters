@@ -7,10 +7,14 @@ public class Shape_Circle : PlayerShape
     private Player _player;
     private GameObject _circleDestroyField;
 
+    [SerializeField]
+    private GameObject PlayerCircleBullet;
+
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+
     }
 
     // Update is called once per frame
@@ -21,7 +25,7 @@ public class Shape_Circle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"cir");
+        Instantiate(PlayerCircleBullet);
     }
 
     public override void SpecialSkill()

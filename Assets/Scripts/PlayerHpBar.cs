@@ -10,8 +10,6 @@ public class PlayerHpBar : MonoBehaviour
 
     private Slider _hpBar;
 
-    // private int clk = 0;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,23 +20,11 @@ public class PlayerHpBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // DamageTest();
+
     }
 
     public void UpdateHp()
     {
-        _hpBar.value = (float)_player.HitPoint/(float)100;
+        // _hpBar.value = (float)(_player.HitPoint)/(float)(_player.MaxHitPoint);
     }
-
-    // private void DamageTest()
-    // {
-    //     if(clk > 70)
-    //     {
-    //         Debug.Log("damage");
-    //         _hpBar.value -= 0.05f;
-    //         clk = 0;
-    //     }
-    //     else
-    //         clk += 1;
-    // }
 }

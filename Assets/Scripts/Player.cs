@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
-    [SerializeField]
     private PlayerHpBar _playerHpBar;
 
     private Vector3[] _corners;
@@ -22,7 +21,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
-    [SerializeField]
     private int _hitPoint;
 
     public int HitPoint
@@ -30,7 +28,7 @@ public class Player : MonoBehaviour
         get {return _hitPoint;}
         set
         {
-            _hitPoint = Mathf.Clamp(value, 0, 100);
+            _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
             _playerHpBar.UpdateHp();
         }
     }
@@ -94,7 +92,7 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
     
-        private int _PrimaryAttackCost;
+    private int _PrimaryAttackCost;
 
     public int PrimaryAttackCost
     {
@@ -107,6 +105,23 @@ public class Player : MonoBehaviour
     {
         get {return _money;}
         set {_money = value;}
+    }
+
+    private float _powerMultiplier;
+
+    public float PowerMultiplier
+    {
+        get {return _powerMultiplier;}
+        set {_powerMultiplier = value;}
+    }
+
+    [SerializeField]
+    private int _maxHitPoint;
+
+    public int MaxHitPoint
+    {
+        get {return _maxHitPoint;}
+        set {_maxHitPoint = value;}
     }
 
     private int _grazeCounter;
@@ -123,10 +138,23 @@ public class Player : MonoBehaviour
         get {return _specialGrazeCounter;}
         set {_specialGrazeCounter = value;}
     }
+    
+    private float _expansionValue;
+
+    public float ExpansionValue
+    {
+        get {return _expansionValue;}
+        set {
+                _expansionValue = value;
+                _UpdateGrazeCollider();
+            }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
+
         GrazeCounter = 0;
 
         PrimaryAttackCost = 500;
@@ -138,6 +166,9 @@ public class Player : MonoBehaviour
 
         IsInShiftCooldown = false;
         IsSlowingDown = false;
+
+        PowerMultiplier = 1;
+        HitPoint = MaxHitPoint;
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -318,6 +349,11 @@ public class Player : MonoBehaviour
         gcSpriteRenderer.color = grazeColor;
     }
 
+    private void _UpdateGrazeCollider()
+    {
+        _grazeCollider.transform.localScale = MyShape.GrazeColliderSize * ExpansionValue;
+    }
+
     private void AddMoney(int reward)
     {
         Money += reward;
@@ -326,5 +362,16 @@ public class Player : MonoBehaviour
     private void UseMoney(int cost)
     {
         Money -= cost;
+    }
+
+    private void EnhanceHitPoint(int boost)
+    {
+        MaxHitPoint += boost;
+        HitPoint += boost;
+    }
+
+    private void EnhancePower(float coefficient)
+    {
+        PowerMultiplier += coefficient;
     }
 }

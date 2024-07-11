@@ -21,7 +21,7 @@ public class Shape_Circle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Debug.Log($"cir");
     }
 
     public override void SpecialSkill()

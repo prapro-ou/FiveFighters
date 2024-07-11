@@ -21,7 +21,7 @@ public class Shape_Triangle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Debug.Log($"tri");
     }
 
     public override void SpecialSkill()

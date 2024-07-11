@@ -21,7 +21,7 @@ public class Shape_Square : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Debug.Log($"squ");
     }
 
     public override void SpecialSkill()

@@ -117,6 +117,17 @@ public class Player : MonoBehaviour
         set {_grazeCounter = value;}
     }
 
+    private float _expansionValue;
+
+    public float ExpansionValue
+    {
+        get {return _expansionValue;}
+        set {
+                _expansionValue = value;
+                _UpdateGrazeCollider();
+            }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -288,6 +299,11 @@ public class Player : MonoBehaviour
 
         dcSpriteRenderer.color = pShape.MyColor;
         gcSpriteRenderer.color = grazeColor;
+    }
+
+    private void _UpdateGrazeCollider()
+    {
+        _grazeCollider.transform.localScale = MyShape.GrazeColliderSize * ExpansionValue;
     }
 
     private void AddMoney(int reward)

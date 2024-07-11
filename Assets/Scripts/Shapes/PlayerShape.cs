@@ -43,6 +43,15 @@ public abstract class PlayerShape : MonoBehaviour
     [SerializeField]
     public DestroyField _destroyField;
 
+    [SerializeField]
+    private int _specialSkillCost;
+
+    public int SpecialSkillCost
+    {
+        get {return _specialSkillCost;}
+        set {_specialSkillCost = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {

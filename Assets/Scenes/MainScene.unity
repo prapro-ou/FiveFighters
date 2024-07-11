@@ -1066,6 +1066,7 @@ MonoBehaviour:
   _speed: 5
   _shiftCooldown: 5
   _slowDownRate: 0.5
+  GrazeCounter: 0
 --- !u!1 &907236227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,6 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e4014841565574b92ce340753c6a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 691294819}
 --- !u!1 &1067346686
 GameObject:
   m_ObjectHideFlags: 0

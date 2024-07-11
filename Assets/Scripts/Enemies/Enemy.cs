@@ -53,5 +53,7 @@ public class Enemy : MonoBehaviour
         HitPoint -= value;
         
         Debug.Log($"Enemy::TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
+
+        
     }
 }

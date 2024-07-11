@@ -94,6 +94,21 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
 
+    private int _GrazeCounter;
+
+    public int GrazeCounter
+    {
+        get {return _GrazeCounter;}
+        set {_GrazeCounter = value;}
+    }
+
+    private int _PrimaryAttackCost;
+
+    public int PrimaryAttackCost
+    {
+        get {return _PrimaryAttackCost;}
+        set {_PrimaryAttackCost = value;}
+    }
     private int _money = 0;
 
     public int Money
@@ -105,6 +120,9 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GrazeCounter = 0;
+
+        PrimaryAttackCost = 500;
         MyShape = _ownShapes[0];
 
         CurrentEnemy = null;
@@ -123,6 +141,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         _Move();
+
+        if(GrazeCounter >= PrimaryAttackCost){
+            PrimaryAttack();
+        }
+    
     }
 
     // 方向入力を受ける関数
@@ -181,12 +204,20 @@ public class Player : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    //通常攻撃
+    public void PrimaryAttack()
+    {
+        // Debug.Log($"Attack {MyShapeNumber}");
+        GrazeCounter -= PrimaryAttackCost;
+    }
+
     //変形入力を受ける関数
     public void OnShiftShape0(InputAction.CallbackContext context)
     {
         if(context.performed)
         {
             _ShiftShape(0);
+            PrimaryAttackCost = 100;
         }
     }
 
@@ -195,6 +226,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(1);
+            PrimaryAttackCost = 500;
         }
     }
 
@@ -203,6 +235,7 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(2);
+            PrimaryAttackCost = 1000;
         }
     }
 

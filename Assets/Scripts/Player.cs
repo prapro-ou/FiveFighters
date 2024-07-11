@@ -106,8 +106,8 @@ public class Player : MonoBehaviour
 
     public int GrazeCounter
     {
-        get {return _GrazeCounter;}
-        set {GrazeCounter = value;}
+        get {return _grazeCounter;}
+        set {_grazeCounter = value;}
     }
 
     // Start is called before the first frame update

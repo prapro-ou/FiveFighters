@@ -681,7 +681,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 2008790476}
   m_HandleRect: {fileID: 0}
@@ -1062,10 +1062,10 @@ MonoBehaviour:
   - {fileID: 1287317979}
   - {fileID: 1960416857}
   - {fileID: 159084274}
-  _hitPoint: 100
   _speed: 5
   _shiftCooldown: 5
   _slowDownRate: 0.5
+  _maxHitPoint: 100
 --- !u!1 &907236227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1549,7 +1549,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1466731320}
   m_HandleRect: {fileID: 0}
@@ -1735,7 +1735,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1329350773}
   m_HandleRect: {fileID: 0}

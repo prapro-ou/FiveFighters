@@ -22,7 +22,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
-    [SerializeField]
     private int _hitPoint;
 
     public int HitPoint
@@ -30,7 +29,7 @@ public class Player : MonoBehaviour
         get {return _hitPoint;}
         set
         {
-            _hitPoint = Mathf.Clamp(value, 0, 100);
+            _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
             _playerHpBar.UpdateHp();
         }
     }
@@ -102,7 +101,6 @@ public class Player : MonoBehaviour
         set {_money = value;}
     }
 
-    [SerializeField]
     private float _powerMultiplier;
 
     public float PowerMultiplier
@@ -112,12 +110,12 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField]
-    private float _hpMultiplier;
+    private int _maxHitPoint;
 
-    public float HpMultiplier
+    public int MaxHitPoint
     {
-        get {return _hpMultiplier;}
-        set {_hpMultiplier = value;}
+        get {return _maxHitPoint;}
+        set {_maxHitPoint = value;}
     }
 
     // Start is called before the first frame update
@@ -131,6 +129,9 @@ public class Player : MonoBehaviour
 
         IsInShiftCooldown = false;
         IsSlowingDown = false;
+
+        PowerMultiplier = 1;
+        HitPoint = MaxHitPoint;
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -285,13 +286,14 @@ public class Player : MonoBehaviour
         Money -= cost;
     }
 
-    private void EnhanceHp()
+    private void EnhanceHitPoint(int boost)
     {
-        HitPoint =(int)(HitPoint * HpMultiplier);
+        MaxHitPoint += boost;
+        HitPoint += boost;
     }
 
-    private void EnhancePower()
+    private void EnhancePower(float coefficient)
     {
-        // Power(?) = (int)(Power * PowerMultiplier);
+        PowerMultiplier += coefficient;
     }
 }

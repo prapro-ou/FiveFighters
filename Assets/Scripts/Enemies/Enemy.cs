@@ -5,6 +5,17 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
+    private int _maxHitPoint;
+
+    public int MaxHitPoint
+    {
+        get {return _maxHitPoint;}
+        set
+        {
+            _maxHitPoint = value;
+        }
+    }
+
     private int _hitPoint;
 
     public int HitPoint
@@ -19,7 +30,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        HitPoint = MaxHitPoint;
     }
 
     // Update is called once per frame
@@ -42,5 +53,7 @@ public class Enemy : MonoBehaviour
         HitPoint -= value;
         
         Debug.Log($"Enemy::TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
+
+        
     }
 }

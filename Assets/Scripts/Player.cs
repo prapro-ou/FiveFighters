@@ -132,6 +132,13 @@ public class Player : MonoBehaviour
         set {_grazeCounter = value;}
     }
 
+    private int _specialGrazeCounter;
+    public int SpecialGrazeCounter
+    {
+        get {return _specialGrazeCounter;}
+        set {_specialGrazeCounter = value;}
+    }
+    
     private float _expansionValue;
 
     public float ExpansionValue
@@ -294,6 +301,27 @@ public class Player : MonoBehaviour
         MyShape.ShiftSkill();
 
         StartCoroutine(StartShiftCooldown());
+    }
+
+    public void OnSpecialSkill(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _SpecialSkill();
+        }
+    }
+
+    private void _SpecialSkill()
+    {
+        if (SpecialGrazeCounter < MyShape.SpecialSkillCost)
+        {
+            Debug.Log($"SpecialGrazeCounter < MyShape.SpecialSkillCost");
+            return;
+        }
+
+        MyShape.SpecialSkill();
+
+        SpecialGrazeCounter = 0;
     }
 
     private IEnumerator StartShiftCooldown()

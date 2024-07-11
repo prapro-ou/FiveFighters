@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Shape_Circle : PlayerShape
 {
+    [SerializeField]
     private Player _player;
+
     private GameObject _circleDestroyField;
 
     [SerializeField]
@@ -25,7 +27,8 @@ public class Shape_Circle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Instantiate(PlayerCircleBullet);
+        Vector3 vec = _player.transform.position;
+        Instantiate(PlayerCircleBullet,vec,Quaternion.identity);
     }
 
     public override void SpecialSkill()

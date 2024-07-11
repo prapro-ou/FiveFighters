@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: 9f78df262fbce20499b5b4b8a5861772
+guid: b99a83db90eb57b4f9db18f904b50362
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - _mySprite: {instanceID: 0}
-  - _destroyField: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -14,17 +14,45 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
+    [SerializeField]
+    private PlayerHpBar _playerHpBar;
+
     private Vector3[] _corners;
 
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
-    private int _myShapeNumber;
+    [SerializeField]
+    private int _hitPoint;
 
-    public int MyShapeNumber
+    public int HitPoint
     {
-        get {return _myShapeNumber;}
-        set {_myShapeNumber = value;}
+        get {return _hitPoint;}
+        set
+        {
+            _hitPoint = Mathf.Clamp(value, 0, 100);
+            _playerHpBar.UpdateHp();
+        }
+    }
+
+    private PlayerShape _myShape;
+
+    public PlayerShape MyShape
+    {
+        get {return _myShape;}
+        set 
+        {
+            _myShape = value;
+            _ShiftShapeOfColliders(MyShape);
+        }
+    }
+
+    private Enemy _currentEnemy;
+
+    public Enemy CurrentEnemy
+    {
+        get {return _currentEnemy;}
+        set {_currentEnemy = value;}
     }
 
     private Vector2 _direction;
@@ -37,6 +65,23 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private float _speed;
+
+    [SerializeField]
+    private float _shiftCooldown;
+
+    public float ShiftCooldown
+    {
+        get {return _shiftCooldown;}
+        set {_shiftCooldown = value;}
+    }
+
+    private bool _isInShiftCooldown;
+
+    public bool IsInShiftCooldown
+    {
+        get {return _isInShiftCooldown;}
+        set {_isInShiftCooldown = value;}
+    }   
 
     [SerializeField]
     private float _slowDownRate;
@@ -64,14 +109,28 @@ public class Player : MonoBehaviour
         get {return _PrimaryAttackCost;}
         set {_PrimaryAttackCost = value;}
     }
+    private int _money = 0;
+
+    public int Money
+    {
+        get {return _money;}
+        set {_money = value;}
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        MyShapeNumber = 1;
         GrazeCounter = 0;
 
         PrimaryAttackCost = 500;
+        MyShape = _ownShapes[0];
+
+        CurrentEnemy = null;
+
+        Direction = Vector2.zero;
+
+        IsInShiftCooldown = false;
+        IsSlowingDown = false;
 
         //プレイエリアの角を取得
         _corners = new Vector3[4];
@@ -132,6 +191,13 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(clampedX, clampedY, transform.position.z);
     }
 
+    public void TakeDamage(int value)
+    {
+        HitPoint -= value;
+        
+        Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
+    }
+
     //自機消滅
     public void DestroyMyself()
     {
@@ -141,7 +207,7 @@ public class Player : MonoBehaviour
     //通常攻撃
     public void PrimaryAttack()
     {
-        Debug.Log($"Attack {MyShapeNumber}");
+        // Debug.Log($"Attack {MyShapeNumber}");
         GrazeCounter -= PrimaryAttackCost;
     }
 
@@ -181,10 +247,33 @@ public class Player : MonoBehaviour
 
         Debug.Log($"ShiftShape {mode}");
 
-        MyShapeNumber = mode;
+        if(MyShape == _ownShapes[mode])
+        {
+            Debug.Log("Shifting to same shape");
+            return;
+        }
 
-        _ownShapes[MyShapeNumber].ShiftSkill();
-        _ShiftShapeOfColliders(_ownShapes[MyShapeNumber]);
+        if(IsInShiftCooldown)
+        {
+            return;
+        }
+
+        MyShape = _ownShapes[mode];
+
+        MyShape.ShiftSkill();
+
+        StartCoroutine(StartShiftCooldown());
+    }
+
+    private IEnumerator StartShiftCooldown()
+    {
+        Debug.Log("Start ShiftCooldown");
+        IsInShiftCooldown = true;
+
+        yield return new WaitForSeconds(ShiftCooldown);
+
+        Debug.Log("Finish ShiftCooldown");
+        IsInShiftCooldown = false;
     }
 
     private void _ShiftShapeOfColliders(PlayerShape pShape)
@@ -199,5 +288,15 @@ public class Player : MonoBehaviour
 
         dcSpriteRenderer.color = pShape.MyColor;
         gcSpriteRenderer.color = grazeColor;
+    }
+
+    private void AddMoney(int reward)
+    {
+        Money += reward;
+    }
+
+    private void UseMoney(int cost)
+    {
+        Money -= cost;
     }
 }

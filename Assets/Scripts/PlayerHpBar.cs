@@ -8,12 +8,12 @@ public class PlayerHpBar : MonoBehaviour
     [SerializeField]
     private Player _player;
 
-    private Slider _hpBar;
+    [SerializeField]
+    private Slider _hpBarSlider;
 
     // Start is called before the first frame update
     void Start()
     {
-        _hpBar = GameObject.Find("PlayerHpBar").GetComponent<Slider>();
         UpdateHp();
     }
 
@@ -25,6 +25,11 @@ public class PlayerHpBar : MonoBehaviour
 
     public void UpdateHp()
     {
-        // _hpBar.value = (float)(_player.HitPoint)/(float)(_player.MaxHitPoint);
+        if(_player == null)
+        {
+            _player = GameObject.Find("Player").GetComponent<Player>();
+        }
+        
+        _hpBarSlider.value = (float)(_player.HitPoint)/(float)(_player.MaxHitPoint);
     }
 }

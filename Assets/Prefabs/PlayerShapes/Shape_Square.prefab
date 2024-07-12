@@ -49,3 +49,4 @@ MonoBehaviour:
   _primaryAttackCost: 120
   _primaryAttackDamage: 3
   _destroyField: {fileID: 8351723773996737352, guid: 3f2df12ca171f9d488ae031c030831de, type: 3}
+  _specialSkillCost: 300

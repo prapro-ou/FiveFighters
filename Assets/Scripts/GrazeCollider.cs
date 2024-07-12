@@ -22,7 +22,8 @@ public class GrazeCollider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _player.GrazeCounter += GrazeCount;
+        _player.PrimaryGrazeCount += GrazeCount;
+        _player.SpecialGrazeCount += GrazeCount;
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

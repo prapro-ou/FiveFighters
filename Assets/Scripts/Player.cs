@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
-    [SerializeField]
     private PlayerHpBar _playerHpBar;
 
     private Vector3[] _corners;
@@ -93,7 +92,7 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
     
-        private int _PrimaryAttackCost;
+    private int _PrimaryAttackCost;
 
     public int PrimaryAttackCost
     {
@@ -133,6 +132,13 @@ public class Player : MonoBehaviour
         set {_grazeCounter = value;}
     }
 
+    private int _specialGrazeCounter;
+    public int SpecialGrazeCounter
+    {
+        get {return _specialGrazeCounter;}
+        set {_specialGrazeCounter = value;}
+    }
+    
     private float _expansionValue;
 
     public float ExpansionValue
@@ -158,6 +164,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
+
         GrazeCounter = 0;
 
         PrimaryAttackCost = 500;
@@ -306,6 +314,27 @@ public class Player : MonoBehaviour
         MyShape.ShiftSkill();
 
         StartCoroutine(StartShiftCooldown());
+    }
+
+    public void OnSpecialSkill(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _SpecialSkill();
+        }
+    }
+
+    private void _SpecialSkill()
+    {
+        if (SpecialGrazeCounter < MyShape.SpecialSkillCost)
+        {
+            Debug.Log($"SpecialGrazeCounter < MyShape.SpecialSkillCost");
+            return;
+        }
+
+        MyShape.SpecialSkill();
+
+        SpecialGrazeCounter = 0;
     }
 
     private IEnumerator StartShiftCooldown()

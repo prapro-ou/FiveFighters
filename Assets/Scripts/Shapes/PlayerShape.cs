@@ -44,6 +44,13 @@ public abstract class PlayerShape : MonoBehaviour
     public DestroyField _destroyField;
 
     [SerializeField]
+    private int _specialSkillCost;
+
+    public int SpecialSkillCost
+    {
+        get {return _specialSkillCost;}
+        set {_specialSkillCost = value;}
+    }
     private Vector3 _grazeColliderSize;
 
     public Vector3 GrazeColliderSize

@@ -1057,7 +1057,6 @@ MonoBehaviour:
   _playArea: {fileID: 282297408}
   _damageCollider: {fileID: 1597177709}
   _grazeCollider: {fileID: 907236232}
-  _playerHpBar: {fileID: 1208074055}
   _ownShapes:
   - {fileID: 1287317979}
   - {fileID: 1960416857}

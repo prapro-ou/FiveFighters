@@ -1065,6 +1065,7 @@ MonoBehaviour:
   _shiftCooldown: 5
   _slowDownRate: 0.5
   _maxHitPoint: 100
+  _playerSpecialGrazeBar: {fileID: 589313744}
 --- !u!1 &907236227
 GameObject:
   m_ObjectHideFlags: 0

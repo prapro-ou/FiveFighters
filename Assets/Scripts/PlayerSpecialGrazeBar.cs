@@ -8,13 +8,13 @@ public class PlayerSpecialGrazeBar : MonoBehaviour
     [SerializeField]
     private Player _player;
 
+    [SerializeField]
     private Slider _specialGrazeBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        _specialGrazeBar = GameObject.Find("PlayerSpecialGrazeBar").GetComponent<Slider>();
-        UpdateSpecialGrazeCount();
+
     }
 
     // Update is called once per frame
@@ -25,6 +25,6 @@ public class PlayerSpecialGrazeBar : MonoBehaviour
 
     public void UpdateSpecialGrazeCount()
     {
-        _specialGrazeBar.value = (float)_player.SpecialGrazeCount/(float)100/*_player.MyShape.SpecialSkillCost*/;
+        _specialGrazeBar.value = (float)_player.SpecialGrazeCount / (float)_player.MyShape.SpecialSkillCost;
     }
 }

@@ -706,6 +706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
+  _specialGrazeBar: {fileID: 589313743}
 --- !u!1 &595751805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,7 +1066,6 @@ MonoBehaviour:
   _shiftCooldown: 5
   _slowDownRate: 0.5
   _maxHitPoint: 100
-  _playerSpecialGrazeBar: {fileID: 589313744}
 --- !u!1 &907236227
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,6 +1762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
+  _primaryGrazeBarSlider: {fileID: 1338443249}
 --- !u!1 &1364362301
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,10 @@ public class Player : MonoBehaviour
 
     private PlayerHpBar _playerHpBar;
 
+    private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
+
+    private PlayerSpecialGrazeBar _playerSpecialGrazeBar;
+
     private Vector3[] _corners;
 
     [SerializeField]
@@ -29,6 +33,11 @@ public class Player : MonoBehaviour
         set
         {
             _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
+
+            if(_playerHpBar == null)
+            {
+                _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
+            }
             _playerHpBar.UpdateHp();
         }
     }
@@ -91,14 +100,7 @@ public class Player : MonoBehaviour
         get {return _isSlowingDown;}
         set {_isSlowingDown = value;}
     }    
-    
-    private int _PrimaryAttackCost;
 
-    public int PrimaryAttackCost
-    {
-        get {return _PrimaryAttackCost;}
-        set {_PrimaryAttackCost = value;}
-    }
     private int _money = 0;
 
     public int Money
@@ -124,21 +126,45 @@ public class Player : MonoBehaviour
         set {_maxHitPoint = value;}
     }
 
-    private int _grazeCounter;
+    private int _primaryGrazeCount;
 
-    public int GrazeCounter
+    public int PrimaryGrazeCount
     {
-        get {return _grazeCounter;}
-        set {_grazeCounter = value;}
+        get {return _primaryGrazeCount;}
+        set 
+        {
+            _primaryGrazeCount = value;
+
+            if(PrimaryGrazeCount >= MyShape.PrimaryAttackCost)
+            {
+                PrimaryAttack();
+            }
+
+            if(_playerPrimaryGrazeBar == null)
+            {
+                _playerPrimaryGrazeBar = GameObject.Find("PlayerPrimaryGrazeBar").GetComponent<PlayerPrimaryGrazeBar>();
+            }
+            _playerPrimaryGrazeBar.UpdatePrimaryGrazeCount();  
+        }
     }
 
-    private int _specialGrazeCounter;
-    public int SpecialGrazeCounter
+    private int _specialGrazeCount;
+
+    public int SpecialGrazeCount
     {
-        get {return _specialGrazeCounter;}
-        set {_specialGrazeCounter = value;}
+        get {return _specialGrazeCount;}
+        set
+        {
+            _specialGrazeCount = value;
+
+            if(_playerSpecialGrazeBar == null)
+            {
+                _playerSpecialGrazeBar = GameObject.Find("PlayerSpecialGrazeBar").GetComponent<PlayerSpecialGrazeBar>();
+            }
+            _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
+        }
     }
-    
+
     private float _expansionValue;
 
     public float ExpansionValue
@@ -150,26 +176,13 @@ public class Player : MonoBehaviour
             }
     }
 
-    [SerializeField]
-    private PlayerSpecialGrazeBar _playerSpecialGrazeBar;
-
-    private int _specialGrazeCount;
-
-    public int SpecialGrazeCount
-    {
-        get {return _specialGrazeCount;}
-        set {_specialGrazeCount = value;}
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
-
-        GrazeCounter = 0;
-
-        PrimaryAttackCost = 500;
         MyShape = _ownShapes[0];
+
+        PrimaryGrazeCount = 0;
+        SpecialGrazeCount = 0;
 
         CurrentEnemy = null;
 
@@ -192,11 +205,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         _Move();
-
-        if(GrazeCounter >= PrimaryAttackCost){
-            PrimaryAttack();
-        }
-    
     }
 
     // 方向入力を受ける関数
@@ -259,7 +267,7 @@ public class Player : MonoBehaviour
     public void PrimaryAttack()
     {
         // Debug.Log($"Attack {MyShapeNumber}");
-        GrazeCounter -= PrimaryAttackCost;
+        PrimaryGrazeCount -= MyShape.PrimaryAttackCost;
     }
 
     //変形入力を受ける関数
@@ -268,7 +276,6 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(0);
-            PrimaryAttackCost = 100;
         }
     }
 
@@ -277,7 +284,6 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(1);
-            PrimaryAttackCost = 500;
         }
     }
 
@@ -286,7 +292,6 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(2);
-            PrimaryAttackCost = 1000;
         }
     }
 
@@ -326,15 +331,15 @@ public class Player : MonoBehaviour
 
     private void _SpecialSkill()
     {
-        if (SpecialGrazeCounter < MyShape.SpecialSkillCost)
+        if (SpecialGrazeCount < MyShape.SpecialSkillCost)
         {
-            Debug.Log($"SpecialGrazeCounter < MyShape.SpecialSkillCost");
+            Debug.Log($"SpecialGrazeCount < MyShape.SpecialSkillCost");
             return;
         }
 
         MyShape.SpecialSkill();
 
-        SpecialGrazeCounter = 0;
+        SpecialGrazeCount = 0;
     }
 
     private IEnumerator StartShiftCooldown()

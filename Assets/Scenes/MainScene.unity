@@ -1511,6 +1511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
+  _hpBarSlider: {fileID: 1208074056}
 --- !u!114 &1208074056
 MonoBehaviour:
   m_ObjectHideFlags: 0

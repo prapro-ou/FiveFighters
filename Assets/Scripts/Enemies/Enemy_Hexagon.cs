@@ -95,7 +95,7 @@ public class Enemy_Hexagon : Enemy
     //攻撃処理はその上に書く。メソッド内で”yield return StartCoroutine(_METHOD());”とすることで、そのメソッドが終わるまで待機ができる。
     private IEnumerator _SingleShoot()
     {
-        Debug.Log("Awake SingleShot");
+        Debug.Log("Start SingleShot");
 
         //ここでIEnumerator型のメソッドをyield return StartCoroutine(...)で呼ぶ。
         yield return StartCoroutine(_ShootCircleBullet());
@@ -107,7 +107,7 @@ public class Enemy_Hexagon : Enemy
 
     private IEnumerator _BurstShoot()
     {
-        Debug.Log("Awake TripleShot");
+        Debug.Log("Start TripleShot");
 
         yield return StartCoroutine(_ShootCircleBullet());
 

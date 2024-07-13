@@ -4,23 +4,55 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+public enum HexagonState
+{
+    Wait,
+    Attack1,
+    Attack2
+}
+
 public class Enemy_Hexagon : Enemy
 {
     private Player _player;
 
-    private List<System.Func<IEnumerator>> _attackFactories;
+    [SerializeField]
+    private EnemyBullet _circleBulletPrefab; 
+
+    private HexagonState _currentState;
+
+    public HexagonState CurrentState
+    {
+        get {return _currentState;}
+        set {_currentState = value;}
+    }
+
+    [SerializeField]
+    private int _numberOfAttacks;
+
+    public int NumberOfAttacks
+    {
+        get {return _numberOfAttacks;}
+        set {_numberOfAttacks = value;}
+    }
+
+    [SerializeField]
+    private int _attackCooltime;
+
+    public int AttackCooltime
+    {
+        get {return _attackCooltime;}
+        set {_attackCooltime = value;}
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        _currentState = HexagonState.Wait;
+
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.CurrentEnemy = this;
 
-        _attackFactories = new List<System.Func<IEnumerator>>();
-
-        _AddAttacks();
-
-        StartCoroutine(_AwakeRandomAttacks());
+        StartCoroutine(_AwakeRandomAttack());
     }
 
     // Update is called once per frame
@@ -29,41 +61,78 @@ public class Enemy_Hexagon : Enemy
         
     }
 
-    private void _AddAttacks()
-    {
-        //_attackFactories.Add(() => _[MethodName]()); で攻撃の種類の追加
-        _attackFactories.Add(() => _SingleShot1());
-        _attackFactories.Add(() => _SingleShot2());
-        //_attackFactories......
-    }
-
-    private IEnumerator _AwakeRandomAttacks()
+    private IEnumerator _AwakeRandomAttack()
     {
         while(true)
         {
-            int random = Random.Range(0,_attackFactories.Count);
-            Debug.Log(random);
-            yield return StartCoroutine(_attackFactories[random]());
+            switch(CurrentState)
+            {
+                case HexagonState.Wait:
+                {
+                    int random = Random.Range(1, NumberOfAttacks);
+                    CurrentState = (HexagonState)System.Enum.GetValues(typeof(HexagonState)).GetValue(random);
+                    yield return new WaitForSeconds(AttackCooltime);
+                    break;
+                }
+                case HexagonState.Attack1:
+                {
+                    yield return StartCoroutine(_SingleShoot());
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
+                case HexagonState.Attack2:
+                {
+                    yield return StartCoroutine(_BurstShoot());
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
+            }
         }
     }
 
-    //各攻撃は、IEnumerator型のメソッドとして定義する。"yield return new WaitForSeconds(second)"のsecondの秒数だけこのメソッドが実行される。
-    //射撃処理はその上に書く。その中でyield return StartCoroutine(_IENUMERATORMETHOD());とすることで、IEnumerator内での待機ができる。
-    private IEnumerator _SingleShot1()
+    //以下二つの攻撃行動はサンプル。
+    //各攻撃行動は、IEnumerator型のメソッドとして定義する。"yield return new WaitForSeconds(second)"のsecondの秒数だけこのメソッドが実行される。
+    //攻撃処理はその上に書く。メソッド内で”yield return StartCoroutine(_METHOD());”とすることで、そのメソッドが終わるまで待機ができる。
+    private IEnumerator _SingleShoot()
     {
-        Debug.Log("Awake SingleShot1");
+        Debug.Log("Awake SingleShot");
+
+        //ここでIEnumerator型のメソッドをyield return StartCoroutine(...)で呼ぶ。
+        yield return StartCoroutine(_ShootCircleBullet());
 
         yield return new WaitForSeconds(1);
 
-        Debug.Log("Finish SingleShot1");
+        Debug.Log("Finish SingleShot");
     }
 
-    private IEnumerator _SingleShot2()
+    private IEnumerator _BurstShoot()
     {
-        Debug.Log("Awake SingleShot2");
+        Debug.Log("Awake TripleShot");
+
+        yield return StartCoroutine(_ShootCircleBullet());
+
+        yield return new WaitForSeconds(0.2f);
+
+        yield return StartCoroutine(_ShootCircleBullet());
+
+        yield return new WaitForSeconds(0.2f);
+
+        yield return StartCoroutine(_ShootCircleBullet());
+
+        yield return new WaitForSeconds(0.2f);
 
         yield return new WaitForSeconds(1);
 
-        Debug.Log("Finish SingleShot2");
+        Debug.Log("Finish TripleShot");
+    }
+
+    private IEnumerator _ShootCircleBullet()
+    {
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+        //弾に力を与える処理など
+
+        yield return new WaitForEndOfFrame();
     }
 }

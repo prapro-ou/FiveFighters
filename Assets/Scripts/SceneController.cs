@@ -9,21 +9,6 @@ public class SceneController : MonoBehaviour
 {
     private List<string> _scenes = new List<string>{"TitleScene", "MainScene", "ShopScene"};
 
-    private static SceneController instance;
-
-    void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {

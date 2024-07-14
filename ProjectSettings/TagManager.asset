@@ -17,8 +17,8 @@ TagManager:
   - PlayerBullet
   - EnemyBullet
   - Enemy
-  - 
-  - 
+  - UICollider
+  - UIObject
   - 
   - 
   - 

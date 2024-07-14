@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
+    [SerializeField]
+    private UICollider _uICollider;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
@@ -391,5 +394,18 @@ public class Player : MonoBehaviour
     private void EnhancePower(float coefficient)
     {
         PowerMultiplier += coefficient;
+    }
+
+    public void OnSubmit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _Submit();
+        }
+    }
+
+    private void _Submit()
+    {
+
     }
 }

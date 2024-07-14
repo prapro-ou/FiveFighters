@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
+    [SerializeField]
+    private UICollider _uICollider;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
@@ -403,6 +406,6 @@ public class Player : MonoBehaviour
 
     private void _Submit()
     {
-        
+
     }
 }

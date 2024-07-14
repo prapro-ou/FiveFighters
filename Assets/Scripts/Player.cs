@@ -6,9 +6,6 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform _playArea;
-
-    [SerializeField]
     private DamageCollider _damageCollider;
 
     [SerializeField]
@@ -17,13 +14,28 @@ public class Player : MonoBehaviour
     [SerializeField]
     private UICollider _uICollider;
 
+    [SerializeField]
+    private GameManager _gameManager;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
 
     private PlayerSpecialGrazeBar _playerSpecialGrazeBar;
 
-    private Vector3[] _corners;
+    private RectTransform _playArea;
+
+    public RectTransform PlayArea
+    {
+        get {return _playArea;}
+        set
+        {
+            _playArea = value;
+            PlayArea.GetWorldCorners(_corners);
+        }
+    }
+
+    private Vector3[] _corners = new Vector3[4];
 
     [SerializeField]
     private List<PlayerShape> _ownShapes;
@@ -198,10 +210,6 @@ public class Player : MonoBehaviour
         HitPoint = MaxHitPoint;
 
         _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
-
-        //プレイエリアの角を取得
-        _corners = new Vector3[4];
-        _playArea.GetWorldCorners(_corners);
     }
 
     // Update is called once per frame
@@ -398,6 +406,8 @@ public class Player : MonoBehaviour
 
     public void OnSubmit(InputAction.CallbackContext context)
     {
+        if(_uICollider.TouchingUI == null) {return;}
+
         if (context.performed)
         {
             _Submit();

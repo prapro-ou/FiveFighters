@@ -406,6 +406,6 @@ public class Player : MonoBehaviour
 
     private void _Submit()
     {
-
+        _uICollider.TouchingUI.InvokeUIAction();
     }
 }

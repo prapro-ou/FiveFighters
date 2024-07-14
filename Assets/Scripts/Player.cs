@@ -392,4 +392,17 @@ public class Player : MonoBehaviour
     {
         PowerMultiplier += coefficient;
     }
+
+    public void OnSubmit(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _Submit();
+        }
+    }
+
+    private void _Submit()
+    {
+        
+    }
 }

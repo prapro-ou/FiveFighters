@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIObject : MonoBehaviour
+public abstract class UIObject : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,4 +15,6 @@ public class UIObject : MonoBehaviour
     {
         
     }
+
+    public abstract void InvokeUIAction();
 }

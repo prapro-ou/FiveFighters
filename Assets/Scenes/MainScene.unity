@@ -2638,7 +2638,7 @@ GameObject:
   - component: {fileID: 1798907520}
   - component: {fileID: 1798907519}
   - component: {fileID: 1798907518}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: UICollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

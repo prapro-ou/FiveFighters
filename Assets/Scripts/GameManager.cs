@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("No Enemies!");
             yield break;
         }
-        
+
         Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
 
         yield return StartCoroutine(_CloseTransition());

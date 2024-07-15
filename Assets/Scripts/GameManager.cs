@@ -49,10 +49,21 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private RectTransform _shopPlayArea;
 
+    [SerializeField]
+    private GameObject _transitionCanvas;
+
+    [SerializeField]
+    private GameObject _transitionObject;
+
+    private Animator _transitionAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
         StateNumber = 0;
+
+        _transitionCanvas.SetActive(true);
+        _transitionAnimator = _transitionObject.GetComponent<Animator>();
 
         _FirstShiftToShop();
     }
@@ -109,6 +120,9 @@ public class GameManager : MonoBehaviour
                 //Playerの移動
                 _player.transform.position = _shopPlayerTransform.position;
 
+                //背景色の変更
+                _backgroundImage.color = _shopImageColor;
+
                 break;
             }
             case 1:
@@ -121,6 +135,10 @@ public class GameManager : MonoBehaviour
 
                 //Playerの移動
                 _player.transform.position = _battlePlayerTransform.position;
+
+                //背景色の変更
+                _backgroundImage.color = _battleImageColor;
+
                 break;
             }
         }
@@ -128,11 +146,26 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _OpenTransition()
     {
-        yield return null;
+        _transitionAnimator.SetBool("Close", false);
+
+        AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
+        float animationLength = animationState.length;
+
+        yield return new WaitForSeconds(animationLength);
     }
 
     private IEnumerator _CloseTransition()
     {
-        yield return null;
+        _transitionAnimator.SetBool("Close", true);
+
+        AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
+        float animationLength = animationState.length;
+
+        yield return new WaitForSeconds(animationLength);
+    }
+
+    public void DebugShift_GoShop()
+    {
+        StartCoroutine(ShiftToShop());
     }
 }

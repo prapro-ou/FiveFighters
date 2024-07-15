@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
     private RectTransform _shopPlayArea;
 
     [SerializeField]
+    private Transform _battleEnemyTransform;
+
+    [SerializeField]
     private GameObject _transitionCanvas;
 
     [SerializeField]
@@ -96,6 +99,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("ShiftToBattle");
 
+        if(_enemies.Count == 0)
+        {
+            Debug.Log("No Enemies!");
+            yield break;
+        }
+        
+        Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
+
         yield return StartCoroutine(_CloseTransition());
 
         _ShiftObjects(1);
@@ -103,6 +114,8 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(_OpenTransition());
 
         //敵の出現
+        _SpawnEnemy(nextEnemy);
+        _enemies.Remove(nextEnemy);
     }
 
     private void _ShiftObjects(int state)
@@ -167,5 +180,10 @@ public class GameManager : MonoBehaviour
     public void DebugShift_GoShop()
     {
         StartCoroutine(ShiftToShop());
+    }
+
+    private void _SpawnEnemy(Enemy enemy)
+    {
+        Instantiate(enemy, _battleEnemyTransform.position, Quaternion.identity);
     }
 }

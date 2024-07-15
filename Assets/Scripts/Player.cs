@@ -369,6 +369,9 @@ public class Player : MonoBehaviour
         SpriteRenderer dcSpriteRenderer = _damageCollider.GetComponent<SpriteRenderer>();
         SpriteRenderer gcSpriteRenderer = _grazeCollider.GetComponent<SpriteRenderer>();
 
+        PolygonCollider2D dcCollider = _damageCollider.GetComponent<PolygonCollider2D>();
+        PolygonCollider2D gcCollider = _grazeCollider.GetComponent<PolygonCollider2D>();
+
         dcSpriteRenderer.sprite = pShape.MySprite;
         gcSpriteRenderer.sprite = pShape.MySprite;
 
@@ -376,6 +379,23 @@ public class Player : MonoBehaviour
 
         dcSpriteRenderer.color = pShape.MyColor;
         gcSpriteRenderer.color = grazeColor;
+
+        dcCollider.pathCount = dcSpriteRenderer.sprite.GetPhysicsShapeCount();
+        List<Vector2> path = new List<Vector2>();
+        for (int i = 0; i < dcCollider.pathCount; i++)
+        {
+            path.Clear();
+            dcSpriteRenderer.sprite.GetPhysicsShape(i, path);
+            dcCollider.SetPath(i, path.ToArray());
+        }
+
+        gcCollider.pathCount = gcSpriteRenderer.sprite.GetPhysicsShapeCount();
+        for (int i = 0; i < gcCollider.pathCount; i++)
+        {
+            path.Clear();
+            gcSpriteRenderer.sprite.GetPhysicsShape(i, path);
+            gcCollider.SetPath(i, path.ToArray());
+        }
     }
 
     private void _UpdateGrazeCollider()

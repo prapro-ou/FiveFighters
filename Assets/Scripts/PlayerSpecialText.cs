@@ -15,7 +15,7 @@ public class PlayerSpecialText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateSpecialUI();
+
     }
 
     // Update is called once per frame

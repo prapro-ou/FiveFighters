@@ -15,7 +15,7 @@ public class PlayerPrimaryText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpDatePrimaryUI();
+
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class PlayerPrimaryText : MonoBehaviour
         
     }
 
-    public void UpDatePrimaryUI()
+    public void UpdatePrimaryUI()
     {
         _primaryText.text = _player.PrimaryGrazeCount + "/" + _player.MyShape.PrimaryAttackCost;
     }

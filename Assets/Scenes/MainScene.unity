@@ -5295,6 +5295,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5078657263269924481, guid: 76e832689c0d53746a8c75747982120a, type: 3}
+      propertyPath: _squareSpecialBullet
+      value: 
+      objectReference: {fileID: 5311180886255428088, guid: 1575eec7556fd9a459d7e297844031b8, type: 3}
     - target: {fileID: 8101890493754366017, guid: 76e832689c0d53746a8c75747982120a, type: 3}
       propertyPath: m_Name
       value: Shape_Square

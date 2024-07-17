@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6935038951718424176}
   - component: {fileID: 104377510339007810}
   - component: {fileID: 8884786643703350391}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: SpecialSquareBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

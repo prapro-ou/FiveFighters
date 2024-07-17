@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpecialSquareBullet : MonoBehaviour
 {
-    [SerializeField]
     private Player _player;
 
     [SerializeField]
@@ -13,6 +12,7 @@ public class SpecialSquareBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = GameObject.Find("Player").GetComponent<Player>();
         StartCoroutine("ScaleUp");
     }
 

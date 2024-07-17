@@ -6,6 +6,9 @@ public class Shape_Square : PlayerShape
 {
     private Player _player;
     private GameObject _squareDestroyField;
+    
+    [SerializeField]
+    private GameObject _squareSpecialBullet;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +36,7 @@ public class Shape_Square : PlayerShape
     {
         _squareDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
         Destroy(_squareDestroyField, 3.0f);
+        Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 1.5f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
         Debug.Log($"ShiftSkill {name}");
     }
 }

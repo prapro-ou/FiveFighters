@@ -191,6 +191,14 @@ public class Player : MonoBehaviour
             }
     }
 
+    private int _bulletDirection;
+
+    public int BulletDirection
+    {
+        get {return _bulletDirection;}
+        set {_bulletDirection = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {

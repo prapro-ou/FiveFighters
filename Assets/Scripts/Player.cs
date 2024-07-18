@@ -277,7 +277,7 @@ public class Player : MonoBehaviour
     //通常攻撃
     public void PrimaryAttack()
     {
-        // Debug.Log($"Attack {MyShapeNumber}");
+        MyShape.PrimaryAttack();
         PrimaryGrazeCount -= MyShape.PrimaryAttackCost;
     }
 

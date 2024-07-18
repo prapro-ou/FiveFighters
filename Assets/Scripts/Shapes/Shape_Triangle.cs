@@ -6,6 +6,7 @@ public class Shape_Triangle : PlayerShape
 {
     private Player _player;
     private GameObject _triangleDestroyField;
+    
 
     // Start is called before the first frame update
     void Start()

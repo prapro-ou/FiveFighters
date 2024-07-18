@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class Shape_Square : PlayerShape
 {
+[SerializeField]
     private Player _player;
+
     private GameObject _squareDestroyField;
-    
+
+    [SerializeField]
+    private GameObject _squarePrimaryBullet;
+
+
+    private PlayerBullet _playerbullet;
+
     [SerializeField]
     private GameObject _squareSpecialBullet;
 
@@ -24,7 +32,9 @@ public class Shape_Square : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"squ");
+        Vector3 vec = _player.transform.position;
+        
+        Instantiate(_squarePrimaryBullet, vec, Quaternion.identity);
     }
 
     public override void SpecialSkill()

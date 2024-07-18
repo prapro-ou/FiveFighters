@@ -10,10 +10,12 @@ public class Shape_Circle : PlayerShape
     private GameObject _circleDestroyField;
 
     [SerializeField]
-    private GameObject PlayerCircleBullet;
+    private GameObject _circlePrimaryBullet;
 
 
     private PlayerBullet _playerbullet;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +34,7 @@ public class Shape_Circle : PlayerShape
     {
         Vector3 vec = _player.transform.position;
         
-        Instantiate(PlayerCircleBullet, vec, Quaternion.identity);
+        Instantiate(_circlePrimaryBullet, vec, Quaternion.identity);
     }
 
     public override void SpecialSkill()

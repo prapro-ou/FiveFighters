@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Shape_Circle : PlayerShape
 {
-    [SerializeField]
     private Player _player;
 
     private GameObject _circleDestroyField;
@@ -19,7 +18,6 @@ public class Shape_Circle : PlayerShape
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-
     }
 
     // Update is called once per frame
@@ -31,9 +29,8 @@ public class Shape_Circle : PlayerShape
     public override void PrimaryAttack()
     {
         Vector3 vec = _player.transform.position;
-
-        Instantiate(PlayerCircleBullet,vec,Quaternion.identity);
         
+        Instantiate(PlayerCircleBullet, vec, Quaternion.identity);
     }
 
     public override void SpecialSkill()

@@ -5361,6 +5361,10 @@ PrefabInstance:
       value: Shape_Circle
       objectReference: {fileID: 0}
     - target: {fileID: 1940550114772737766, guid: 558635a39eb59ee47a9ad3cea23180f9, type: 3}
+      propertyPath: _player
+      value: 
+      objectReference: {fileID: 691294819}
+    - target: {fileID: 1940550114772737766, guid: 558635a39eb59ee47a9ad3cea23180f9, type: 3}
       propertyPath: PlayerCircleBullet
       value: 
       objectReference: {fileID: 1538726239033067789, guid: 4201457a34400b14cb385383dd29b2bf, type: 3}

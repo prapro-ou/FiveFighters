@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class Shape_Circle : PlayerShape
 {
+    [SerializeField]
     private Player _player;
+
     private GameObject _circleDestroyField;
+
+    [SerializeField]
+    private GameObject PlayerCircleBullet;
+
+    private PlayerBullet _playerbullet;
 
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+
     }
 
     // Update is called once per frame
@@ -21,7 +29,11 @@ public class Shape_Circle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Vector3 vec = _player.transform.position;
+
+        Instantiate(PlayerCircleBullet,vec,Quaternion.identity);
+       
+        
     }
 
     public override void SpecialSkill()

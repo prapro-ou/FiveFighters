@@ -6,23 +6,40 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform _playArea;
-
-    [SerializeField]
     private DamageCollider _damageCollider;
 
     [SerializeField]
     private GrazeCollider _grazeCollider;
 
     [SerializeField]
+    private UICollider _uICollider;
+
+    [SerializeField]
+    private GameManager _gameManager;
+
     private PlayerHpBar _playerHpBar;
 
-    private Vector3[] _corners;
+    private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
+
+    private PlayerSpecialGrazeBar _playerSpecialGrazeBar;
+
+    private RectTransform _playArea;
+
+    public RectTransform PlayArea
+    {
+        get {return _playArea;}
+        set
+        {
+            _playArea = value;
+            PlayArea.GetWorldCorners(_corners);
+        }
+    }
+
+    private Vector3[] _corners = new Vector3[4];
 
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
-    [SerializeField]
     private int _hitPoint;
 
     public int HitPoint
@@ -30,7 +47,12 @@ public class Player : MonoBehaviour
         get {return _hitPoint;}
         set
         {
-            _hitPoint = Mathf.Clamp(value, 0, 100);
+            _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
+
+            if(_playerHpBar == null)
+            {
+                _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
+            }
             _playerHpBar.UpdateHp();
         }
     }
@@ -94,21 +116,6 @@ public class Player : MonoBehaviour
         set {_isSlowingDown = value;}
     }    
 
-    private int _GrazeCounter;
-
-    public int GrazeCounter
-    {
-        get {return _GrazeCounter;}
-        set {_GrazeCounter = value;}
-    }
-
-    private int _PrimaryAttackCost;
-
-    public int PrimaryAttackCost
-    {
-        get {return _PrimaryAttackCost;}
-        set {_PrimaryAttackCost = value;}
-    }
     private int _money = 0;
 
     public int Money
@@ -117,13 +124,80 @@ public class Player : MonoBehaviour
         set {_money = value;}
     }
 
+    private float _powerMultiplier;
+
+    public float PowerMultiplier
+    {
+        get {return _powerMultiplier;}
+        set {_powerMultiplier = value;}
+    }
+
+    [SerializeField]
+    private int _maxHitPoint;
+
+    public int MaxHitPoint
+    {
+        get {return _maxHitPoint;}
+        set {_maxHitPoint = value;}
+    }
+
+    private int _primaryGrazeCount;
+
+    public int PrimaryGrazeCount
+    {
+        get {return _primaryGrazeCount;}
+        set 
+        {
+            _primaryGrazeCount = value;
+
+            if(PrimaryGrazeCount >= MyShape.PrimaryAttackCost)
+            {
+                PrimaryAttack();
+            }
+
+            if(_playerPrimaryGrazeBar == null)
+            {
+                _playerPrimaryGrazeBar = GameObject.Find("PlayerPrimaryGrazeBar").GetComponent<PlayerPrimaryGrazeBar>();
+            }
+            _playerPrimaryGrazeBar.UpdatePrimaryGrazeCount();  
+        }
+    }
+
+    private int _specialGrazeCount;
+
+    public int SpecialGrazeCount
+    {
+        get {return _specialGrazeCount;}
+        set
+        {
+            _specialGrazeCount = value;
+
+            if(_playerSpecialGrazeBar == null)
+            {
+                _playerSpecialGrazeBar = GameObject.Find("PlayerSpecialGrazeBar").GetComponent<PlayerSpecialGrazeBar>();
+            }
+            _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
+        }
+    }
+
+    private float _expansionValue;
+
+    public float ExpansionValue
+    {
+        get {return _expansionValue;}
+        set {
+                _expansionValue = value;
+                _UpdateGrazeCollider();
+            }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        GrazeCounter = 0;
-
-        PrimaryAttackCost = 500;
         MyShape = _ownShapes[0];
+
+        PrimaryGrazeCount = 0;
+        SpecialGrazeCount = 0;
 
         CurrentEnemy = null;
 
@@ -132,20 +206,16 @@ public class Player : MonoBehaviour
         IsInShiftCooldown = false;
         IsSlowingDown = false;
 
-        //プレイエリアの角を取得
-        _corners = new Vector3[4];
-        _playArea.GetWorldCorners(_corners);
+        PowerMultiplier = 1;
+        HitPoint = MaxHitPoint;
+
+        _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
     }
 
     // Update is called once per frame
     void Update()
     {
         _Move();
-
-        if(GrazeCounter >= PrimaryAttackCost){
-            PrimaryAttack();
-        }
-    
     }
 
     // 方向入力を受ける関数
@@ -208,7 +278,7 @@ public class Player : MonoBehaviour
     public void PrimaryAttack()
     {
         MyShape.PrimaryAttack();
-        GrazeCounter -= PrimaryAttackCost;
+        PrimaryGrazeCount -= MyShape.PrimaryAttackCost;
     }
 
     //変形入力を受ける関数
@@ -217,7 +287,6 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(0);
-            PrimaryAttackCost = 100;
         }
     }
 
@@ -226,7 +295,6 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(1);
-            PrimaryAttackCost = 500;
         }
     }
 
@@ -235,7 +303,6 @@ public class Player : MonoBehaviour
         if(context.performed)
         {
             _ShiftShape(2);
-            PrimaryAttackCost = 1000;
         }
     }
 
@@ -265,6 +332,27 @@ public class Player : MonoBehaviour
         StartCoroutine(StartShiftCooldown());
     }
 
+    public void OnSpecialSkill(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            _SpecialSkill();
+        }
+    }
+
+    private void _SpecialSkill()
+    {
+        if (SpecialGrazeCount < MyShape.SpecialSkillCost)
+        {
+            Debug.Log($"SpecialGrazeCount < MyShape.SpecialSkillCost");
+            return;
+        }
+
+        MyShape.SpecialSkill();
+
+        SpecialGrazeCount = 0;
+    }
+
     private IEnumerator StartShiftCooldown()
     {
         Debug.Log("Start ShiftCooldown");
@@ -281,6 +369,9 @@ public class Player : MonoBehaviour
         SpriteRenderer dcSpriteRenderer = _damageCollider.GetComponent<SpriteRenderer>();
         SpriteRenderer gcSpriteRenderer = _grazeCollider.GetComponent<SpriteRenderer>();
 
+        PolygonCollider2D dcCollider = _damageCollider.GetComponent<PolygonCollider2D>();
+        PolygonCollider2D gcCollider = _grazeCollider.GetComponent<PolygonCollider2D>();
+
         dcSpriteRenderer.sprite = pShape.MySprite;
         gcSpriteRenderer.sprite = pShape.MySprite;
 
@@ -288,6 +379,28 @@ public class Player : MonoBehaviour
 
         dcSpriteRenderer.color = pShape.MyColor;
         gcSpriteRenderer.color = grazeColor;
+
+        dcCollider.pathCount = dcSpriteRenderer.sprite.GetPhysicsShapeCount();
+        List<Vector2> path = new List<Vector2>();
+        for (int i = 0; i < dcCollider.pathCount; i++)
+        {
+            path.Clear();
+            dcSpriteRenderer.sprite.GetPhysicsShape(i, path);
+            dcCollider.SetPath(i, path.ToArray());
+        }
+
+        gcCollider.pathCount = gcSpriteRenderer.sprite.GetPhysicsShapeCount();
+        for (int i = 0; i < gcCollider.pathCount; i++)
+        {
+            path.Clear();
+            gcSpriteRenderer.sprite.GetPhysicsShape(i, path);
+            gcCollider.SetPath(i, path.ToArray());
+        }
+    }
+
+    private void _UpdateGrazeCollider()
+    {
+        _grazeCollider.transform.localScale = MyShape.GrazeColliderSize * ExpansionValue;
     }
 
     private void AddMoney(int reward)
@@ -298,5 +411,31 @@ public class Player : MonoBehaviour
     private void UseMoney(int cost)
     {
         Money -= cost;
+    }
+
+    private void EnhanceHitPoint(int boost)
+    {
+        MaxHitPoint += boost;
+        HitPoint += boost;
+    }
+
+    private void EnhancePower(float coefficient)
+    {
+        PowerMultiplier += coefficient;
+    }
+
+    public void OnSubmit(InputAction.CallbackContext context)
+    {
+        if(_uICollider.TouchingUI == null) {return;}
+
+        if (context.performed)
+        {
+            _Submit();
+        }
+    }
+
+    private void _Submit()
+    {
+        _uICollider.TouchingUI.InvokeUIAction();
     }
 }

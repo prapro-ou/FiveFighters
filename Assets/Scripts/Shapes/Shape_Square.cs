@@ -6,9 +6,10 @@ public class Shape_Square : PlayerShape
 {
     private Player _player;
     private GameObject _squareDestroyField;
-    
+
     [SerializeField]
     private GameObject _squareSpecialBullet;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,14 +30,30 @@ public class Shape_Square : PlayerShape
 
     public override void SpecialSkill()
     {
+        GameObject bullet;
+
+        bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 2.0f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
+        bullet.GetComponent<SpecialSquareBullet>().Direction = 0;
+
+        bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x - 2.0f, _player.transform.localPosition.y + 0.0f, _player.transform.localPosition.z + 0.0f), Quaternion.Euler(0,0,90));
+        bullet.GetComponent<SpecialSquareBullet>().Direction = 1;
+
+        bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y - 2.0f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
+        bullet.GetComponent<SpecialSquareBullet>().Direction = 2;
+
+        bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 2.0f, _player.transform.localPosition.y + 0.0f, _player.transform.localPosition.z + 0.0f), Quaternion.Euler(0,0,90));
+        bullet.GetComponent<SpecialSquareBullet>().Direction = 3;
+
         Debug.Log($"ShiftSkill {name}");
     }
 
     public override void ShiftSkill()
     {
+        GameObject bullet;
+
         _squareDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
         Destroy(_squareDestroyField, 3.0f);
-        Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 1.5f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
-        Debug.Log($"ShiftSkill {name}");
+        bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 2.0f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
+        bullet.GetComponent<SpecialSquareBullet>().Direction = 0;
     }
 }

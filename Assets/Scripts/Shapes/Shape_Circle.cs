@@ -12,6 +12,8 @@ public class Shape_Circle : PlayerShape
     [SerializeField]
     private GameObject PlayerCircleBullet;
 
+    private PlayerBullet _playerbullet;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,8 +30,9 @@ public class Shape_Circle : PlayerShape
     public override void PrimaryAttack()
     {
         Vector3 vec = _player.transform.position;
-        Instantiate(PlayerCircleBullet,vec,Quaternion.identity);
 
+        Instantiate(PlayerCircleBullet,vec,Quaternion.identity);
+        _playerbullet.DamageValue = MyShape.PrimaryAttackDamage;
         
     }
 

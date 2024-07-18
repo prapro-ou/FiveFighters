@@ -5,7 +5,14 @@ using UnityEngine;
 public class Shape_Circle : PlayerShape
 {
     private Player _player;
+
     private GameObject _circleDestroyField;
+
+    [SerializeField]
+    private GameObject PlayerCircleBullet;
+
+
+    private PlayerBullet _playerbullet;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +28,9 @@ public class Shape_Circle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Vector3 vec = _player.transform.position;
+        
+        Instantiate(PlayerCircleBullet, vec, Quaternion.identity);
     }
 
     public override void SpecialSkill()

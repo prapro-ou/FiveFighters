@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    private List<string> _scenes = new List<string>{"TitleScene", "MainScene", "ShopScene"};
+    private List<string> _scenes = new List<string>{"TitleScene", "MainScene"};
 
     // Start is called before the first frame update
     void Start()

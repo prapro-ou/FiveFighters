@@ -12,6 +12,7 @@ public class Shape_Circle : PlayerShape
     [SerializeField]
     private GameObject PlayerCircleBullet;
 
+
     private PlayerBullet _playerbullet;
 
     // Start is called before the first frame update

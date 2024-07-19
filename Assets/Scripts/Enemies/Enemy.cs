@@ -42,10 +42,11 @@ public class Enemy : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
-
-        TakeDamage(bullet.DamageValue);
-
-        Destroy(bullet.gameObject);
+        if(bullet != null)
+        {
+            TakeDamage(bullet.DamageValue);
+            Destroy(bullet.gameObject);
+        }
     }
 
     public void TakeDamage(int value)

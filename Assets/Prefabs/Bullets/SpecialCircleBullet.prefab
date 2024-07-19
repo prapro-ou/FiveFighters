@@ -99,4 +99,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _specialCircleBullet: {fileID: 6578594027543298336}
   _specialCircleBulletSpeed: 3
-  _specialCircleExplode: {fileID: 4557725197129817443, guid: ae2d1d6a80d90884ab04d6ea5fe3c09e, type: 3}
+  _specialCircleExplode: {fileID: 5292125927458322600, guid: 7493f6b05dee29648a9c6bee8a7b3040, type: 3}

@@ -7,6 +7,9 @@ public class Shape_Circle : PlayerShape
     private Player _player;
     private GameObject _circleDestroyField;
 
+    [SerializeField]
+    private GameObject _specialCircleBullet;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +29,8 @@ public class Shape_Circle : PlayerShape
 
     public override void SpecialSkill()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Instantiate(_specialCircleBullet.gameObject, _player.transform.position, Quaternion.identity);
+        Debug.Log($"SpecialSkill {name}");
     }
 
     public override void ShiftSkill()

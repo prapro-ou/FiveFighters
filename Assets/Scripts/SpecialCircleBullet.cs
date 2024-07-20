@@ -13,6 +13,9 @@ public class SpecialCircleBullet : MonoBehaviour
     [SerializeField]
     private GameObject _specialCircleExplode;
 
+    [SerializeField]
+    private float _explosionTime;
+
     private GameObject _specialCircleExplodeObject;
 
     private bool _isExplosion;
@@ -40,7 +43,7 @@ public class SpecialCircleBullet : MonoBehaviour
             _specialCircleExplodeObject = Instantiate(_specialCircleExplode.gameObject, transform.position, Quaternion.identity);
             _isExplosion = true;
             Destroy(this.gameObject);
-            Destroy(_specialCircleExplodeObject, 5.0f);
+            Destroy(_specialCircleExplodeObject, _explosionTime);
         }
     }
 }

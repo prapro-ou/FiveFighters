@@ -5,6 +5,10 @@ using UnityEngine;
 public class SpecialCircleExplode : MonoBehaviour
 {
     private Animator _explodeAnim;
+
+    [SerializeField]
+    private int _explosionDamage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +25,8 @@ public class SpecialCircleExplode : MonoBehaviour
     {
         if (collider.gameObject.tag == "Enemy")
         {
-            Debug.Log($"TakeDamageEnemy");
+            collider.gameObject.GetComponent<Enemy>().TakeDamage(_explosionDamage);
+            Debug.Log($"TakeDamageEnemy{_explosionDamage}");
         }
 
         if (collider.gameObject.tag == "EnemyCircleBullet")

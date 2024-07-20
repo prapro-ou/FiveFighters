@@ -18,7 +18,7 @@ public class SpecialCircleExplode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _explodeAnim.SetBool("blExplode", true);
+        
     }
 
     void OnTriggerEnter2D(Collider2D collider)

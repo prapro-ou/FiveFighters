@@ -9,10 +9,13 @@ public class Shape_Circle : PlayerShape
     private GameObject _circleDestroyField;
 
     [SerializeField]
-    private GameObject PlayerCircleBullet;
+    private GameObject _specialCircleBullet;
+
+    [SerializeField]
+    private GameObject _playerCircleBullet;
 
 
-    private PlayerBullet _playerbullet;
+    // private PlayerBullet _playerbullet;
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +33,13 @@ public class Shape_Circle : PlayerShape
     {
         Vector3 vec = _player.transform.position;
         
-        Instantiate(PlayerCircleBullet, vec, Quaternion.identity);
+        Instantiate(_playerCircleBullet, vec, Quaternion.identity);
     }
 
     public override void SpecialSkill()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Instantiate(_specialCircleBullet.gameObject, _player.transform.position, Quaternion.identity);
+        Debug.Log($"SpecialSkill {name}");
     }
 
     public override void ShiftSkill()

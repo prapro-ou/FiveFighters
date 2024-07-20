@@ -13,6 +13,14 @@ public class GameManager : MonoBehaviour
         set {_stateNumber = value;}
     }
 
+    private bool _isRunningShift;
+
+    public bool IsRunningShift
+    {
+        get {return _isRunningShift;}
+        set {_isRunningShift = value;}
+    }
+
     [SerializeField]
     private Player _player;
 
@@ -65,6 +73,8 @@ public class GameManager : MonoBehaviour
     {
         StateNumber = 0;
 
+        IsRunningShift = false;
+
         _transitionCanvas.SetActive(true);
         _transitionAnimator = _transitionObject.GetComponent<Animator>();
 
@@ -99,11 +109,19 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("ShiftToBattle");
 
+        if(IsRunningShift == true)
+        {
+            Debug.Log("Already Shifting");
+            yield break;
+        }
+
         if(_enemies.Count == 0)
         {
             Debug.Log("No Enemies!");
             yield break;
         }
+
+        IsRunningShift = true;
 
         Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
 

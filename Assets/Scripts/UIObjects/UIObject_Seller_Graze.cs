@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class UIObject_Seller_Graze : UIObject
 {
-    private int _buyCount = 0;
+    private int _buyCount = 1;
 
     [SerializeField]
     private Player _player;
-
-    [SerializeField]
-    private GrazeCollider _grazeCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +24,7 @@ public class UIObject_Seller_Graze : UIObject
     public override void InvokeUIAction()
     {
         _player.UseMoney(_buyCount);
-        _grazeCollider.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+        _player.ExpansionValue += 0.2f;
         Test();
         _buyCount++;
     }

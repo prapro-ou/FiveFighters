@@ -51,6 +51,7 @@ public abstract class PlayerShape : MonoBehaviour
         get {return _specialSkillCost;}
         set {_specialSkillCost = value;}
     }
+    [SerializeField]
     private Vector3 _grazeColliderSize;
 
     public Vector3 GrazeColliderSize

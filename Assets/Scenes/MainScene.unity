@@ -5224,7 +5224,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
-  _grazeCollider: {fileID: 907236232}
 --- !u!1 &1783384744
 GameObject:
   m_ObjectHideFlags: 0
@@ -6155,6 +6154,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 691294818}
     m_Modifications:
+    - target: {fileID: 1245467101349170531, guid: 676f90cf7a09b534998e64e4790f74b3, type: 3}
+      propertyPath: _grazeColliderSize.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245467101349170531, guid: 676f90cf7a09b534998e64e4790f74b3, type: 3}
+      propertyPath: _grazeColliderSize.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245467101349170531, guid: 676f90cf7a09b534998e64e4790f74b3, type: 3}
+      propertyPath: _grazeColliderSize.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1890504010690801326, guid: 676f90cf7a09b534998e64e4790f74b3, type: 3}
       propertyPath: m_Name
       value: Shape_Triangle
@@ -6252,6 +6263,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5078657263269924481, guid: 76e832689c0d53746a8c75747982120a, type: 3}
+      propertyPath: _grazeColliderSize.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078657263269924481, guid: 76e832689c0d53746a8c75747982120a, type: 3}
+      propertyPath: _grazeColliderSize.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078657263269924481, guid: 76e832689c0d53746a8c75747982120a, type: 3}
+      propertyPath: _grazeColliderSize.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8101890493754366017, guid: 76e832689c0d53746a8c75747982120a, type: 3}
       propertyPath: m_Name
       value: Shape_Square
@@ -6312,6 +6335,18 @@ PrefabInstance:
     - target: {fileID: 1361036283148881194, guid: 558635a39eb59ee47a9ad3cea23180f9, type: 3}
       propertyPath: m_Name
       value: Shape_Circle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1940550114772737766, guid: 558635a39eb59ee47a9ad3cea23180f9, type: 3}
+      propertyPath: _grazeColliderSize.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1940550114772737766, guid: 558635a39eb59ee47a9ad3cea23180f9, type: 3}
+      propertyPath: _grazeColliderSize.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1940550114772737766, guid: 558635a39eb59ee47a9ad3cea23180f9, type: 3}
+      propertyPath: _grazeColliderSize.z
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

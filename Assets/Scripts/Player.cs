@@ -235,6 +235,8 @@ public class Player : MonoBehaviour
         PowerMultiplier = 1;
         HitPoint = MaxHitPoint;
 
+        ExpansionValue = 1.0f;
+
         _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
     }
 

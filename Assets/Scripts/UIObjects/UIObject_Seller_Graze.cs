@@ -24,7 +24,7 @@ public class UIObject_Seller_Graze : UIObject
     public override void InvokeUIAction()
     {
         _player.UseMoney(_buyCount);
-        _player.ExpansionValue = 1.1f;
+        _player.ExpansionValue += 0.2f;
         Test();
         _buyCount++;
     }

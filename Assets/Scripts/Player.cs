@@ -455,23 +455,23 @@ public class Player : MonoBehaviour
         _grazeCollider.transform.localScale = MyShape.GrazeColliderSize * ExpansionValue;
     }
 
-    private void AddMoney(int reward)
+    public void AddMoney(int reward)
     {
         Money += reward;
     }
 
-    private void UseMoney(int cost)
+    public void UseMoney(int cost)
     {
         Money -= cost;
     }
 
-    private void EnhanceHitPoint(int boost)
+    public void EnhanceHitPoint(int boost)
     {
         MaxHitPoint += boost;
         HitPoint += boost;
     }
 
-    private void EnhancePower(float coefficient)
+    public void EnhancePower(float coefficient)
     {
         PowerMultiplier += coefficient;
     }

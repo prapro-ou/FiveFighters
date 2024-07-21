@@ -89,6 +89,32 @@ public class Player : MonoBehaviour
     private float _speed;
 
     [SerializeField]
+    private float _dashTime;
+
+    public float DashTime
+    {
+        get {return _dashTime;}
+        set {_dashTime = value;}
+    }
+
+    [SerializeField]
+    private float _dashSpeed;
+
+    public float DashSpeed
+    {
+        get {return _dashSpeed;}
+        set {_dashSpeed = value;}
+    }
+
+    private bool _isDashing;
+
+    public bool IsDashing
+    {
+        get {return _isDashing;}
+        set {_isDashing = value;}
+    }
+
+    [SerializeField]
     private float _shiftCooldown;
 
     public float ShiftCooldown
@@ -215,6 +241,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(IsDashing) {return;}
+
         _Move();
     }
 
@@ -266,6 +294,30 @@ public class Player : MonoBehaviour
         HitPoint -= value;
         
         Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
+    }
+
+    public void Dash()
+    {
+        Debug.Log("Dash");
+        _damageCollider.BeInvincibleWithDash();
+
+        StartCoroutine(StartDash());
+
+        
+    }
+
+    private IEnumerator StartDash()
+    {
+        IsDashing = true;
+        Vector2 currentDirection = Direction;
+
+        for(float i = 0f; i < DashTime; i += Time.deltaTime)
+        {
+            transform.position += (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.deltaTime * DashSpeed);
+            yield return null;
+        }
+
+        IsDashing = false;
     }
 
     //自機消滅

@@ -16,12 +16,21 @@ public class DamageCollider : MonoBehaviour
     }
 
     [SerializeField]
-    private float _invincibleTime;
+    private float _damageInvincibleTime;
 
-    public float InvincibleTime
+    public float DamageInvincibleTime
     {
-        get {return _invincibleTime;}
-        set {_invincibleTime = value;}
+        get {return _damageInvincibleTime;}
+        set {_damageInvincibleTime = value;}
+    }
+
+    [SerializeField]
+    private float _dashInvincibleTime;
+
+    public float DashInvincibleTime
+    {
+        get {return _dashInvincibleTime;}
+        set {_dashInvincibleTime = value;}
     }
 
     // Start is called before the first frame update
@@ -44,7 +53,12 @@ public class DamageCollider : MonoBehaviour
 
         _player.TakeDamage(enemyBullet.DamageValue);
 
-        StartCoroutine("StartInvincible", InvincibleTime);
+        StartCoroutine(StartInvincible(DamageInvincibleTime));
+    }
+
+    public void BeInvincibleWithDash()
+    {
+        StartCoroutine(StartInvincible(DashInvincibleTime));
     }
 
     private IEnumerator StartInvincible(float time)

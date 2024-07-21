@@ -2689,6 +2689,8 @@ MonoBehaviour:
   - {fileID: 1960416857}
   - {fileID: 159084274}
   _speed: 5
+  _dashTime: 0.2
+  _dashSpeed: 15
   _shiftCooldown: 5
   _slowDownRate: 0.5
   _maxHitPoint: 100
@@ -4491,7 +4493,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
-  _invincibleTime: 2
+  _damageInvincibleTime: 2
+  _dashInvincibleTime: 1
 --- !u!1 &1602896400
 GameObject:
   m_ObjectHideFlags: 0

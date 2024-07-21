@@ -26,13 +26,16 @@ public class Shape_Triangle : PlayerShape
 
     public override void SpecialSkill()
     {
-        Debug.Log($"ShiftSkill {name}");
+        Debug.Log($"SpecialSkill {name}");
     }
 
     public override void ShiftSkill()
     {
         _triangleDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
-        Destroy(_triangleDestroyField, 3.0f);
+        Destroy(_triangleDestroyField, _player.DashTime);
+
+        _player.Dash();
+
         Debug.Log($"ShiftSkill {name}");
     }
 }

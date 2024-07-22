@@ -50,3 +50,4 @@ MonoBehaviour:
   _primaryAttackDamage: 2
   _destroyField: {fileID: 8351723773996737352, guid: 7dca6a5add47f924496ddc68f1536db7, type: 3}
   _specialSkillCost: 300
+  _grazeColliderSize: {x: 1.5, y: 1.5, z: 1.5}

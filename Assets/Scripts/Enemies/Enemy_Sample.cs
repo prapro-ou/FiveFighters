@@ -4,23 +4,23 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public enum HexagonState
+public enum SampleState
 {
     Wait,
     Attack1,
     Attack2
 }
 
-public class Enemy_Hexagon : Enemy
+public class Enemy_Sample : Enemy
 {
     private Player _player;
 
     [SerializeField]
     private EnemyBullet _circleBulletPrefab; 
 
-    private HexagonState _currentState;
+    private SampleState _currentState;
 
-    public HexagonState CurrentState
+    public SampleState CurrentState
     {
         get {return _currentState;}
         set {_currentState = value;}
@@ -48,8 +48,8 @@ public class Enemy_Hexagon : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        CurrentState = HexagonState.Wait;
-        NumberOfAttacks = System.Enum.GetValues(typeof(HexagonState)).Length - 1;
+        CurrentState = SampleState.Wait;
+        NumberOfAttacks = System.Enum.GetValues(typeof(SampleState)).Length - 1;
         // Debug.Log("NumberOfAttacks: " + NumberOfAttacks);
 
         _remainingAttacks = Enumerable.Range(1, NumberOfAttacks).ToList();
@@ -75,12 +75,12 @@ public class Enemy_Hexagon : Enemy
         {
             switch(CurrentState)
             {
-                case HexagonState.Wait:
+                case SampleState.Wait:
                 {
                     int random = Random.Range(0, _remainingAttacks.Count);
 
                     Debug.Log(_remainingAttacks[random]);
-                    CurrentState = (HexagonState)System.Enum.GetValues(typeof(HexagonState)).GetValue(_remainingAttacks[random]);
+                    CurrentState = (SampleState)System.Enum.GetValues(typeof(SampleState)).GetValue(_remainingAttacks[random]);
                     _remainingAttacks.Remove(_remainingAttacks[random]);
 
                     if(_remainingAttacks.Count == 0)
@@ -91,16 +91,16 @@ public class Enemy_Hexagon : Enemy
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
-                case HexagonState.Attack1:
+                case SampleState.Attack1:
                 {
                     yield return StartCoroutine(_SingleShoot());
-                    CurrentState = HexagonState.Wait;
+                    CurrentState = SampleState.Wait;
                     break;
                 }
-                case HexagonState.Attack2:
+                case SampleState.Attack2:
                 {
                     yield return StartCoroutine(_BurstShoot());
-                    CurrentState = HexagonState.Wait;
+                    CurrentState = SampleState.Wait;
                     break;
                 }
             }

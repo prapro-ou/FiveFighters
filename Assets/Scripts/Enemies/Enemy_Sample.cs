@@ -18,15 +18,14 @@ public class Enemy_Sample : Enemy
     [SerializeField]
     private EnemyBullet _circleBulletPrefab; 
 
-    private HexagonState _currentState;
+    private SampleState _currentState;
 
-    public HexagonState CurrentState
+    public SampleState CurrentState
     {
         get {return _currentState;}
         set {_currentState = value;}
     }
 
-    [SerializeField]
     private int _numberOfAttacks;
 
     public int NumberOfAttacks
@@ -34,6 +33,8 @@ public class Enemy_Sample : Enemy
         get {return _numberOfAttacks;}
         set {_numberOfAttacks = value;}
     }
+
+    private List<int> _remainingAttacks;
 
     [SerializeField]
     private int _attackCooltime;
@@ -47,12 +48,14 @@ public class Enemy_Sample : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        _currentState = HexagonState.Wait;
+        CurrentState = SampleState.Wait;
+        NumberOfAttacks = System.Enum.GetValues(typeof(SampleState)).Length - 1;
+        // Debug.Log("NumberOfAttacks: " + NumberOfAttacks);
+
+        _remainingAttacks = Enumerable.Range(1, NumberOfAttacks).ToList();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.CurrentEnemy = this;
-
-        StartCoroutine(_AwakeRandomAttack());
     }
 
     // Update is called once per frame
@@ -61,7 +64,12 @@ public class Enemy_Sample : Enemy
         
     }
 
-    private IEnumerator _AwakeRandomAttack()
+    public override void StartAttacking()
+    {
+        StartCoroutine(_StartAttackingCycle());
+    }
+
+    private IEnumerator _StartAttackingCycle()
     {
         while(true)
         {
@@ -69,8 +77,17 @@ public class Enemy_Sample : Enemy
             {
                 case SampleState.Wait:
                 {
-                    int random = Random.Range(1, NumberOfAttacks);
-                    CurrentState = (SampleState)System.Enum.GetValues(typeof(SampleState)).GetValue(random);
+                    int random = Random.Range(0, _remainingAttacks.Count);
+
+                    Debug.Log(_remainingAttacks[random]);
+                    CurrentState = (SampleState)System.Enum.GetValues(typeof(SampleState)).GetValue(_remainingAttacks[random]);
+                    _remainingAttacks.Remove(_remainingAttacks[random]);
+
+                    if(_remainingAttacks.Count == 0)
+                    {
+                        _remainingAttacks = Enumerable.Range(1, NumberOfAttacks).ToList();
+                    }
+
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
@@ -80,7 +97,7 @@ public class Enemy_Sample : Enemy
                     CurrentState = SampleState.Wait;
                     break;
                 }
-                case HexagonState.Attack2:
+                case SampleState.Attack2:
                 {
                     yield return StartCoroutine(_BurstShoot());
                     CurrentState = SampleState.Wait;

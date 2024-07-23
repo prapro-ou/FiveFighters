@@ -26,7 +26,6 @@ public class Enemy_Hexagon : Enemy
         set {_currentState = value;}
     }
 
-    [SerializeField]
     private int _numberOfAttacks;
 
     public int NumberOfAttacks
@@ -34,6 +33,8 @@ public class Enemy_Hexagon : Enemy
         get {return _numberOfAttacks;}
         set {_numberOfAttacks = value;}
     }
+
+    private List<int> _remainingAttacks;
 
     [SerializeField]
     private int _attackCooltime;
@@ -47,12 +48,14 @@ public class Enemy_Hexagon : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        _currentState = HexagonState.Wait;
+        CurrentState = HexagonState.Wait;
+        NumberOfAttacks = System.Enum.GetValues(typeof(HexagonState)).Length - 1;
+        // Debug.Log("NumberOfAttacks: " + NumberOfAttacks);
+
+        _remainingAttacks = Enumerable.Range(1, NumberOfAttacks).ToList();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.CurrentEnemy = this;
-
-        StartCoroutine(_AwakeRandomAttack());
     }
 
     // Update is called once per frame
@@ -61,7 +64,12 @@ public class Enemy_Hexagon : Enemy
         
     }
 
-    private IEnumerator _AwakeRandomAttack()
+    public override void StartAttacking()
+    {
+        StartCoroutine(_StartAttackingCycle());
+    }
+
+    private IEnumerator _StartAttackingCycle()
     {
         while(true)
         {
@@ -69,8 +77,17 @@ public class Enemy_Hexagon : Enemy
             {
                 case HexagonState.Wait:
                 {
-                    int random = Random.Range(1, NumberOfAttacks);
-                    CurrentState = (HexagonState)System.Enum.GetValues(typeof(HexagonState)).GetValue(random);
+                    int random = Random.Range(0, _remainingAttacks.Count);
+
+                    Debug.Log(_remainingAttacks[random]);
+                    CurrentState = (HexagonState)System.Enum.GetValues(typeof(HexagonState)).GetValue(_remainingAttacks[random]);
+                    _remainingAttacks.Remove(_remainingAttacks[random]);
+
+                    if(_remainingAttacks.Count == 0)
+                    {
+                        _remainingAttacks = Enumerable.Range(1, NumberOfAttacks).ToList();
+                    }
+
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
@@ -133,6 +150,6 @@ public class Enemy_Hexagon : Enemy
 
         //弾に力を与える処理など
 
-        yield return new WaitForEndOfFrame();
+        yield return null;
     }
 }

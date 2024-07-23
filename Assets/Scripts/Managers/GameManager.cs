@@ -24,6 +24,14 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Player _player;
 
+    private Enemy _currentEnemy;
+
+    public Enemy CurrentEnemy
+    {
+        get {return _currentEnemy;}
+        set {_currentEnemy = value;}
+    }
+
     [SerializeField]
     private List<Enemy> _enemies;
 
@@ -134,6 +142,11 @@ public class GameManager : MonoBehaviour
         //敵の出現
         _SpawnEnemy(nextEnemy);
         _enemies.Remove(nextEnemy);
+
+        //登場演出を挟む
+        yield return new WaitForSeconds(5f);
+
+        CurrentEnemy.StartAttacking();
     }
 
     private void _ShiftObjects(int state)
@@ -202,6 +215,6 @@ public class GameManager : MonoBehaviour
 
     private void _SpawnEnemy(Enemy enemy)
     {
-        Instantiate(enemy, _battleEnemyTransform.position, Quaternion.identity);
+        CurrentEnemy = Instantiate(enemy, _battleEnemyTransform.position, Quaternion.identity);
     }
 }

@@ -82,6 +82,7 @@ public class Enemy_Diamond : Enemy
                 case DiamondState.Wait:
                 {
                     int random = Random.Range(0, _remainingAttacks.Count);
+
                     Debug.Log(_remainingAttacks[random]);
                     CurrentState = (DiamondState)System.Enum.GetValues(typeof(DiamondState)).GetValue(_remainingAttacks[random]);
                     _remainingAttacks.Remove(_remainingAttacks[random]);
@@ -97,45 +98,52 @@ public class Enemy_Diamond : Enemy
                 case DiamondState.Attack1:
                 //3つの頂点から平行に射撃
                 {
-                    yield return StartCoroutine(_ShootCircleBullet());
-                    CurrentState = DiamondState.Wait;
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_StraightTripleShoot());
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack2:
                 //分身設置
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack3:
                 //ランダム方向へのビーム
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack4:
                 //かすり値減少弾
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_RapidShoot());
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack5:
                 //徹甲榴弾
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack6:
                 //3つの頂点から扇形に射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack7:
                 //弾速が違う弾が混ざった射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    CurrentState = DiamondState.Wait;
                     break;
                 }
             }
@@ -147,7 +155,34 @@ public class Enemy_Diamond : Enemy
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
         EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
-        //弾に力を与える処理など
+        Vector3 power = new Vector3(0, -5.0f, 0);
+        bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+
+        yield return null;
+    }
+
+    private IEnumerator _StraightTripleShoot()
+    {
+        yield return StartCoroutine(_ShootCircleBullet());
+
+        yield return new WaitForSeconds(0.1f);
+
+        yield return StartCoroutine(_ShootCircleBullet());
+
+        yield return new WaitForSeconds(0.1f);
+
+        yield return StartCoroutine(_ShootCircleBullet());
+
+        yield return new WaitForSeconds(1);
+    }
+
+    private IEnumerator _RapidShoot()
+    {
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+        Vector3 power = new Vector3(0, -10.0f, 0);
+        bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
 
         yield return null;
     }

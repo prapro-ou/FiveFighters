@@ -4,7 +4,7 @@
 # ゲームの始め方
 GitHub Pagesによって作成したWebページにアクセスすることでプレイできます。
 
-URL: [---URL---]
+URL: https://prapro-ou.github.io/FiveFighters/ (テストビルド)
 
 # 操作方法
 ## メニュー操作

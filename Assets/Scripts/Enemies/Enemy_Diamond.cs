@@ -23,6 +23,9 @@ public class Enemy_Diamond : Enemy
     [SerializeField]
     private EnemyBullet _circleBulletPrefab;
 
+    [SerializeField]
+    private EnemyBullet _beamPrefab;
+
     private DiamondState _currentState;
 
     public DiamondState CurrentState
@@ -99,7 +102,7 @@ public class Enemy_Diamond : Enemy
                 //3つの頂点から平行に射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_StraightTripleShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -114,6 +117,7 @@ public class Enemy_Diamond : Enemy
                 //ランダム方向へのビーム
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_BeamShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -174,6 +178,34 @@ public class Enemy_Diamond : Enemy
         yield return StartCoroutine(_ShootCircleBullet());
 
         yield return new WaitForSeconds(1);
+    }
+
+    private IEnumerator _3VerticesShoot()
+    {
+        Vector3 power = new Vector3(0, -10.0f, 0);
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        pos.x += 1.2f;
+        EnemyBullet bullet2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        pos.x -= 2.4f;
+        EnemyBullet bullet3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+        bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+        bullet2.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+        bullet3.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+
+        yield return null;
+    }
+
+    private IEnumerator _BeamShoot()
+    {
+        Vector3 power = new Vector3(5.0f, -5.0f, 0);
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _beamPrefab.transform.position.z);
+        var dir = Random.insideUnitCircle.normalized;
+        EnemyBullet beam = Instantiate(_beamPrefab, pos, Quaternion.identity);
+
+        beam.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
+        yield return null;
     }
 
     private IEnumerator _RapidShoot()

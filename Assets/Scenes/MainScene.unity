@@ -2236,6 +2236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
+  _inputManager: {fileID: 0}
+  _eventSystem: {fileID: 0}
+  _sceneController: {fileID: 0}
   _enemies:
   - {fileID: -8352821498467316285, guid: bf23582edfd82a24fa1c0419dbd9f711, type: 3}
   _camera: {fileID: 519420031}
@@ -2251,6 +2254,12 @@ MonoBehaviour:
   _battleEnemyTransform: {fileID: 1634889170}
   _transitionCanvas: {fileID: 590212343}
   _transitionObject: {fileID: 282819266}
+  _stageClearText: {fileID: 0}
+  _gameOverText: {fileID: 0}
+  _clearResultCanvas: {fileID: 0}
+  _clearResultButton: {fileID: 0}
+  _deathResultCanvas: {fileID: 0}
+  _deathResultButton: {fileID: 0}
 --- !u!1 &564375895
 GameObject:
   m_ObjectHideFlags: 0

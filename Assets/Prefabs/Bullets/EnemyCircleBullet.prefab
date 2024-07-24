@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6450398580459616629}
   m_Layer: 10
   m_Name: EnemyCircleBullet
-  m_TagString: EnemyCircleBullet
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,9 +6,6 @@ public class SpecialSquareBullet : MonoBehaviour
 {
     private Player _player;
 
-    [SerializeField]
-    private GameObject _squareSpecialBullet;
-
     private int _direction;
     public int Direction
     {
@@ -61,9 +58,9 @@ public class SpecialSquareBullet : MonoBehaviour
 
     private IEnumerator MoveToAhead()
     {
-        for(float j = 0.1f; j < 5.0f; j += 0.1f)
+        for(int j = 1; j < 50; j++)
         {
-            this.transform.localPosition += new Vector3(0.0f, 0.1f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, 10.0f, 0.0f);
             yield return null;
         }
         Destroy(this.gameObject);
@@ -73,7 +70,7 @@ public class SpecialSquareBullet : MonoBehaviour
     {
         for(float j = 0.1f; j < 5.0f; j += 0.1f)
         {
-            this.transform.localPosition += new Vector3(-0.1f, 0.0f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(-10.0f, 0.0f, 0.0f);
             yield return null;
         }
         Destroy(this.gameObject);
@@ -83,7 +80,7 @@ public class SpecialSquareBullet : MonoBehaviour
     {
         for(float j = 0.1f; j < 5.0f; j += 0.1f)
         {
-            this.transform.localPosition += new Vector3(0.0f, -0.1f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, -10.0f, 0.0f);
             yield return null;
         }
         Destroy(this.gameObject);
@@ -93,7 +90,7 @@ public class SpecialSquareBullet : MonoBehaviour
     {
         for(float j = 0.1f; j < 5.0f; j += 0.1f)
         {
-            this.transform.localPosition += new Vector3(0.1f, 0.0f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(10.0f, 0.0f, 0.0f);
             yield return null;
         }
         Destroy(this.gameObject);

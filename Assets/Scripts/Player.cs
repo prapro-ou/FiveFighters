@@ -54,6 +54,11 @@ public class Player : MonoBehaviour
                 _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
             }
             _playerHpBar.UpdateHp();
+
+            if(_hitPoint <= 0)
+            {
+                Die();
+            }
         }
     }
 
@@ -140,7 +145,16 @@ public class Player : MonoBehaviour
     {
         get {return _isSlowingDown;}
         set {_isSlowingDown = value;}
+    }
+
+    private bool _isDead;
+
+    public bool IsDead
+    {
+        get {return _isDead;}
+        set {_isDead = value;}
     }    
+
 
     private int _money = 0;
 
@@ -231,6 +245,7 @@ public class Player : MonoBehaviour
 
         IsInShiftCooldown = false;
         IsSlowingDown = false;
+        IsDead = false;
 
         PowerMultiplier = 1;
         HitPoint = MaxHitPoint;
@@ -304,8 +319,6 @@ public class Player : MonoBehaviour
         _damageCollider.BeInvincibleWithDash();
 
         StartCoroutine(StartDash());
-
-        
     }
 
     private IEnumerator StartDash()
@@ -326,6 +339,14 @@ public class Player : MonoBehaviour
     public void DestroyMyself()
     {
         Destroy(this.gameObject);
+    }
+
+    public void Die()
+    {
+        _grazeCollider.enabled = false;
+        _damageCollider.enabled = false;
+        IsDead = true;
+        _gameManager.DiePlayer();
     }
 
     //通常攻撃

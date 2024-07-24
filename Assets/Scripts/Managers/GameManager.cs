@@ -35,6 +35,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private SceneController _sceneController;
 
+    [SerializeField]
+    private CameraManager _cameraManager;
+
     private Enemy _currentEnemy;
 
     public Enemy CurrentEnemy
@@ -43,11 +46,10 @@ public class GameManager : MonoBehaviour
         set {_currentEnemy = value;}
     }
 
-    [SerializeField]
-    private List<Enemy> _enemies;
+    private int _lockedEnemy; //DEBUG!!!!!!!!!!
 
     [SerializeField]
-    private Camera _camera;
+    private List<Enemy> _enemies;
 
     [SerializeField]
     private Image _backgroundImage;
@@ -169,13 +171,24 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(_OpenTransition());
 
         //敵の出現
-        _SpawnEnemy(nextEnemy);
-        _enemies.Remove(nextEnemy);
-
+        if(_lockedEnemy != -1) //DEBUG!!!!!!!!!!!!!!!
+        {
+            Debug.Log($"DEBUG: SpawnLockedEnemy: {_enemies[_lockedEnemy]}");
+            _SpawnEnemy(_enemies[_lockedEnemy]);
+            _lockedEnemy = -1;
+        }
+        else
+        {
+            _SpawnEnemy(nextEnemy);
+            _enemies.Remove(nextEnemy);
+        }
+        
         //登場演出を挟む
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
 
         CurrentEnemy.StartAttacking();
+
+        IsRunningShift = false;
     }
 
     private void _ShiftObjects(int state)
@@ -185,7 +198,7 @@ public class GameManager : MonoBehaviour
             case 0:
             {
                 //カメラの移動
-                _camera.transform.position = _shopCameraTransform.position;
+                _cameraManager.MoveToPointImmediately(_shopCameraTransform.position);
 
                 //PlayerのPlayAreaの設定
                 _player.PlayArea = _shopPlayArea;
@@ -201,7 +214,7 @@ public class GameManager : MonoBehaviour
             case 1:
             {
                 //カメラの移動
-                _camera.transform.position = _battleCameraTransform.position;
+                _cameraManager.MoveToPointImmediately(_battleCameraTransform.position);
 
                 //PlayerのPlayAreaの設定
                 _player.PlayArea = _battlePlayArea;
@@ -237,9 +250,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(animationLength);
     }
 
-    public void DebugShift_GoShop()
+    public void DEBUG_GoShop()
     {
         StartCoroutine(ShiftToShop());
+    }
+
+    public void DEBUG_lockEnemy(int enemy)
+    {
+        _lockedEnemy = enemy;
+        Debug.Log($"DEBUG: Locked Enemy as {_enemies[_lockedEnemy]}");
     }
 
     private void _SpawnEnemy(Enemy enemy)
@@ -251,14 +270,26 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("ClearStage");
 
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EnemyBullet"))
+        {
+            Destroy(obj);
+        }
+
         StartCoroutine(_PopUpOnClear());
     }
 
     private IEnumerator _PopUpOnClear()
     {
+        //InputManagerのモードをUIに移行する
+        _inputManager.SwitchCurrentActionMap("UI");
+
         //カメラを敵に寄せる
+        yield return StartCoroutine(_cameraManager.MoveToPoint(CurrentEnemy.transform.position));
+        
+        yield return new WaitForSeconds(1f);
 
         //カメラを戻す
+        yield return StartCoroutine(_cameraManager.MoveToPoint(new Vector3(0, 0, -10)));
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
@@ -266,11 +297,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
-        //_clearResultCanvas.SetActive(true);
+        _clearResultCanvas.gameObject.SetActive(true);
 
-        //InputManagerのモードをUIに移行する
-        _inputManager.SwitchCurrentActionMap("UI");
-        // _eventSystem.SetSelectedGameObject(_clearResultButton);
+        _eventSystem.SetSelectedGameObject(_clearResultButton);
 
         yield return null;
     }
@@ -280,7 +309,7 @@ public class GameManager : MonoBehaviour
         //InputManagerのモードをPlayerに移行する
         _inputManager.SwitchCurrentActionMap("Player");
 
-        // _clearResultCanvas.SetActive(false);
+        _clearResultCanvas.gameObject.SetActive(false);
 
         StartCoroutine(ShiftToShop());
     }
@@ -294,9 +323,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _PopUpOnDeath()
     {
+        //InputManagerのモードをUIに移行する
+        _inputManager.SwitchCurrentActionMap("UI");
+
         //カメラを敵に寄せる
+        yield return StartCoroutine(_cameraManager.MoveToPoint(_player.transform.position));
+
+        yield return new WaitForSeconds(1f);
 
         //カメラを戻す
+        yield return StartCoroutine(_cameraManager.MoveToPoint(new Vector3(0, 0, -10)));
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);
@@ -304,11 +340,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
-        //_deathResultCanvas.SetActive(true);
+        _deathResultCanvas.gameObject.SetActive(true);
 
-        //InputManagerのモードをUIに移行する
-        _inputManager.SwitchCurrentActionMap("UI");
-        // _eventSystem.SetSelectedGameObject(_deathResultButton);
+        _eventSystem.SetSelectedGameObject(_deathResultButton);
 
         yield return null;
     }
@@ -318,7 +352,7 @@ public class GameManager : MonoBehaviour
         //InputManagerのモードをPlayerに移行する
         _inputManager.SwitchCurrentActionMap("Player");
 
-        // _clearResultCanvas.SetActive(false);
+        _clearResultCanvas.gameObject.SetActive(false);
 
         StartCoroutine(_LoadTitleAfterTransition());
     }

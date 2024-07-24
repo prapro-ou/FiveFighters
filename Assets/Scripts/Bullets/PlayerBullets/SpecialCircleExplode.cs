@@ -29,10 +29,10 @@ public class SpecialCircleExplode : MonoBehaviour
             Debug.Log($"TakeDamageEnemy{_explosionDamage}");
         }
 
-        if (collider.gameObject.tag == "EnemyCircleBullet")
+        if (collider.gameObject.tag == "EnemyBullet")
         {
             Destroy(collider.gameObject);
-            Debug.Log($"DestroyEnemyCircleBullet");
+            Debug.Log($"DestroyEnemyBullet");
         }
     }
 }

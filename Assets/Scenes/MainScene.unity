@@ -2238,6 +2238,7 @@ MonoBehaviour:
   _player: {fileID: 691294819}
   _enemies:
   - {fileID: -8352821498467316285, guid: bf23582edfd82a24fa1c0419dbd9f711, type: 3}
+  - {fileID: 8178231971346529793, guid: 9aa55f5bac0c39e4185235f4f6fa828a, type: 3}
   _camera: {fileID: 519420031}
   _backgroundImage: {fileID: 1494604933}
   _battleImageColor: {r: 0.5896226, g: 0, b: 0, a: 1}

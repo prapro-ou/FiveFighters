@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +25,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private Player _player;
+
+    [SerializeField]
+    private PlayerInput _inputManager;
+
+    [SerializeField]
+    private EventSystem _eventSystem;
+
+    [SerializeField]
+    private SceneController _sceneController;
 
     private Enemy _currentEnemy;
 
@@ -75,6 +86,24 @@ public class GameManager : MonoBehaviour
     private GameObject _transitionObject;
 
     private Animator _transitionAnimator;
+
+    [SerializeField]
+    private GameObject _stageClearText;
+
+    [SerializeField]
+    private GameObject _gameOverText;
+
+    [SerializeField]
+    private Canvas _clearResultCanvas;
+
+    [SerializeField]
+    private GameObject _clearResultButton;
+
+    [SerializeField]
+    private Canvas _deathResultCanvas;
+
+    [SerializeField]
+    private GameObject _deathResultButton;
 
     // Start is called before the first frame update
     void Start()
@@ -216,5 +245,88 @@ public class GameManager : MonoBehaviour
     private void _SpawnEnemy(Enemy enemy)
     {
         CurrentEnemy = Instantiate(enemy, _battleEnemyTransform.position, Quaternion.identity);
+    }
+
+    public void ClearStage()
+    {
+        Debug.Log("ClearStage");
+
+        StartCoroutine(_PopUpOnClear());
+    }
+
+    private IEnumerator _PopUpOnClear()
+    {
+        //カメラを敵に寄せる
+
+        //カメラを戻す
+
+        //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
+        //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
+        // Destroy(text, 10f);
+        yield return new WaitForSeconds(1.5f);
+
+        //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
+        //_clearResultCanvas.SetActive(true);
+
+        //InputManagerのモードをUIに移行する
+        _inputManager.SwitchCurrentActionMap("UI");
+        // _eventSystem.SetSelectedGameObject(_clearResultButton);
+
+        yield return null;
+    }
+
+    public void ShiftToShopWithClearResult()
+    {
+        //InputManagerのモードをPlayerに移行する
+        _inputManager.SwitchCurrentActionMap("Player");
+
+        // _clearResultCanvas.SetActive(false);
+
+        StartCoroutine(ShiftToShop());
+    }
+
+    public void DiePlayer()
+    {
+        Debug.Log("DiePlayer");
+
+        StartCoroutine(_PopUpOnDeath());
+    }
+
+    private IEnumerator _PopUpOnDeath()
+    {
+        //カメラを敵に寄せる
+
+        //カメラを戻す
+
+        //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
+        //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);
+        // Destroy(text, 10f);
+        yield return new WaitForSeconds(1.5f);
+
+        //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
+        //_deathResultCanvas.SetActive(true);
+
+        //InputManagerのモードをUIに移行する
+        _inputManager.SwitchCurrentActionMap("UI");
+        // _eventSystem.SetSelectedGameObject(_deathResultButton);
+
+        yield return null;
+    }
+
+    public void LoadTitleWithDeathResult()
+    {
+        //InputManagerのモードをPlayerに移行する
+        _inputManager.SwitchCurrentActionMap("Player");
+
+        // _clearResultCanvas.SetActive(false);
+
+        StartCoroutine(_LoadTitleAfterTransition());
+    }
+
+    private IEnumerator _LoadTitleAfterTransition()
+    {
+        yield return StartCoroutine(_CloseTransition());
+
+        _sceneController.LoadNextScene(0);
     }
 }

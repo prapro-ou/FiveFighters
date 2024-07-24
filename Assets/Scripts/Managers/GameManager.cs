@@ -114,6 +114,8 @@ public class GameManager : MonoBehaviour
 
         IsRunningShift = false;
 
+        _lockedEnemy = -1;
+
         _transitionCanvas.SetActive(true);
         _transitionAnimator = _transitionObject.GetComponent<Animator>();
 

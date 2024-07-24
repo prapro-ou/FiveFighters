@@ -49,6 +49,8 @@ public class DamageCollider : MonoBehaviour
     {
         if(InInvincible) {return;}
 
+        if(_player.IsDead) {return;}
+
         EnemyBullet enemyBullet = collider.gameObject.GetComponent<EnemyBullet>();
 
         _player.TakeDamage(enemyBullet.DamageValue);

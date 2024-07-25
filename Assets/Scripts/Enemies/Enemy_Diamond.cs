@@ -29,6 +29,12 @@ public class Enemy_Diamond : Enemy
     [SerializeField]
     private EnemyBullet _reduceBulletPrefab;
 
+    [SerializeField]
+    private Enemy_Diamond_LeftCanon _leftCanonPrefab;
+
+    [SerializeField]
+    private Enemy_Diamond_RightCanon _rightCanonPrefab;
+
     private DiamondState _currentState;
 
     public DiamondState CurrentState
@@ -115,6 +121,7 @@ public class Enemy_Diamond : Enemy
                 //分身設置
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_GenerateCanon());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -151,7 +158,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack7:
-                //弾速が違う弾が混ざった射撃
+                //弾速が違う弾が混ざった射撃を5発 1発ごとにホーミング
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_ChangeSpeedShoot());
@@ -183,6 +190,29 @@ public class Enemy_Diamond : Enemy
         bullet3.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(0.3f);
+        yield return null;
+    }
+
+    private IEnumerator _GenerateCanon()
+    {
+        //左か右かを決めるための1か2を生成
+        int rnd_x = Random.Range(1, 3);
+        //y座標設定のための1から5の乱数を生成
+        int rnd_y = Random.Range(1, 6);
+
+        //遠隔砲台の生成位置を調整 rnd_xが1なら左側，2なら右側に生成
+        //弾の発射，砲台の削除は砲台側で制御する．
+        if(rnd_x == 1)
+        {
+            Vector3 pos = new Vector3(transform.position.x - 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Enemy_Diamond_LeftCanon canon = Instantiate(_leftCanonPrefab, pos, Quaternion.Euler(0, 0, 270));
+        }
+        else
+        {
+            Vector3 pos = new Vector3(transform.position.x + 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Enemy_Diamond_RightCanon canon = Instantiate(_rightCanonPrefab, pos, Quaternion.Euler(0, 0, 90));
+        }
+
         yield return null;
     }
 

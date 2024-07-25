@@ -164,7 +164,7 @@ public class Enemy_Diamond : Enemy
     private IEnumerator _3VerticesShoot()
     {
         //直進させるための力
-        Vector3 power = new Vector3(0, -7.0f, 0);
+        Vector3 power = new Vector3(0, -5.0f, 0);
         //自機(敵)の位置を取得
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
         //中心部分の弾を生成
@@ -188,7 +188,7 @@ public class Enemy_Diamond : Enemy
     private IEnumerator _BeamShoot()
     {
         //適当な力
-        Vector3 power = new Vector3(3.0f, -7.0f, 0);
+        Vector3 power = new Vector3(2.0f, -5.0f, 0);
 
        //ランダムな角度
         var dir = Random.insideUnitCircle.normalized;
@@ -214,7 +214,7 @@ public class Enemy_Diamond : Enemy
         Vector3 power = target - this.transform.position;
 
         //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
-        bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 12.0f, ForceMode2D.Impulse);
+        bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 8.0f, ForceMode2D.Impulse);
 
         yield return null;
     }
@@ -234,7 +234,7 @@ public class Enemy_Diamond : Enemy
         {
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-            Vector3 power = new Vector3(3.0f, -7.0f, 0);
+            Vector3 power = new Vector3(2.0f, -5.0f, 0);
             var dir = Random.insideUnitCircle.normalized;
             bullet.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
 
@@ -252,9 +252,9 @@ public class Enemy_Diamond : Enemy
     private IEnumerator _FanShoot()
     {
         //各方向 c(直進) r(右) l(左)へ向かう力
-        Vector3 power_c = new Vector3(0, -7.0f, 0);
-        Vector3 power_r = new Vector3(2.0f, -7.0f, 0);
-        Vector3 power_l = new Vector3(-2.0f, -7.0f, 0);
+        Vector3 power_c = new Vector3(0, -5.0f, 0);
+        Vector3 power_r = new Vector3(2.0f, -5.0f, 0);
+        Vector3 power_l = new Vector3(-2.0f, -5.0f, 0);
 
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
 

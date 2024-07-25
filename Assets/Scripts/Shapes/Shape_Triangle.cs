@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Shape_Triangle : PlayerShape
 {
-    private Player _player;
+    [SerializeField]
+    private Player _player;    
     private GameObject _triangleDestroyField;
-    
+
+    [SerializeField]
+    private GameObject _trianglePrimaryBullet;
+
+    private PlayerBullet _playerbullet;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +27,11 @@ public class Shape_Triangle : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"tri");
+        Vector3 vec = _player.transform.position;
+        
+        Instantiate(_trianglePrimaryBullet, new Vector3(vec.x + 0.3f, vec.y, vec.z), Quaternion.identity);
+
+        Instantiate(_trianglePrimaryBullet, new Vector3(vec.x - 0.3f, vec.y, vec.z), Quaternion.identity);
     }
 
     public override void SpecialSkill()

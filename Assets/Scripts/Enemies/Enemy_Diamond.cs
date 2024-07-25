@@ -26,6 +26,9 @@ public class Enemy_Diamond : Enemy
     [SerializeField]
     private EnemyBullet _beamPrefab;
 
+    [SerializeField]
+    private EnemyBullet _reduceBulletPrefab;
+
     private DiamondState _currentState;
 
     public DiamondState CurrentState
@@ -103,6 +106,8 @@ public class Enemy_Diamond : Enemy
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_3VerticesShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -122,17 +127,18 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack4:
-                //かすり値減少弾
+                //高速かすり値減少弾
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_RapidShoot());
+                    yield return StartCoroutine(_HomingRapidShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack5:
-                //徹甲榴弾
+                //画面中央で乱れ撃ち
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    Vector3 startpos = this.transform.position;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -140,6 +146,7 @@ public class Enemy_Diamond : Enemy
                 //3つの頂点から扇形に射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_FanShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -154,46 +161,27 @@ public class Enemy_Diamond : Enemy
         }
     }
 
-    private IEnumerator _ShootCircleBullet()
-    {
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
-        EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-
-        Vector3 power = new Vector3(0, -5.0f, 0);
-        bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
-
-        yield return null;
-    }
-
-    private IEnumerator _StraightTripleShoot()
-    {
-        yield return StartCoroutine(_ShootCircleBullet());
-
-        yield return new WaitForSeconds(0.1f);
-
-        yield return StartCoroutine(_ShootCircleBullet());
-
-        yield return new WaitForSeconds(0.1f);
-
-        yield return StartCoroutine(_ShootCircleBullet());
-
-        yield return new WaitForSeconds(1);
-    }
-
     private IEnumerator _3VerticesShoot()
     {
-        Vector3 power = new Vector3(0, -10.0f, 0);
+        //直進させるための力
+        Vector3 power = new Vector3(0, -7.0f, 0);
+        //自機(敵)の位置を取得
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        //中心部分の弾を生成
         EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        //右側部分の弾を生成
         pos.x += 1.2f;
         EnemyBullet bullet2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        //左側部分の弾を生成
         pos.x -= 2.4f;
         EnemyBullet bullet3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
+        //弾を発射
         bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
         bullet2.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
         bullet3.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
 
+        yield return new WaitForSeconds(0.3f);
         yield return null;
     }
 
@@ -201,21 +189,77 @@ public class Enemy_Diamond : Enemy
     {
         Vector3 power = new Vector3(5.0f, -5.0f, 0);
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _beamPrefab.transform.position.z);
+       //ランダムな角度
         var dir = Random.insideUnitCircle.normalized;
-        EnemyBullet beam = Instantiate(_beamPrefab, pos, Quaternion.identity);
+        EnemyBullet beam = Instantiate(_beamPrefab, pos, Quaternion.Euler(dir));
 
         beam.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
         yield return null;
     }
 
-    private IEnumerator _RapidShoot()
+    private IEnumerator _HomingRapidShoot()
     {
+        //弾を敵の位置に生成
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
-        EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet = Instantiate(_reduceBulletPrefab, pos, Quaternion.identity);
 
-        Vector3 power = new Vector3(0, -10.0f, 0);
-        bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+        //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
+        Vector3 target = _player.transform.position;
+        Vector3 power = target - this.transform.position;
 
+        //弾を発射
+        bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 10.0f, ForceMode2D.Impulse);
+
+        yield return null;
+    }
+
+    private IEnumerator _RandomShoot()
+    {
+        yield return null;
+    }
+
+    private IEnumerator _FanShoot()
+    {
+        //各方向 c(直進) r(右) l(左)へ向かう力
+        Vector3 power_c = new Vector3(0, -7.0f, 0);
+        Vector3 power_r = new Vector3(3.0f, -7.0f, 0);
+        Vector3 power_l = new Vector3(-3.0f, -7.0f, 0);
+
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+
+        //中心部分の弾を生成
+        EnemyBullet bullet_c1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet_r1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet_l1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+        //右側部分の弾を生成
+        pos.x += 1.2f;
+        EnemyBullet bullet_c2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet_r2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet_l2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+        //左側部分の弾を生成
+        pos.x -= 2.4f;
+        EnemyBullet bullet_c3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet_r3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+        EnemyBullet bullet_l3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+        //各部分の直進する弾を発射
+        bullet_c1.GetComponent<Rigidbody2D>().AddForce(power_c, ForceMode2D.Impulse);
+        bullet_c2.GetComponent<Rigidbody2D>().AddForce(power_c, ForceMode2D.Impulse);
+        bullet_c3.GetComponent<Rigidbody2D>().AddForce(power_c, ForceMode2D.Impulse);
+
+        //各部分の右側へ向かう弾を発射
+        bullet_r1.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
+        bullet_r2.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
+        bullet_r3.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
+
+        //各部分の左側へ向かう弾を発射
+        bullet_l1.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
+        bullet_l2.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
+        bullet_l3.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(1);
         yield return null;
     }
 }

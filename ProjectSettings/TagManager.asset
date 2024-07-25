@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - EnemyCircleBullet
+  - Enemy
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
@@ -20,9 +23,9 @@ TagManager:
   - UICollider
   - UIObject
   - SpecialBullet
-  - 
-  - 
-  - 
+  - SpecialCircleBullet
+  - SpecialCircleExplode
+  - PermanentDestroyField
   - 
   - 
   - 

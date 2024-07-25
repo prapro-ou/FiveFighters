@@ -54,6 +54,11 @@ public class Player : MonoBehaviour
                 _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
             }
             _playerHpBar.UpdateHp();
+
+            if(_hitPoint <= 0)
+            {
+                Die();
+            }
         }
     }
 
@@ -89,6 +94,32 @@ public class Player : MonoBehaviour
     private float _speed;
 
     [SerializeField]
+    private float _dashTime;
+
+    public float DashTime
+    {
+        get {return _dashTime;}
+        set {_dashTime = value;}
+    }
+
+    [SerializeField]
+    private float _dashSpeed;
+
+    public float DashSpeed
+    {
+        get {return _dashSpeed;}
+        set {_dashSpeed = value;}
+    }
+
+    private bool _isDashing;
+
+    public bool IsDashing
+    {
+        get {return _isDashing;}
+        set {_isDashing = value;}
+    }
+
+    [SerializeField]
     private float _shiftCooldown;
 
     public float ShiftCooldown
@@ -114,7 +145,16 @@ public class Player : MonoBehaviour
     {
         get {return _isSlowingDown;}
         set {_isSlowingDown = value;}
+    }
+
+    private bool _isDead;
+
+    public bool IsDead
+    {
+        get {return _isDead;}
+        set {_isDead = value;}
     }    
+
 
     private int _money = 0;
 
@@ -205,9 +245,12 @@ public class Player : MonoBehaviour
 
         IsInShiftCooldown = false;
         IsSlowingDown = false;
+        IsDead = false;
 
         PowerMultiplier = 1;
         HitPoint = MaxHitPoint;
+
+        ExpansionValue = 1.0f;
 
         _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
     }
@@ -215,6 +258,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(IsDashing) {return;}
+
         _Move();
     }
 
@@ -268,10 +313,40 @@ public class Player : MonoBehaviour
         Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
     }
 
+    public void Dash()
+    {
+        Debug.Log("Dash");
+        _damageCollider.BeInvincibleWithDash();
+
+        StartCoroutine(StartDash());
+    }
+
+    private IEnumerator StartDash()
+    {
+        IsDashing = true;
+        Vector2 currentDirection = Direction;
+
+        for(float i = 0f; i < DashTime; i += Time.deltaTime)
+        {
+            transform.position += (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.deltaTime * DashSpeed);
+            yield return null;
+        }
+
+        IsDashing = false;
+    }
+
     //自機消滅
     public void DestroyMyself()
     {
         Destroy(this.gameObject);
+    }
+
+    public void Die()
+    {
+        _grazeCollider.enabled = false;
+        _damageCollider.enabled = false;
+        IsDead = true;
+        _gameManager.DiePlayer();
     }
 
     //通常攻撃
@@ -403,23 +478,23 @@ public class Player : MonoBehaviour
         _grazeCollider.transform.localScale = MyShape.GrazeColliderSize * ExpansionValue;
     }
 
-    private void AddMoney(int reward)
+    public void AddMoney(int reward)
     {
         Money += reward;
     }
 
-    private void UseMoney(int cost)
+    public void UseMoney(int cost)
     {
         Money -= cost;
     }
 
-    private void EnhanceHitPoint(int boost)
+    public void EnhanceHitPoint(int boost)
     {
         MaxHitPoint += boost;
         HitPoint += boost;
     }
 
-    private void EnhancePower(float coefficient)
+    public void EnhancePower(float coefficient)
     {
         PowerMultiplier += coefficient;
     }

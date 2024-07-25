@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
+    private GameManager _gameManager;
+
+    private Collider2D _collider;
+
     [SerializeField]
     private int _maxHitPoint;
 
@@ -23,14 +27,31 @@ public class Enemy : MonoBehaviour
         get {return _hitPoint;}
         set
         {
-            _hitPoint = value;
+            _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
+            Debug.Log($"EnemyHP: {HitPoint}");
+
+            if(_hitPoint <= 0)
+            {
+                StopAllCoroutines();
+                _collider.enabled = false;
+                _gameManager.ClearStage();
+            }
         }
+    }
+
+    void Awake()
+    {
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        _collider = GetComponent<Collider2D>();
+
+        HitPoint = MaxHitPoint;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        HitPoint = MaxHitPoint;
+
     }
 
     // Update is called once per frame
@@ -42,18 +63,17 @@ public class Enemy : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
-
-        TakeDamage(bullet.DamageValue);
-
-        Destroy(bullet.gameObject);
+        if(bullet != null)
+        {
+            TakeDamage(bullet.DamageValue);
+            Destroy(bullet.gameObject);
+        }
     }
 
     public void TakeDamage(int value)
     {
         HitPoint -= value;
-        
-        Debug.Log($"Enemy::TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
-
-        
     }
+
+    public abstract void StartAttacking();
 }

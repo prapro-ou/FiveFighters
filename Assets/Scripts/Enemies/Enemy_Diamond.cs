@@ -225,28 +225,45 @@ public class Enemy_Diamond : Enemy
         Vector3 startPos = this.transform.position;
 
         //画面中央に移動．今のままだと瞬間移動する．
-        this.transform.position += new Vector3(0,-2.5f,0);
-
+        yield return StartCoroutine(_Move(0));
         yield return new WaitForSeconds(1.5f);
 
         //乱射
-        for(int i=0;i<20;++i)
+        for(int i=0; i < 20; ++i)
         {
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
             Vector3 power = new Vector3(2.0f, -5.0f, 0);
             var dir = Random.insideUnitCircle.normalized;
+
             bullet.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
 
             yield return new WaitForSeconds(0.2f);
         }
 
+        //元の位置に戻る
+        yield return StartCoroutine(_Move(1));
         yield return new WaitForSeconds(1);
 
-        //元の位置に戻る
-        this.transform.position = startPos;
-
         yield return null;
+    }
+
+    private IEnumerator _Move(int n)
+    {
+        //進行方向管理用
+        float mode = 1.0f;
+
+        //引数が0だったら前進，1だったら後退．
+        if(n == 1)
+            mode *= -1.0f;
+
+        for(int i = 0; i<= 25; ++i)
+        {
+            this.transform.position += Time.deltaTime * new Vector3(0, -10.0f * mode, 0);
+            yield return null;
+        }
+
+        yield break;
     }
 
     private IEnumerator _FanShoot()

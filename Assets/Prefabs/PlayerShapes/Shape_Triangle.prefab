@@ -54,3 +54,4 @@ MonoBehaviour:
   _smallTriangle: {fileID: 5805627911642357826, guid: 4f575201adea6d14ba1021554a47f0df, type: 3}
   _smallTrianglePosition: 1
   _smallTriangleGrazeCollider: {fileID: 6762370605632346006, guid: f9825ca18f264f84c839c47a97cfe438, type: 3}
+  _primaryTriangleBullet: {fileID: 2883208648697385833, guid: b09ee1934e349b94990026e5809573de, type: 3}

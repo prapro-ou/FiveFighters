@@ -9,11 +9,10 @@ public class Shape_Circle : PlayerShape
     private GameObject _circleDestroyField;
 
     [SerializeField]
-    private GameObject _specialCircleBullet;
+    private PrimaryCircleBullet _primaryCircleBullet;
 
     [SerializeField]
-    private GameObject _playerCircleBullet;
-
+    private GameObject _specialCircleBullet;
 
     // private PlayerBullet _playerbullet;
 
@@ -33,7 +32,9 @@ public class Shape_Circle : PlayerShape
     {
         Vector3 vec = _player.transform.position;
         
-        Instantiate(_playerCircleBullet, vec, Quaternion.identity);
+        PlayerBullet bullet = Instantiate(_primaryCircleBullet, vec, Quaternion.identity);
+
+        bullet.DamageValue = PrimaryAttackDamage;
     }
 
     public override void SpecialSkill()

@@ -58,41 +58,61 @@ public class SpecialSquareBullet : MonoBehaviour
 
     private IEnumerator MoveToAhead()
     {
-        for(int j = 1; j < 50; j++)
+        float duration = 5.0f; // 移動にかかる総時間
+        float elapsedTime = 0f; // 経過時間
+
+        while (elapsedTime < duration)
         {
             this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, 10.0f, 0.0f);
+            elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
+
         Destroy(this.gameObject);
     }
 
     private IEnumerator MoveToLeft()
     {
-        for(float j = 0.1f; j < 5.0f; j += 0.1f)
+        float duration = 5.0f; // 移動にかかる総時間
+        float elapsedTime = 0f; // 経過時間
+
+        while (elapsedTime < duration)
         {
             this.transform.localPosition += Time.deltaTime * new Vector3(-10.0f, 0.0f, 0.0f);
+            elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
+
         Destroy(this.gameObject);
     }
 
     private IEnumerator MoveToBack()
     {
-        for(float j = 0.1f; j < 5.0f; j += 0.1f)
+        float duration = 5.0f; // 移動にかかる総時間
+        float elapsedTime = 0f; // 経過時間
+
+        while (elapsedTime < duration)
         {
             this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, -10.0f, 0.0f);
+            elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
+
         Destroy(this.gameObject);
     }
 
     private IEnumerator MoveToRight()
     {
-        for(float j = 0.1f; j < 5.0f; j += 0.1f)
+        float duration = 5.0f; // 移動にかかる総時間
+        float elapsedTime = 0f; // 経過時間
+
+        while (elapsedTime < duration)
         {
             this.transform.localPosition += Time.deltaTime * new Vector3(10.0f, 0.0f, 0.0f);
+            elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
+
         Destroy(this.gameObject);
     }
 }

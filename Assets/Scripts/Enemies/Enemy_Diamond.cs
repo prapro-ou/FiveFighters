@@ -29,6 +29,12 @@ public class Enemy_Diamond : Enemy
     [SerializeField]
     private EnemyBullet _reduceBulletPrefab;
 
+    [SerializeField]
+    private Enemy_Diamond_LeftCanon _leftCanonPrefab;
+
+    [SerializeField]
+    private Enemy_Diamond_RightCanon _rightCanonPrefab;
+
     private DiamondState _currentState;
 
     public DiamondState CurrentState
@@ -71,7 +77,7 @@ public class Enemy_Diamond : Enemy
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void StartAttacking()
@@ -115,6 +121,7 @@ public class Enemy_Diamond : Enemy
                 //分身設置
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_GenerateCanon());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -151,9 +158,10 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack7:
-                //弾速が違う弾が混ざった射撃
+                //弾速が違う弾が混ざった射撃を5発 1発ごとにホーミング
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_ChangeSpeedShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -182,6 +190,29 @@ public class Enemy_Diamond : Enemy
         bullet3.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(0.3f);
+        yield return null;
+    }
+
+    private IEnumerator _GenerateCanon()
+    {
+        //左か右かを決めるための1か2を生成
+        int rnd_x = Random.Range(1, 3);
+        //y座標設定のための1から5の乱数を生成
+        int rnd_y = Random.Range(1, 6);
+
+        //遠隔砲台の生成位置を調整 rnd_xが1なら左側，2なら右側に生成
+        //弾の発射，砲台の削除は砲台側で制御する．
+        if(rnd_x == 1)
+        {
+            Vector3 pos = new Vector3(transform.position.x - 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Enemy_Diamond_LeftCanon canon = Instantiate(_leftCanonPrefab, pos, Quaternion.Euler(0, 0, 270));
+        }
+        else
+        {
+            Vector3 pos = new Vector3(transform.position.x + 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Enemy_Diamond_RightCanon canon = Instantiate(_rightCanonPrefab, pos, Quaternion.Euler(0, 0, 90));
+        }
+
         yield return null;
     }
 
@@ -225,28 +256,50 @@ public class Enemy_Diamond : Enemy
         Vector3 startPos = this.transform.position;
 
         //画面中央に移動．今のままだと瞬間移動する．
-        this.transform.position += new Vector3(0,-2.5f,0);
-
+        yield return StartCoroutine(_Move(0));
         yield return new WaitForSeconds(1.5f);
 
         //乱射
-        for(int i=0;i<20;++i)
+        for(int i=0; i < 20; ++i)
         {
+            //自機の位置に弾を生成
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
             Vector3 power = new Vector3(2.0f, -5.0f, 0);
+
+            //ランダムな方向
             var dir = Random.insideUnitCircle.normalized;
+
+            //弾を発射
             bullet.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
 
             yield return new WaitForSeconds(0.2f);
         }
 
+        //元の位置に戻る
+        yield return StartCoroutine(_Move(1));
         yield return new WaitForSeconds(1);
 
-        //元の位置に戻る
-        this.transform.position = startPos;
-
         yield return null;
+    }
+
+    private IEnumerator _Move(int n)
+    {
+        //進行方向管理用
+        float mode = 1.0f;
+
+        //引数が0だったら前進，1だったら後退．
+        if(n == 1)
+            mode *= -1.0f;
+
+        for(int i = 0; i <= 25; ++i)
+        {
+            this.transform.position +=  new Vector3(0, -0.1f * mode, 0);
+            yield return null;
+        }
+
+        yield break;
     }
 
     private IEnumerator _FanShoot()
@@ -291,6 +344,30 @@ public class Enemy_Diamond : Enemy
         bullet_l3.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(1);
+        yield return null;
+    }
+
+    private IEnumerator _ChangeSpeedShoot()
+    {
+        for(int i = 0; i < 5; ++i)
+        {
+            //5から9の乱数を生成
+            int rnd = Random.Range(5,10);
+
+            //弾を敵の位置に生成
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+            EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+            //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
+            Vector3 target = _player.transform.position;
+            Vector3 power = target - this.transform.position;
+
+            //弾を発射 正規化した位置ベクトルに乱数を乗算して速さを調整．
+            bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * rnd, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(0.4f);
+        }
+
         yield return null;
     }
 }

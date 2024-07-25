@@ -71,7 +71,7 @@ public class Enemy_Diamond : Enemy
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void StartAttacking()
@@ -154,6 +154,7 @@ public class Enemy_Diamond : Enemy
                 //弾速が違う弾が混ざった射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_ChangeSpeedShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -231,11 +232,16 @@ public class Enemy_Diamond : Enemy
         //乱射
         for(int i=0; i < 20; ++i)
         {
+            //自機の位置に弾を生成
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
             Vector3 power = new Vector3(2.0f, -5.0f, 0);
+
+            //ランダムな方向
             var dir = Random.insideUnitCircle.normalized;
 
+            //弾を発射
             bullet.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
 
             yield return new WaitForSeconds(0.2f);
@@ -257,9 +263,9 @@ public class Enemy_Diamond : Enemy
         if(n == 1)
             mode *= -1.0f;
 
-        for(int i = 0; i<= 25; ++i)
+        for(int i = 0; i <= 25; ++i)
         {
-            this.transform.position += Time.deltaTime * new Vector3(0, -10.0f * mode, 0);
+            this.transform.position +=  new Vector3(0, -0.1f * mode, 0);
             yield return null;
         }
 
@@ -308,6 +314,30 @@ public class Enemy_Diamond : Enemy
         bullet_l3.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(1);
+        yield return null;
+    }
+
+    private IEnumerator _ChangeSpeedShoot()
+    {
+        for(int i = 0; i < 5; ++i)
+        {
+            //5から9の乱数を生成
+            int rnd = Random.Range(5,10);
+
+            //弾を敵の位置に生成
+            Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+            EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+
+            //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
+            Vector3 target = _player.transform.position;
+            Vector3 power = target - this.transform.position;
+
+            //弾を発射 正規化した位置ベクトルに乱数を乗算して速さを調整．
+            bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * rnd, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(0.4f);
+        }
+
         yield return null;
     }
 }

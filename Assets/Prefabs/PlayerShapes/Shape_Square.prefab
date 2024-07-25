@@ -51,4 +51,5 @@ MonoBehaviour:
   _destroyField: {fileID: 8351723773996737352, guid: 3f2df12ca171f9d488ae031c030831de, type: 3}
   _specialSkillCost: 300
   _grazeColliderSize: {x: 1.5, y: 1.5, z: 1.5}
+  _primarySquareBullet: {fileID: -287504730934293958, guid: 44619cc308420a94a9c80b35f391ab0f, type: 3}
   _squareSpecialBullet: {fileID: 5311180886255428088, guid: 1575eec7556fd9a459d7e297844031b8, type: 3}

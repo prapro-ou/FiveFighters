@@ -5,7 +5,11 @@ using UnityEngine;
 public class Shape_Square : PlayerShape
 {
     private Player _player;
+
     private GameObject _squareDestroyField;
+
+    [SerializeField]
+    private PrimarySquareBullet _primarySquareBullet;
 
     [SerializeField]
     private GameObject _squareSpecialBullet;
@@ -25,7 +29,11 @@ public class Shape_Square : PlayerShape
 
     public override void PrimaryAttack()
     {
-        Debug.Log($"squ");
+        Vector3 vec = _player.transform.position;
+        
+        PlayerBullet bullet = Instantiate(_primarySquareBullet, vec, Quaternion.identity);
+
+        bullet.DamageValue = PrimaryAttackDamage;
     }
 
     public override void SpecialSkill()

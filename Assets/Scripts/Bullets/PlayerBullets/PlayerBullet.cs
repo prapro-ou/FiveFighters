@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    [SerializeField]
     private int _damageValue;
 
     public int DamageValue
@@ -13,10 +12,11 @@ public class PlayerBullet : MonoBehaviour
         set {_damageValue = value;}
     }
 
+ 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame

@@ -7,12 +7,22 @@ public class DamageCollider : MonoBehaviour
     [SerializeField]
     private Player _player;
 
+    private SpriteRenderer _spriteRenderer;
+
     private bool _inInvincible;
 
     public bool InInvincible
     {
         get {return _inInvincible;}
         set {_inInvincible = value;}
+    }
+
+    private int _invincibleNumber;
+
+    public int InvincibleNumber
+    {
+        get {return _invincibleNumber;}
+        set {_invincibleNumber = value;}
     }
 
     [SerializeField]
@@ -37,6 +47,9 @@ public class DamageCollider : MonoBehaviour
     void Start()
     {
         InInvincible = false;
+        InvincibleNumber = 0;
+
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -65,10 +78,30 @@ public class DamageCollider : MonoBehaviour
 
     private IEnumerator StartInvincible(float time)
     {
+        Debug.Log("InInvincible");
         InInvincible = true;
 
-        yield return new WaitForSeconds(time);
+        InvincibleNumber += 1;
 
-        InInvincible = false;
+        for(float i = 0; i <= time; i += 0.1f)
+        {
+            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 0.5f);
+            yield return new WaitForSeconds(0.05f);
+
+            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1f);
+            yield return new WaitForSeconds(0.05f);
+        }
+        
+        if(InvincibleNumber <= 1)
+        {
+            InInvincible = false;
+            InvincibleNumber -= 1;
+            Debug.Log("Not InInvincible");
+        }
+        else
+        {
+            InvincibleNumber -= 1;
+            Debug.Log("InvincibleCoroutine ends but other is running");
+        }
     }
 }

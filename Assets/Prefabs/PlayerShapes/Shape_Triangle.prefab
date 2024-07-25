@@ -45,9 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mySprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  _myColor: {r: 0.8726415, g: 0.67753124, b: 0, a: 1}
+  _myColor: {r: 1, g: 0.7607843, b: 0.003921569, a: 1}
   _primaryAttackCost: 50
   _primaryAttackDamage: 2
   _destroyField: {fileID: 8351723773996737352, guid: 7dca6a5add47f924496ddc68f1536db7, type: 3}
   _specialSkillCost: 300
   _grazeColliderSize: {x: 1.5, y: 1.5, z: 1.5}
+  _smallTriangle: {fileID: 5805627911642357826, guid: 4f575201adea6d14ba1021554a47f0df, type: 3}
+  _smallTrianglePosition: 1
+  _smallTriangleGrazeCollider: {fileID: 6762370605632346006, guid: f9825ca18f264f84c839c47a97cfe438, type: 3}

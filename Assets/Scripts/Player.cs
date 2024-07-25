@@ -74,6 +74,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    private Shape_SmallTriangle _smallRightTriangle;
+
+    public Shape_SmallTriangle SmallRightTriangle
+    {
+        get {return _smallRightTriangle;}
+        set {_smallRightTriangle = value;}
+    }
+
+    private Shape_SmallTriangle _smallLeftTriangle;
+
+    public Shape_SmallTriangle SmallLeftTriangle
+    {
+        get {return _smallLeftTriangle;}
+        set {_smallLeftTriangle = value;}
+    }
+
     private Enemy _currentEnemy;
 
     public Enemy CurrentEnemy
@@ -353,6 +369,16 @@ public class Player : MonoBehaviour
     public void PrimaryAttack()
     {
         MyShape.PrimaryAttack();
+        
+        if (SmallRightTriangle != null)
+        {
+            SmallRightTriangle.PrimaryAttack();
+        }
+        if (SmallLeftTriangle != null)
+        {
+            SmallLeftTriangle.PrimaryAttack();
+        }
+
         PrimaryGrazeCount -= MyShape.PrimaryAttackCost;
     }
 

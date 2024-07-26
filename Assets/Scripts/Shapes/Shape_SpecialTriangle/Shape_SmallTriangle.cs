@@ -7,6 +7,8 @@ public class Shape_SmallTriangle : MonoBehaviour
     [SerializeField]
     private int _primaryAttackDamage;
 
+    [SerializeField]
+    private PrimaryTriangleSubBullet _primaryTriangleSubBullet;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,8 @@ public class Shape_SmallTriangle : MonoBehaviour
 
     public void PrimaryAttack()
     {
-        Debug.Log($"Shape_SmallTriangle.PrimaryAttack {(float)_primaryAttackDamage/10}");
+        PlayerBullet triangleSubBullet = Instantiate(_primaryTriangleSubBullet, this.transform.position, Quaternion.identity);
+        triangleSubBullet.DamageValue = _primaryAttackDamage/2;
+        Debug.Log($"Shape_SmallTriangle.PrimaryAttack {_primaryAttackDamage/2}");
     }
 }

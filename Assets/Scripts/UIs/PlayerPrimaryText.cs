@@ -26,6 +26,6 @@ public class PlayerPrimaryText : MonoBehaviour
 
     public void UpdatePrimaryUI()
     {
-        _primaryText.text = _player.PrimaryGrazeCount + "/" + _player.MyShape.PrimaryAttackCost;
+        _primaryText.text = $"{_player.PrimaryGrazeCount}/{_player.MyShape.PrimaryAttackCost}";
     }
 }

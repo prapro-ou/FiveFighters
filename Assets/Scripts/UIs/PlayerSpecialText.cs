@@ -26,6 +26,6 @@ public class PlayerSpecialText : MonoBehaviour
 
     public void UpdateSpecialUI()
     {
-        _specialText.text = _player.SpecialGrazeCount + "/" + _player.MyShape.SpecialSkillCost;
+        _specialText.text = $"{_player.SpecialGrazeCount}/{_player.MyShape.SpecialSkillCost}";
     }
 }

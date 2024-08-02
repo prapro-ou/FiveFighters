@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class Player : MonoBehaviour
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
 
     private PlayerSpecialGrazeBar _playerSpecialGrazeBar;
+
+    private PlayerHpText _playerHpText;
+
+    private PlayerPrimaryText _playerPrimaryGrazeText;
+
+    private PlayerSpecialText _playerSpecialGrazeText;
+
+    private TMP_Text _moneyText;
 
     private RectTransform _playArea;
 
@@ -54,6 +63,12 @@ public class Player : MonoBehaviour
                 _playerHpBar = GameObject.Find("PlayerHpBar").GetComponent<PlayerHpBar>();
             }
             _playerHpBar.UpdateHp();
+
+            if(_playerHpText == null)
+            {
+                _playerHpText = GameObject.Find("PlayerHpText").GetComponent<PlayerHpText>();
+            }
+            _playerHpText.UpdateHpUI();
 
             if(_hitPoint <= 0)
             {
@@ -171,13 +186,22 @@ public class Player : MonoBehaviour
         set {_isDead = value;}
     }    
 
-
     private int _money = 0;
 
     public int Money
     {
         get {return _money;}
-        set {_money = value;}
+        set
+        {
+            _money = value;
+
+            if(_moneyText == null)
+            {
+                _moneyText = GameObject.Find("MoneyText").GetComponent<TMP_Text>();
+            }
+
+            _moneyText.SetText($"{_money}");
+        }
     }
 
     private float _powerMultiplier;
@@ -215,7 +239,13 @@ public class Player : MonoBehaviour
             {
                 _playerPrimaryGrazeBar = GameObject.Find("PlayerPrimaryGrazeBar").GetComponent<PlayerPrimaryGrazeBar>();
             }
-            _playerPrimaryGrazeBar.UpdatePrimaryGrazeCount();  
+            _playerPrimaryGrazeBar.UpdatePrimaryGrazeCount();
+
+            if(_playerPrimaryGrazeText == null)
+            {
+                _playerPrimaryGrazeText = GameObject.Find("PlayerPrimaryGrazeText").GetComponent<PlayerPrimaryText>();
+            }
+            _playerPrimaryGrazeText.UpdatePrimaryUI();
         }
     }
 
@@ -226,13 +256,19 @@ public class Player : MonoBehaviour
         get {return _specialGrazeCount;}
         set
         {
-            _specialGrazeCount = value;
+            _specialGrazeCount = Mathf.Clamp(value, 0, MyShape.SpecialSkillCost);
 
             if(_playerSpecialGrazeBar == null)
             {
                 _playerSpecialGrazeBar = GameObject.Find("PlayerSpecialGrazeBar").GetComponent<PlayerSpecialGrazeBar>();
             }
             _playerSpecialGrazeBar.UpdateSpecialGrazeCount();
+
+            if(_playerSpecialGrazeText == null)
+            {
+                _playerSpecialGrazeText = GameObject.Find("PlayerSpecialGrazeText").GetComponent<PlayerSpecialText>();
+            }
+            _playerSpecialGrazeText.UpdateSpecialUI();
         }
     }
 

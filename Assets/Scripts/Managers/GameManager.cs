@@ -132,6 +132,8 @@ public class GameManager : MonoBehaviour
     {
         _ShiftObjects(0);
 
+        _player.AddMoney(3);
+
         StartCoroutine(_OpenTransition());
     }
 

@@ -241,11 +241,11 @@ public class Player : MonoBehaviour
             }
             _playerPrimaryGrazeBar.UpdatePrimaryGrazeCount();
 
-            if(_playerPrimaryGrazeText == null)
-            {
-                _playerPrimaryGrazeText = GameObject.Find("PlayerPrimaryGrazeText").GetComponent<PlayerPrimaryText>();
-            }
-            _playerPrimaryGrazeText.UpdatePrimaryUI();
+            // if(_playerPrimaryGrazeText == null)
+            // {
+            //     _playerPrimaryGrazeText = GameObject.Find("PlayerPrimaryGrazeText").GetComponent<PlayerPrimaryText>();
+            // }
+            // _playerPrimaryGrazeText.UpdatePrimaryUI();
         }
     }
 

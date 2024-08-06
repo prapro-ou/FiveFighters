@@ -266,6 +266,12 @@ public class GameManager : MonoBehaviour
         Debug.Log($"DEBUG: Locked Enemy as {_enemies[_lockedEnemy]}");
     }
 
+    public void DEBUG_killEnemy()
+    {
+        CurrentEnemy.TakeDamage(1000000);
+        Debug.Log($"DEBUG: KillEnemy(HugeDamage)");
+    }
+
     private void _SpawnEnemy(Enemy enemy)
     {
         CurrentEnemy = Instantiate(enemy, _battleEnemyTransform.position, Quaternion.identity);

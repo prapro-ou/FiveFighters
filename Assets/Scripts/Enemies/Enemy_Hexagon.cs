@@ -79,7 +79,7 @@ public class Enemy_Hexagon : Enemy
                 {
                     int random = Random.Range(0, _remainingAttacks.Count);
 
-                    Debug.Log(_remainingAttacks[random]);
+                    Debug.Log($"EnemyAttack: {_remainingAttacks[random]}");
                     CurrentState = (HexagonState)System.Enum.GetValues(typeof(HexagonState)).GetValue(_remainingAttacks[random]);
                     _remainingAttacks.Remove(_remainingAttacks[random]);
 

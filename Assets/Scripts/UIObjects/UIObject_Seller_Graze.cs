@@ -80,8 +80,7 @@ public class UIObject_Seller_Graze : UIObject
 
     private void Test()
     {
-        Debug.Log("Use " + _buyCount + " money");
-        Debug.Log("PlayerMoney:" + _player.Money);
+        Debug.Log($"Use {_buyCount}, PlayerMoney: {_player.Money}");
     }
 
     private void _UpdateMoneyText()

@@ -80,9 +80,7 @@ public class UIObject_Seller_Power : UIObject
 
     private void Test()
     {
-        Debug.Log("Use:" + _buyCount + " money");
-        Debug.Log("PlayerMoney:" + _player.Money);
-        Debug.Log("PlayerPowerMultiplier:" +  _player.PowerMultiplier);
+        Debug.Log($"Use {_buyCount}, PlayerMoney: {_player.Money}, PlayerPowerMultiplier: {_player.PowerMultiplier}");
     }
 
     private void _UpdateMoneyText()

@@ -582,7 +582,7 @@ public class Player : MonoBehaviour
         PrimaryGrazeCount = 0;
         SpecialGrazeCount = 0;
 
-        Destroy(SmallLeftTriangle.gameObject);
-        Destroy(SmallRightTriangle.gameObject);
+        if(SmallLeftTriangle != null) Destroy(SmallLeftTriangle.gameObject);
+        if(SmallRightTriangle != null) Destroy(SmallRightTriangle.gameObject);
     }
 }

@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class Shape_SmallTriangle : MonoBehaviour
 {
+    private Player _player;
+
     [SerializeField]
     private int _primaryAttackDamage;
 
     [SerializeField]
     private PrimaryTriangleSubBullet _primaryTriangleSubBullet;
 
+    private bool _isRight;
+
+    public bool IsRight
+    {
+        get {return _isRight;}
+        set {_isRight = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        IsRight = false;
     }
 
     // Update is called once per frame
@@ -24,6 +35,15 @@ public class Shape_SmallTriangle : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D collider)
     {
+        if(!IsRight)
+        {
+            _player.SmallLeftTriangle = null;
+        }
+        else
+        {
+            _player.SmallRightTriangle = null;
+        }
+        
         Destroy(this.gameObject);
     }
 

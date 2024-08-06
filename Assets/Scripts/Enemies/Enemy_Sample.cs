@@ -79,7 +79,7 @@ public class Enemy_Sample : Enemy
                 {
                     int random = Random.Range(0, _remainingAttacks.Count);
 
-                    Debug.Log(_remainingAttacks[random]);
+                    Debug.Log($"EnemyAttack: {_remainingAttacks[random]}");
                     CurrentState = (SampleState)System.Enum.GetValues(typeof(SampleState)).GetValue(_remainingAttacks[random]);
                     _remainingAttacks.Remove(_remainingAttacks[random]);
 
@@ -112,19 +112,19 @@ public class Enemy_Sample : Enemy
     //攻撃処理はその上に書く。メソッド内で”yield return StartCoroutine(_METHOD());”とすることで、そのメソッドが終わるまで待機ができる。
     private IEnumerator _SingleShoot()
     {
-        Debug.Log("Start SingleShot");
+        // Debug.Log("Start SingleShot");
 
         //ここでIEnumerator型のメソッドをyield return StartCoroutine(...)で呼ぶ。
         yield return StartCoroutine(_ShootCircleBullet());
 
         yield return new WaitForSeconds(1);
 
-        Debug.Log("Finish SingleShot");
+        // Debug.Log("Finish SingleShot");
     }
 
     private IEnumerator _BurstShoot()
     {
-        Debug.Log("Start TripleShot");
+        // Debug.Log("Start TripleShot");
 
         yield return StartCoroutine(_ShootCircleBullet());
 
@@ -140,7 +140,7 @@ public class Enemy_Sample : Enemy
 
         yield return new WaitForSeconds(1);
 
-        Debug.Log("Finish TripleShot");
+        // Debug.Log("Finish TripleShot");
     }
 
     private IEnumerator _ShootCircleBullet()

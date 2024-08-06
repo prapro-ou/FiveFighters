@@ -326,7 +326,7 @@ public class Player : MonoBehaviour
         //コンテキストから入力を読み取り正規化
         Direction = context.ReadValue<Vector2>();
         Direction.Normalize();
-        Debug.Log(Direction);
+        // Debug.Log(Direction);
     }
 
     public void OnSlowDown(InputAction.CallbackContext context)
@@ -481,7 +481,7 @@ public class Player : MonoBehaviour
     {
         if (SpecialGrazeCount < MyShape.SpecialSkillCost)
         {
-            Debug.Log($"SpecialGrazeCount < MyShape.SpecialSkillCost");
+            Debug.Log($"Player does not have enough SPGrazeCount");
             return;
         }
 

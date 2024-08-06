@@ -575,4 +575,14 @@ public class Player : MonoBehaviour
     {
         _uICollider.TouchingUI.InvokeUIAction();
     }
+
+    public void ResetStatusInShop()
+    {
+        HitPoint = MaxHitPoint;
+        PrimaryGrazeCount = 0;
+        SpecialGrazeCount = 0;
+
+        if(SmallLeftTriangle != null) Destroy(SmallLeftTriangle.gameObject);
+        if(SmallRightTriangle != null) Destroy(SmallRightTriangle.gameObject);
+    }
 }

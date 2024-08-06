@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator ShiftToShop()
     {
         Debug.Log("ShiftToShop");
+        _player.ResetStatusInShop();
 
         yield return StartCoroutine(_CloseTransition());
 

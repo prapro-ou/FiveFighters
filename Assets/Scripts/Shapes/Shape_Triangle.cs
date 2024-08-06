@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shape_Triangle : PlayerShape
 {
-    private Player _player;    
+    private Player _player;
     private GameObject _triangleDestroyField;
     
     [SerializeField]

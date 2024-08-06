@@ -16,8 +16,6 @@ public class Shape_Triangle : PlayerShape
     [SerializeField]
     private float _smallTrianglePosition;
 
-    private List<GameObject> activeTriangles = new List<GameObject>();
-
     [SerializeField]
     private PrimaryTriangleBullet _primaryTriangleBullet;
 
@@ -47,13 +45,7 @@ public class Shape_Triangle : PlayerShape
     }
 
     public override void SpecialSkill()
-    {
-        if (activeTriangles.Count >= 3)
-        {
-            Debug.Log("Max SmallTriangle.");
-            return;
-        }
-              
+    {         
         Vector3 rightPosition = new Vector3(_player.transform.position.x + _smallTrianglePosition, _player.transform.position.y + _smallTrianglePosition);
         Vector3 leftPosition  = new Vector3(_player.transform.position.x - _smallTrianglePosition, _player.transform.position.y + _smallTrianglePosition);
 

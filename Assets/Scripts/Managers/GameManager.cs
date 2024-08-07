@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
             case 0:
             {
                 //カメラの移動
-                _cameraManager.MoveToPointImmediately(_shopCameraTransform.position);
+                _cameraManager.MoveToPoint(_shopCameraTransform.position);
 
                 //PlayerのPlayAreaの設定
                 _player.PlayArea = _shopPlayArea;
@@ -219,7 +219,7 @@ public class GameManager : MonoBehaviour
             case 1:
             {
                 //カメラの移動
-                _cameraManager.MoveToPointImmediately(_battleCameraTransform.position);
+                _cameraManager.MoveToPoint(_battleCameraTransform.position);
 
                 //PlayerのPlayAreaの設定
                 _player.PlayArea = _battlePlayArea;
@@ -295,13 +295,16 @@ public class GameManager : MonoBehaviour
         _inputManager.SwitchCurrentActionMap("UI");
 
         //カメラを敵に寄せる
-        yield return StartCoroutine(_cameraManager.MoveToPoint(CurrentEnemy.transform.position));
-        
-        yield return new WaitForSeconds(1f);
+        _cameraManager.MoveToPoint(CurrentEnemy.transform.position);
+        _cameraManager.SetSize(3);
+
+        //消滅演出待ち
+        yield return new WaitForSeconds(3f);
 
         //カメラを戻す
-        yield return StartCoroutine(_cameraManager.MoveToPoint(new Vector3(0, 0, -10)));
-
+        StartCoroutine(_cameraManager.SetSizeOnCurve(5));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
+        
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
         // Destroy(text, 10f);
@@ -338,12 +341,14 @@ public class GameManager : MonoBehaviour
         _inputManager.SwitchCurrentActionMap("UI");
 
         //カメラを敵に寄せる
-        yield return StartCoroutine(_cameraManager.MoveToPoint(_player.transform.position));
+        _cameraManager.MoveToPoint(_player.transform.position);
+        _cameraManager.SetSize(3);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         //カメラを戻す
-        yield return StartCoroutine(_cameraManager.MoveToPoint(new Vector3(0, 0, -10)));
+        StartCoroutine(_cameraManager.SetSizeOnCurve(5));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);

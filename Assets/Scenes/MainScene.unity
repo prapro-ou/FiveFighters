@@ -3625,6 +3625,7 @@ MonoBehaviour:
   _clearResultButton: {fileID: 1262787156}
   _deathResultCanvas: {fileID: 1734318035}
   _deathResultButton: {fileID: 309185182}
+  _uICanvas: {fileID: 1594103087}
 --- !u!1 &589313740
 GameObject:
   m_ObjectHideFlags: 0
@@ -9664,6 +9665,7 @@ MonoBehaviour:
   _transitionObject: {fileID: 282819266}
   _whiteFlashImage: {fileID: 1976041482}
   _redFlashImage: {fileID: 993967501}
+  _transitionAnimator: {fileID: 282819268}
   _curve:
     serializedVersion: 2
     m_Curve:

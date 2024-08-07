@@ -102,6 +102,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _deathResultButton;
 
+    [SerializeField]
+    private Canvas _uICanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -269,6 +272,8 @@ public class GameManager : MonoBehaviour
         //カメラを敵に寄せる
         _cameraManager.MoveToPoint(CurrentEnemy.transform.position);
         _cameraManager.SetSize(3);
+
+        _uICanvas.enabled = false;
         
         //フラッシュ
         StartCoroutine(_overlayEffectManager.PlayWhiteFlash());
@@ -279,6 +284,8 @@ public class GameManager : MonoBehaviour
         //カメラを戻す
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
+
+        _uICanvas.enabled = true;
         
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
@@ -319,6 +326,8 @@ public class GameManager : MonoBehaviour
         _cameraManager.MoveToPoint(_player.transform.position);
         _cameraManager.SetSize(3);
 
+        _uICanvas.enabled = false;
+
         //フラッシュ
         StartCoroutine(_overlayEffectManager.PlayRedFlash());
 
@@ -327,6 +336,8 @@ public class GameManager : MonoBehaviour
         //カメラを戻す
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
+
+        _uICanvas.enabled = true;
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);

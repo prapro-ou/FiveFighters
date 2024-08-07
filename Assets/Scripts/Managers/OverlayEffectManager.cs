@@ -17,6 +17,7 @@ public class OverlayEffectManager : MonoBehaviour
     [SerializeField]
     private Image _redFlashImage;
 
+    [SerializeField]
     private Animator _transitionAnimator;
 
     [SerializeField]
@@ -26,7 +27,6 @@ public class OverlayEffectManager : MonoBehaviour
     void Start()
     {
         _transitionCanvas.SetActive(true);
-        _transitionAnimator = _transitionObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -37,6 +37,9 @@ public class OverlayEffectManager : MonoBehaviour
 
     public IEnumerator OpenTransition()
     {
+        //Delay
+        yield return new WaitForSeconds(0.1f);
+
         _transitionAnimator.SetBool("Close", false);
 
         AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);

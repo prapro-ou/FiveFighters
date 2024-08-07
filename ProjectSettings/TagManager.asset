@@ -44,9 +44,39 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Seller
+  - name: Background
+    uniqueID: 2321669555
+    locked: 0
+  - name: PlayArea
+    uniqueID: 3008793649
+    locked: 0
+  - name: PlayerBullet
+    uniqueID: 3126535715
+    locked: 0
+  - name: Enemy
+    uniqueID: 340137213
+    locked: 0
+  - name: PlayerEffect
+    uniqueID: 1919366451
+    locked: 0
+  - name: EnemyEffect
+    uniqueID: 3732045211
+    locked: 0
+  - name: EnemyBullet
+    uniqueID: 2681524431
+    locked: 0
+  - name: UIObject
     uniqueID: 3531560711
     locked: 0
   - name: Player
     uniqueID: 305734323
+    locked: 0
+  - name: EnemyUI
+    uniqueID: 1510093857
+    locked: 0
+  - name: PlayerUI
+    uniqueID: 293888683
+    locked: 0
+  - name: UI
+    uniqueID: 962696365
     locked: 0

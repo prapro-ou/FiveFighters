@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private CameraManager _cameraManager;
 
+    [SerializeField]
+    private OverlayEffectManager _overlayEffectManager;
+
     private Enemy _currentEnemy;
 
     public Enemy CurrentEnemy
@@ -82,14 +85,6 @@ public class GameManager : MonoBehaviour
     private Transform _battleEnemyTransform;
 
     [SerializeField]
-    private GameObject _transitionCanvas;
-
-    [SerializeField]
-    private GameObject _transitionObject;
-
-    private Animator _transitionAnimator;
-
-    [SerializeField]
     private GameObject _stageClearText;
 
     [SerializeField]
@@ -116,9 +111,6 @@ public class GameManager : MonoBehaviour
 
         _lockedEnemy = -1;
 
-        _transitionCanvas.SetActive(true);
-        _transitionAnimator = _transitionObject.GetComponent<Animator>();
-
         _FirstShiftToShop();
     }
 
@@ -134,7 +126,7 @@ public class GameManager : MonoBehaviour
 
         _player.AddMoney(3);
 
-        StartCoroutine(_OpenTransition());
+        StartCoroutine(_overlayEffectManager.OpenTransition());
     }
 
     public IEnumerator ShiftToShop()
@@ -142,11 +134,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("ShiftToShop");
         _player.ResetStatusInShop();
 
-        yield return StartCoroutine(_CloseTransition());
+        yield return StartCoroutine(_overlayEffectManager.CloseTransition());
 
         _ShiftObjects(0);
 
-        StartCoroutine(_OpenTransition());
+        StartCoroutine(_overlayEffectManager.OpenTransition());
     }
 
     public IEnumerator ShiftToBattle()
@@ -169,11 +161,11 @@ public class GameManager : MonoBehaviour
 
         Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
 
-        yield return StartCoroutine(_CloseTransition());
+        yield return StartCoroutine(_overlayEffectManager.CloseTransition());
 
         _ShiftObjects(1);
 
-        yield return StartCoroutine(_OpenTransition());
+        yield return StartCoroutine(_overlayEffectManager.OpenTransition());
 
         //敵の出現
         if(_lockedEnemy != -1) //DEBUG!!!!!!!!!!!!!!!
@@ -233,26 +225,6 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private IEnumerator _OpenTransition()
-    {
-        _transitionAnimator.SetBool("Close", false);
-
-        AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
-        float animationLength = animationState.length;
-
-        yield return new WaitForSeconds(animationLength);
-    }
-
-    private IEnumerator _CloseTransition()
-    {
-        _transitionAnimator.SetBool("Close", true);
-
-        AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
-        float animationLength = animationState.length;
-
-        yield return new WaitForSeconds(animationLength);
     }
 
     public void DEBUG_GoShop()
@@ -375,7 +347,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _LoadTitleAfterTransition()
     {
-        yield return StartCoroutine(_CloseTransition());
+        yield return StartCoroutine(_overlayEffectManager.CloseTransition());
 
         _sceneController.LoadNextScene(0);
     }

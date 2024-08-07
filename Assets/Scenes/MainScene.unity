@@ -6877,6 +6877,243 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _vibrateCurveX:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 8.308493
+      outSlope: 8.308493
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.11507057
+      value: 0.956063
+      inSlope: -3.98483
+      outSlope: -3.98483
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.14609888
+      value: 0.45097935
+      inSlope: -17.353184
+      outSlope: -17.353184
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.22433776
+      value: -0.9908235
+      inSlope: 1.4363279
+      outSlope: 1.4363279
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.30459306
+      value: 0.71868414
+      inSlope: -2.141016
+      outSlope: -2.141016
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3576052
+      value: -0.6375202
+      inSlope: -1.0416491
+      outSlope: -1.0416491
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6128144
+    - serializedVersion: 3
+      time: 0.48315698
+      value: 0.44381416
+      inSlope: 1.0582104
+      outSlope: 1.0582104
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.587469
+      value: -0.2338211
+      inSlope: -0.074151516
+      outSlope: -0.074151516
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.68714356
+      value: 0.39890635
+      inSlope: -1.6031384
+      outSlope: -1.6031384
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.7283277
+      value: 0.0054246187
+      inSlope: -4.6537514
+      outSlope: -4.6537514
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8213924
+      value: 0.028384238
+      inSlope: 0.036752664
+      outSlope: 0.036752664
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0001943
+      value: -0.0025843587
+      inSlope: -0.1732006
+      outSlope: -0.1732006
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _vibrateCurveY:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -8.0762005
+      outSlope: -8.0762005
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.082569346
+      value: -0.6668466
+      inSlope: 19.392212
+      outSlope: 19.392212
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.11667994
+      value: 0.9315969
+      inSlope: 3.8896198
+      outSlope: 3.8896198
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.16495775
+      value: -0.9551667
+      inSlope: -5.5669765
+      outSlope: -5.5669765
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.21963207
+      value: 0.5728402
+      inSlope: 4.65213
+      outSlope: 4.65213
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.26936692
+      value: -0.35437495
+      inSlope: -1.0416491
+      outSlope: -1.0416491
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6128144
+    - serializedVersion: 3
+      time: 0.36495683
+      value: 0.37958044
+      inSlope: -0.6910672
+      outSlope: -0.6910672
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4537868
+      value: -0.42524594
+      inSlope: -1.7220619
+      outSlope: -1.7220619
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5781306
+      value: 0.27309114
+      inSlope: 0.32473373
+      outSlope: 0.32473373
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6747534
+      value: -0.20680654
+      inSlope: 0.1340437
+      outSlope: 0.1340437
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.73919195
+      value: 0.13051617
+      inSlope: 1.5138764
+      outSlope: 1.5138764
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8182796
+      value: -0.044033974
+      inSlope: -0.989597
+      outSlope: -0.989597
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0001943
+      value: -0.0025843587
+      inSlope: 0.22785194
+      outSlope: 0.22785194
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1169924642
 Transform:
   m_ObjectHideFlags: 0

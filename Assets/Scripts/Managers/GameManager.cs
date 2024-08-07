@@ -278,6 +278,9 @@ public class GameManager : MonoBehaviour
         //フラッシュ
         StartCoroutine(_overlayEffectManager.PlayWhiteFlash());
 
+        //振動
+        StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
+
         //消滅演出待ち
         yield return new WaitForSeconds(3f);
 
@@ -330,6 +333,9 @@ public class GameManager : MonoBehaviour
 
         //フラッシュ
         StartCoroutine(_overlayEffectManager.PlayRedFlash());
+
+        //振動
+        StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
 
         yield return new WaitForSeconds(3f);
 

@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameManager _gameManager;
 
+    [SerializeField]
+    private CameraManager _cameraManager;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
@@ -361,6 +364,8 @@ public class Player : MonoBehaviour
     public void TakeDamage(int value)
     {
         HitPoint -= value;
+
+        StartCoroutine(_cameraManager.Vibrate(0.2f, 0.1f));
         
         Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
     }

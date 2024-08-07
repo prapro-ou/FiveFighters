@@ -13,6 +13,12 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private AnimationCurve _curve;
 
+    [SerializeField]
+    private AnimationCurve _vibrateCurveX;
+
+    [SerializeField]
+    private AnimationCurve _vibrateCurveY;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,12 +31,12 @@ public class CameraManager : MonoBehaviour
         
     }
 
-    public void MoveToPointImmediately(Vector3 endPoint)
+    public void MoveToPoint(Vector3 endPoint)
     {
         _cameraTransform.position = new Vector3(endPoint.x, endPoint.y, _cameraTransform.position.z);
     }
 
-    public IEnumerator MoveToPoint(Vector3 endPoint)
+    public IEnumerator MoveToPointOnCurve(Vector3 endPoint)
     {
         Vector3 startPoint = _cameraTransform.position;
 
@@ -41,5 +47,39 @@ public class CameraManager : MonoBehaviour
             _cameraTransform.position = lerpVec3;
             yield return null;
         }
+    }
+
+    public void SetSize(float size)
+    {
+        _camera.orthographicSize = size;
+    }
+    public IEnumerator SetSizeOnCurve(float endSize)
+    {
+        float startSize = _camera.orthographicSize;
+        float lerpSize = 0f;
+
+        for(float i = 0; i <= 1; i += Time.deltaTime)
+        {
+            lerpSize = Mathf.Lerp(startSize, endSize, _curve.Evaluate(i));
+            _camera.orthographicSize = lerpSize;
+            yield return null;
+        }
+    }
+
+    public IEnumerator Vibrate(float duration, float power)
+    {
+        Vector3 startPosition = _camera.transform.position;
+
+        Vector3 nextPosition = startPosition;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            nextPosition.x = startPosition.x + (_vibrateCurveX.Evaluate(i / duration) * power);
+            nextPosition.y = startPosition.y + (_vibrateCurveY.Evaluate(i / duration) * power);
+            _camera.transform.position = nextPosition;
+            yield return null;
+        }
+
+        _camera.transform.position = startPosition;
     }
 }

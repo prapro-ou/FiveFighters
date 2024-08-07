@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private CameraManager _cameraManager;
 
+    [SerializeField]
+    private OverlayManager _overlayManager;
+
     private Enemy _currentEnemy;
 
     public Enemy CurrentEnemy
@@ -82,14 +85,6 @@ public class GameManager : MonoBehaviour
     private Transform _battleEnemyTransform;
 
     [SerializeField]
-    private GameObject _transitionCanvas;
-
-    [SerializeField]
-    private GameObject _transitionObject;
-
-    private Animator _transitionAnimator;
-
-    [SerializeField]
     private GameObject _stageClearText;
 
     [SerializeField]
@@ -107,6 +102,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _deathResultButton;
 
+    [SerializeField]
+    private Canvas _uICanvas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -115,9 +113,6 @@ public class GameManager : MonoBehaviour
         IsRunningShift = false;
 
         _lockedEnemy = -1;
-
-        _transitionCanvas.SetActive(true);
-        _transitionAnimator = _transitionObject.GetComponent<Animator>();
 
         _FirstShiftToShop();
     }
@@ -134,7 +129,7 @@ public class GameManager : MonoBehaviour
 
         _player.AddMoney(3);
 
-        StartCoroutine(_OpenTransition());
+        StartCoroutine(_overlayManager.OpenTransition());
     }
 
     public IEnumerator ShiftToShop()
@@ -142,11 +137,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("ShiftToShop");
         _player.ResetStatusInShop();
 
-        yield return StartCoroutine(_CloseTransition());
+        yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _ShiftObjects(0);
 
-        StartCoroutine(_OpenTransition());
+        StartCoroutine(_overlayManager.OpenTransition());
     }
 
     public IEnumerator ShiftToBattle()
@@ -169,11 +164,11 @@ public class GameManager : MonoBehaviour
 
         Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
 
-        yield return StartCoroutine(_CloseTransition());
+        yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _ShiftObjects(1);
 
-        yield return StartCoroutine(_OpenTransition());
+        yield return StartCoroutine(_overlayManager.OpenTransition());
 
         //敵の出現
         if(_lockedEnemy != -1) //DEBUG!!!!!!!!!!!!!!!
@@ -203,7 +198,7 @@ public class GameManager : MonoBehaviour
             case 0:
             {
                 //カメラの移動
-                _cameraManager.MoveToPointImmediately(_shopCameraTransform.position);
+                _cameraManager.MoveToPoint(_shopCameraTransform.position);
 
                 //PlayerのPlayAreaの設定
                 _player.PlayArea = _shopPlayArea;
@@ -219,7 +214,7 @@ public class GameManager : MonoBehaviour
             case 1:
             {
                 //カメラの移動
-                _cameraManager.MoveToPointImmediately(_battleCameraTransform.position);
+                _cameraManager.MoveToPoint(_battleCameraTransform.position);
 
                 //PlayerのPlayAreaの設定
                 _player.PlayArea = _battlePlayArea;
@@ -233,26 +228,6 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
-    }
-
-    private IEnumerator _OpenTransition()
-    {
-        _transitionAnimator.SetBool("Close", false);
-
-        AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
-        float animationLength = animationState.length;
-
-        yield return new WaitForSeconds(animationLength);
-    }
-
-    private IEnumerator _CloseTransition()
-    {
-        _transitionAnimator.SetBool("Close", true);
-
-        AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
-        float animationLength = animationState.length;
-
-        yield return new WaitForSeconds(animationLength);
     }
 
     public void DEBUG_GoShop()
@@ -295,12 +270,24 @@ public class GameManager : MonoBehaviour
         _inputManager.SwitchCurrentActionMap("UI");
 
         //カメラを敵に寄せる
-        yield return StartCoroutine(_cameraManager.MoveToPoint(CurrentEnemy.transform.position));
+        _cameraManager.MoveToPoint(CurrentEnemy.transform.position);
+        _cameraManager.SetSize(3);
+
+        _overlayManager.DisappearUICanvas();
         
-        yield return new WaitForSeconds(1f);
+        //フラッシュ
+        StartCoroutine(_overlayManager.PlayWhiteFlash());
+
+        //振動
+        StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
+
+        //消滅演出待ち
+        yield return new WaitForSeconds(3f);
 
         //カメラを戻す
-        yield return StartCoroutine(_cameraManager.MoveToPoint(new Vector3(0, 0, -10)));
+        StartCoroutine(_overlayManager.AppearUICanvas(0.2f));
+        StartCoroutine(_cameraManager.SetSizeOnCurve(5));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
@@ -338,12 +325,23 @@ public class GameManager : MonoBehaviour
         _inputManager.SwitchCurrentActionMap("UI");
 
         //カメラを敵に寄せる
-        yield return StartCoroutine(_cameraManager.MoveToPoint(_player.transform.position));
+        _cameraManager.MoveToPoint(_player.transform.position);
+        _cameraManager.SetSize(3);
 
-        yield return new WaitForSeconds(1f);
+        _overlayManager.DisappearUICanvas();
+
+        //フラッシュ
+        StartCoroutine(_overlayManager.PlayRedFlash());
+
+        //振動
+        StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
+
+        yield return new WaitForSeconds(3f);
 
         //カメラを戻す
-        yield return StartCoroutine(_cameraManager.MoveToPoint(new Vector3(0, 0, -10)));
+        StartCoroutine(_overlayManager.AppearUICanvas(0.2f));
+        StartCoroutine(_cameraManager.SetSizeOnCurve(5));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);
@@ -370,7 +368,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _LoadTitleAfterTransition()
     {
-        yield return StartCoroutine(_CloseTransition());
+        yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _sceneController.LoadNextScene(0);
     }

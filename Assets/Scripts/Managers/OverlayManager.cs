@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OverlayEffectManager : MonoBehaviour
+public class OverlayManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _transitionCanvas;
@@ -19,6 +19,9 @@ public class OverlayEffectManager : MonoBehaviour
 
     [SerializeField]
     private Animator _transitionAnimator;
+
+    [SerializeField]
+    private Canvas _uICanvas;
 
     [SerializeField]
     private AnimationCurve _curve;
@@ -80,12 +83,31 @@ public class OverlayEffectManager : MonoBehaviour
         for(float i = 0; i <= 0.5f; i += Time.deltaTime)
         {
             color.a = Mathf.Lerp(0, 1, _curve.Evaluate(i * 2));
-            Debug.Log(color.a);
             _redFlashImage.color = color;
             yield return null;
         }
 
         color.a = 0;
         _redFlashImage.color = color;
+    }
+
+    public void DisappearUICanvas()
+    {
+        CanvasGroup canvasGroup = _uICanvas.GetComponent<CanvasGroup>();
+
+        canvasGroup.alpha = 0;
+    }
+
+    public IEnumerator AppearUICanvas(float duration)
+    {
+        CanvasGroup canvasGroup = _uICanvas.GetComponent<CanvasGroup>();
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            canvasGroup.alpha = Mathf.Lerp(1, 0, _curve.Evaluate(i / duration));
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1;
     }
 }

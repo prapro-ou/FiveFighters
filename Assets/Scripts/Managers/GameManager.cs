@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     private CameraManager _cameraManager;
 
     [SerializeField]
-    private OverlayEffectManager _overlayEffectManager;
+    private OverlayManager _overlayManager;
 
     private Enemy _currentEnemy;
 
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
 
         _player.AddMoney(3);
 
-        StartCoroutine(_overlayEffectManager.OpenTransition());
+        StartCoroutine(_overlayManager.OpenTransition());
     }
 
     public IEnumerator ShiftToShop()
@@ -137,11 +137,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("ShiftToShop");
         _player.ResetStatusInShop();
 
-        yield return StartCoroutine(_overlayEffectManager.CloseTransition());
+        yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _ShiftObjects(0);
 
-        StartCoroutine(_overlayEffectManager.OpenTransition());
+        StartCoroutine(_overlayManager.OpenTransition());
     }
 
     public IEnumerator ShiftToBattle()
@@ -164,11 +164,11 @@ public class GameManager : MonoBehaviour
 
         Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
 
-        yield return StartCoroutine(_overlayEffectManager.CloseTransition());
+        yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _ShiftObjects(1);
 
-        yield return StartCoroutine(_overlayEffectManager.OpenTransition());
+        yield return StartCoroutine(_overlayManager.OpenTransition());
 
         //敵の出現
         if(_lockedEnemy != -1) //DEBUG!!!!!!!!!!!!!!!
@@ -273,10 +273,10 @@ public class GameManager : MonoBehaviour
         _cameraManager.MoveToPoint(CurrentEnemy.transform.position);
         _cameraManager.SetSize(3);
 
-        _uICanvas.enabled = false;
+        _overlayManager.DisappearUICanvas();
         
         //フラッシュ
-        StartCoroutine(_overlayEffectManager.PlayWhiteFlash());
+        StartCoroutine(_overlayManager.PlayWhiteFlash());
 
         //振動
         StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
@@ -285,11 +285,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         //カメラを戻す
+        StartCoroutine(_overlayManager.AppearUICanvas(0.2f));
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
-        _uICanvas.enabled = true;
-        
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
         // Destroy(text, 10f);
@@ -329,10 +328,10 @@ public class GameManager : MonoBehaviour
         _cameraManager.MoveToPoint(_player.transform.position);
         _cameraManager.SetSize(3);
 
-        _uICanvas.enabled = false;
+        _overlayManager.DisappearUICanvas();
 
         //フラッシュ
-        StartCoroutine(_overlayEffectManager.PlayRedFlash());
+        StartCoroutine(_overlayManager.PlayRedFlash());
 
         //振動
         StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
@@ -340,10 +339,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         //カメラを戻す
+        StartCoroutine(_overlayManager.AppearUICanvas(0.2f));
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
-
-        _uICanvas.enabled = true;
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);
@@ -370,7 +368,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _LoadTitleAfterTransition()
     {
-        yield return StartCoroutine(_overlayEffectManager.CloseTransition());
+        yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _sceneController.LoadNextScene(0);
     }

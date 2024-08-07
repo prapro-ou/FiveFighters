@@ -3605,7 +3605,7 @@ MonoBehaviour:
   _eventSystem: {fileID: 469670610}
   _sceneController: {fileID: 516198109}
   _cameraManager: {fileID: 1169924641}
-  _overlayEffectManager: {fileID: 1627412660}
+  _overlayManager: {fileID: 1627412660}
   _enemies:
   - {fileID: -8352821498467316285, guid: bf23582edfd82a24fa1c0419dbd9f711, type: 3}
   - {fileID: 8178231971346529793, guid: 9aa55f5bac0c39e4185235f4f6fa828a, type: 3}
@@ -4568,6 +4568,7 @@ MonoBehaviour:
   _grazeCollider: {fileID: 907236232}
   _uICollider: {fileID: 1798907518}
   _gameManager: {fileID: 555237763}
+  _cameraManager: {fileID: 1169924641}
   _ownShapes:
   - {fileID: 1287317979}
   - {fileID: 1960416857}
@@ -9487,6 +9488,7 @@ GameObject:
   - component: {fileID: 1594103087}
   - component: {fileID: 1594103086}
   - component: {fileID: 1594103085}
+  - component: {fileID: 1594103089}
   m_Layer: 5
   m_Name: Canvas_UI
   m_TagString: Untagged
@@ -9580,6 +9582,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1594103089
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1594103084}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1597177704
 GameObject:
   m_ObjectHideFlags: 0
@@ -9880,7 +9894,7 @@ GameObject:
   - component: {fileID: 1627412661}
   - component: {fileID: 1627412660}
   m_Layer: 0
-  m_Name: OverlayEffectManager
+  m_Name: OverlayManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9903,6 +9917,7 @@ MonoBehaviour:
   _whiteFlashImage: {fileID: 1976041482}
   _redFlashImage: {fileID: 993967501}
   _transitionAnimator: {fileID: 282819268}
+  _uICanvas: {fileID: 1594103087}
   _curve:
     serializedVersion: 2
     m_Curve:

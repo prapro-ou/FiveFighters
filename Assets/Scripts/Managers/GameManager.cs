@@ -269,6 +269,9 @@ public class GameManager : MonoBehaviour
         //カメラを敵に寄せる
         _cameraManager.MoveToPoint(CurrentEnemy.transform.position);
         _cameraManager.SetSize(3);
+        
+        //フラッシュ
+        StartCoroutine(_overlayEffectManager.PlayWhiteFlash());
 
         //消滅演出待ち
         yield return new WaitForSeconds(3f);
@@ -315,6 +318,9 @@ public class GameManager : MonoBehaviour
         //カメラを敵に寄せる
         _cameraManager.MoveToPoint(_player.transform.position);
         _cameraManager.SetSize(3);
+
+        //フラッシュ
+        StartCoroutine(_overlayEffectManager.PlayRedFlash());
 
         yield return new WaitForSeconds(3f);
 

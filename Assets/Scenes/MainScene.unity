@@ -452,7 +452,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 80459205}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 250.43477}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3810,7 +3810,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!224 &590212347
 RectTransform:
@@ -9317,7 +9317,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 100
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1594103088
 RectTransform:
@@ -9662,6 +9662,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _transitionCanvas: {fileID: 590212343}
   _transitionObject: {fileID: 282819266}
+  _whiteFlashImage: {fileID: 1976041482}
+  _redFlashImage: {fileID: 993967501}
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.010365997
+      outSlope: -0.010365997
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.5167079
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.1971424
+      outSlope: -2.1971424
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09438437
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1627412661
 Transform:
   m_ObjectHideFlags: 0

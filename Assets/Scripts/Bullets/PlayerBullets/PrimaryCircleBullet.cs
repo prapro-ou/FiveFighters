@@ -11,6 +11,9 @@ public class PrimaryCircleBullet : PlayerBullet
 
     private Rigidbody2D rb;
 
+    [SerializeField]
+    private GameObject _circleEffectPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +25,11 @@ public class PrimaryCircleBullet : PlayerBullet
     void Update()
     {
        
+    }
+
+    public override void DestroyWithParticle()
+    {
+        Instantiate(_circleEffectPrefab, this.transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 }

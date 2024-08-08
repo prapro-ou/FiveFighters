@@ -169,6 +169,28 @@ public class Enemy_Diamond : Enemy
         }
     }
 
+    //出現したときに、StartAttackingよりも先に実行されるコルーチン。これが終了してからStartAttackingメソッドが実行される。
+    //登場したときの演出をこのメソッドに記述しよう。アニメーション自体はスクリプトで書かず、アニメーターコンポーネントで実装することもできる。
+    public override IEnumerator StartSpawnAnimation()
+    {
+        Debug.Log("StartSpawnAnimation");
+
+        yield return new WaitForSeconds(5); //Sample
+    }
+
+    //死亡したときに、GameManagerによって実行されるコルーチン。
+    //死亡したときの演出をこのメソッドに記述しよう。アニメーション自体はスクリプトで書かず、アニメーター(アニメーション)コンポーネントで実装することもできる。
+    public override IEnumerator StartDeathAnimation()
+    {
+        Debug.Log("StartDeathAnimation");
+
+        yield return new WaitForSeconds(2); //Sample
+
+        Destroy(this.gameObject);
+
+        yield return new WaitForSeconds(1); //Sample
+    }
+
     private IEnumerator _3VerticesShoot()
     {
         //直進させるための力

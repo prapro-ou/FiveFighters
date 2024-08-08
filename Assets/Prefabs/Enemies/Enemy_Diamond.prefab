@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4945120662982079540}
   - component: {fileID: 3522140364192102436}
-  - component: {fileID: 5229973225140476354}
+  - component: {fileID: -8792252088933982547}
   - component: {fileID: 8382845163705311989}
   - component: {fileID: 8178231971346529793}
   m_Layer: 11
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 340137213
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -87,8 +87,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &5229973225140476354
-BoxCollider2D:
+--- !u!60 &-8792252088933982547
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -116,7 +116,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -128,10 +128,14 @@ BoxCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.5}
-  m_EdgeRadius: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 0.25}
+      - {x: -0.5, y: 0}
+      - {x: 0, y: -0.25}
+      - {x: 0.5, y: 0}
+  m_UseDelaunayMesh: 0
 --- !u!50 &8382845163705311989
 Rigidbody2D:
   serializedVersion: 4
@@ -172,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHitPoint: 1000
-  _effectPrefab: {fileID: 5523554253423798234, guid: 849b7b989ceb2bf4f8517f9460008a12, type: 3}
+  _explodePrefab: {fileID: 0}
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _beamPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}
   _reduceBulletPrefab: {fileID: 1347029831895677856, guid: 0fd17d92bbf593b4a9071eabcbf4daeb, type: 3}

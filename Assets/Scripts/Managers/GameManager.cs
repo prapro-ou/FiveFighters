@@ -76,12 +76,6 @@ public class GameManager : MonoBehaviour
     private Transform _shopPlayerTransform;
 
     [SerializeField]
-    private RectTransform _battlePlayArea;
-
-    [SerializeField]
-    private RectTransform _shopPlayArea;
-
-    [SerializeField]
     private Transform _battleEnemyTransform;
 
     [SerializeField]
@@ -200,9 +194,6 @@ public class GameManager : MonoBehaviour
                 //カメラの移動
                 _cameraManager.MoveToPoint(_shopCameraTransform.position);
 
-                //PlayerのPlayAreaの設定
-                _player.PlayArea = _shopPlayArea;
-
                 //Playerの移動
                 _player.transform.position = _shopPlayerTransform.position;
 
@@ -215,9 +206,6 @@ public class GameManager : MonoBehaviour
             {
                 //カメラの移動
                 _cameraManager.MoveToPoint(_battleCameraTransform.position);
-
-                //PlayerのPlayAreaの設定
-                _player.PlayArea = _battlePlayArea;
 
                 //Playerの移動
                 _player.transform.position = _battlePlayerTransform.position;

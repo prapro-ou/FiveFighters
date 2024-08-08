@@ -6,6 +6,8 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
+    private Rigidbody2D _rigidbody;
+
     [SerializeField]
     private DamageCollider _damageCollider;
 
@@ -34,20 +36,6 @@ public class Player : MonoBehaviour
     private PlayerSpecialText _playerSpecialGrazeText;
 
     private TMP_Text _moneyText;
-
-    private RectTransform _playArea;
-
-    public RectTransform PlayArea
-    {
-        get {return _playArea;}
-        set
-        {
-            _playArea = value;
-            PlayArea.GetWorldCorners(_corners);
-        }
-    }
-
-    private Vector3[] _corners = new Vector3[4];
 
     [SerializeField]
     private List<PlayerShape> _ownShapes;
@@ -289,6 +277,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _rigidbody = GetComponent<Rigidbody2D>();
+
         MyShape = _ownShapes[0];
 
         PrimaryGrazeCount = 0;
@@ -312,6 +302,11 @@ public class Player : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+
+    }
+
+    void FixedUpdate()
     {
         if(IsDashing) {return;}
 
@@ -346,19 +341,12 @@ public class Player : MonoBehaviour
         //Directionから次の位置に移動
         if(IsSlowingDown == false)
         {
-            transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime));
+            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (_speed * Time.fixedDeltaTime)));
         }
         else
         {
-            transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime * _slowDownRate)); 
+            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (_speed * Time.fixedDeltaTime * _slowDownRate))); 
         }
-        // transform.position = transform.position + ((Vector3)Direction * (_speed * Time.deltaTime * (IsSlowingDown ? _slowDownRate : 1)));
-
-        //移動範囲を制限
-        float clampedX = Mathf.Clamp(transform.position.x, _corners[0].x, _corners[2].x);
-        float clampedY = Mathf.Clamp(transform.position.y, _corners[0].y, _corners[2].y);
-
-        transform.position = new Vector3(clampedX, clampedY, transform.position.z);
     }
 
     public void TakeDamage(int value)
@@ -385,7 +373,7 @@ public class Player : MonoBehaviour
 
         for(float i = 0f; i < DashTime; i += Time.deltaTime)
         {
-            transform.position += (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.deltaTime * DashSpeed);
+            _rigidbody.MovePosition(transform.position + (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.deltaTime * DashSpeed));
             yield return null;
         }
 

@@ -18,8 +18,11 @@ public class EnemyReduceGrazeCountBullet : EnemyBullet
         
     }
 
-    void OnTriggerEnter2D(Collider2D colider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        _player.PrimaryGrazeCount -= 20;
+        if(collider.gameObject.tag == "DamageCollider")
+        {
+            _player.SpecialGrazeCount -= 100;
+        }
     }
 }

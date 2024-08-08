@@ -40,7 +40,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject _effectPrefab;
+    private GameObject _explodePrefab;
 
     void Awake()
     {
@@ -68,10 +68,11 @@ public abstract class Enemy : MonoBehaviour
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
         if(bullet != null)
         {
-            Vector3 pos = new Vector3(bullet.transform.position.x, bullet.transform.position.y, bullet.transform.position.z);
-            MakeDamageParticle(pos);
+            //Vector3 pos = new Vector3(bullet.transform.position.x, bullet.transform.position.y, bullet.transform.position.z);
+            //MakeDamageParticle(pos);
+            bullet.DestroyWithParticle();
             TakeDamage(bullet.DamageValue);
-            Destroy(bullet.gameObject);
+            //Destroy(bullet.gameObject);
         }
     }
 
@@ -82,7 +83,7 @@ public abstract class Enemy : MonoBehaviour
 
     public void MakeDamageParticle(Vector3 pos)
     {
-        Instantiate(_effectPrefab, pos, Quaternion.identity);
+        Instantiate(_explodePrefab, pos, Quaternion.identity);
     }
 
     public abstract void StartAttacking();

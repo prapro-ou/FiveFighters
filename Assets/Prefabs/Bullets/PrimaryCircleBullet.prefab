@@ -162,3 +162,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vec: {x: 0, y: 5}
+  _circleEffectPrefab: {fileID: 5523554253423798234, guid: 849b7b989ceb2bf4f8517f9460008a12, type: 3}

@@ -18,6 +18,9 @@ public class PrimarySquareBullet : PlayerBullet
 
     private Rigidbody2D rb;
 
+    [SerializeField]
+    private GameObject _squareEffectPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,5 +41,11 @@ public class PrimarySquareBullet : PlayerBullet
     void Update()
     {
        
+    }
+
+    public override void DestroyWithParticle()
+    {
+        Instantiate(_squareEffectPrefab, this.transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 }

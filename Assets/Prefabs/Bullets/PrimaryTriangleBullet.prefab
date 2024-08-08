@@ -162,3 +162,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vec: {x: 1, y: 1}
+  _triangleEffectPrefab: {fileID: 5523554253423798234, guid: ac1ce530c72a12d448141143e7024894, type: 3}

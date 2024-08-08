@@ -158,7 +158,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack7:
-                //弾速が違う弾が混ざった射撃を5発 1発ごとにホーミング
+                //弾速が違う弾が混ざった射撃を10発 1発ごとにホーミング
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_ChangeSpeedShoot());
@@ -266,8 +266,29 @@ public class Enemy_Diamond : Enemy
         Vector3 target = _player.transform.position;
         Vector3 power = target - this.transform.position;
 
+        //生成した弾を点滅させる
+        yield return StartCoroutine(_Flashing(bullet));
+
         //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
         bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 8.0f, ForceMode2D.Impulse);
+
+        yield return null;
+    }
+
+    private IEnumerator _Flashing(EnemyBullet bullet)
+    {
+        var v = bullet.GetComponent<SpriteRenderer>();
+
+        //0.2秒おきにSpriteRendererの有効・無効を切り替えて点滅させる
+        for(int i = 0; i < 15; i++)
+        {
+            if(i % 2 == 1)
+                v.enabled = false;
+            else
+                v.enabled = true;
+
+            yield return new WaitForSeconds(0.2f);
+        }
 
         yield return null;
     }
@@ -277,7 +298,7 @@ public class Enemy_Diamond : Enemy
         //攻撃開始時点での敵の位置を保存
         Vector3 startPos = this.transform.position;
 
-        //画面中央に移動．今のままだと瞬間移動する．
+        //画面中央に移動
         yield return StartCoroutine(_Move(0));
         yield return new WaitForSeconds(1.5f);
 
@@ -328,8 +349,8 @@ public class Enemy_Diamond : Enemy
     {
         //各方向 c(直進) r(右) l(左)へ向かう力
         Vector3 power_c = new Vector3(0, -5.0f, 0);
-        Vector3 power_r = new Vector3(2.0f, -5.0f, 0);
-        Vector3 power_l = new Vector3(-2.0f, -5.0f, 0);
+        Vector3 power_r = new Vector3(4.0f, -5.0f, 0);
+        Vector3 power_l = new Vector3(-4.0f, -5.0f, 0);
 
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
 
@@ -371,7 +392,7 @@ public class Enemy_Diamond : Enemy
 
     private IEnumerator _ChangeSpeedShoot()
     {
-        for(int i = 0; i < 5; ++i)
+        for(int i = 0; i < 10; ++i)
         {
             //5から9の乱数を生成
             int rnd = Random.Range(5,10);

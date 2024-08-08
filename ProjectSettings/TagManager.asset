@@ -7,6 +7,8 @@ TagManager:
   - EnemyCircleBullet
   - Enemy
   - EnemyBullet
+  - GrazeCollider
+  - DamageCollider
   layers:
   - Default
   - TransparentFX
@@ -26,8 +28,8 @@ TagManager:
   - SpecialCircleBullet
   - SpecialCircleExplode
   - PermanentDestroyField
-  - 
-  - 
+  - Player
+  - Wall
   - 
   - 
   - 
@@ -50,6 +52,9 @@ TagManager:
   - name: PlayArea
     uniqueID: 3008793649
     locked: 0
+  - name: UIObject
+    uniqueID: 3531560711
+    locked: 0
   - name: PlayerBullet
     uniqueID: 3126535715
     locked: 0
@@ -64,9 +69,6 @@ TagManager:
     locked: 0
   - name: EnemyBullet
     uniqueID: 2681524431
-    locked: 0
-  - name: UIObject
-    uniqueID: 3531560711
     locked: 0
   - name: Player
     uniqueID: 305734323

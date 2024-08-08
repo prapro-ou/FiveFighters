@@ -22,6 +22,11 @@ public class GrazeCollider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    void FixedUpdate()
+    {
         _player.PrimaryGrazeCount += GrazeCount;
         _player.SpecialGrazeCount += GrazeCount;
     }

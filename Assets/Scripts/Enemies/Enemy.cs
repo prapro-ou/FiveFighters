@@ -80,12 +80,12 @@ public abstract class Enemy : MonoBehaviour
     {
         HitPoint -= value;
     }
-
+/*
     public void MakeDamageParticle(Vector3 pos)
     {
         Instantiate(_explodePrefab, pos, Quaternion.identity);
     }
-
+*/
     public abstract void StartAttacking();
 
     public abstract IEnumerator StartSpawnAnimation();

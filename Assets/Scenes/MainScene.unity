@@ -3932,8 +3932,6 @@ MonoBehaviour:
   _shopCameraTransform: {fileID: 1856536367}
   _battlePlayerTransform: {fileID: 1265321694}
   _shopPlayerTransform: {fileID: 1653885788}
-  _battlePlayArea: {fileID: 282297408}
-  _shopPlayArea: {fileID: 201967762}
   _battleEnemyTransform: {fileID: 1634889170}
   _stageClearText: {fileID: 3683286836030368035, guid: 76a9d042a84dfca4f87bdf3c1f3a697b, type: 3}
   _gameOverText: {fileID: 3683286836030368035, guid: 76a9d042a84dfca4f87bdf3c1f3a697b, type: 3}
@@ -4893,7 +4891,7 @@ MonoBehaviour:
   - {fileID: 159084274}
   _speed: 5
   _dashTime: 0.2
-  _dashSpeed: 200
+  _dashSpeed: 150
   _shiftCooldown: 5
   _slowDownRate: 0.5
   _maxHitPoint: 100
@@ -5097,6 +5095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grazeValue: 0
 --- !u!61 &722456446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7145,6 +7144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grazeValue: 0
 --- !u!61 &1118359385
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7263,6 +7263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grazeValue: 0
 --- !u!61 &1125719094
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13190,6 +13191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _grazeValue: 0
 --- !u!61 &1951958440
 BoxCollider2D:
   m_ObjectHideFlags: 0

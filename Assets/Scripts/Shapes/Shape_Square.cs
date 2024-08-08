@@ -60,7 +60,7 @@ public class Shape_Square : PlayerShape
         GameObject bullet;
 
         _squareDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
-        Destroy(_squareDestroyField, 3.0f);
+        Destroy(_squareDestroyField, 0.5f);
         bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 2.0f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
         bullet.GetComponent<SpecialSquareBullet>().Direction = 0;
     }

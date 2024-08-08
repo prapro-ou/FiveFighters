@@ -29,13 +29,13 @@ public class SpecialSquareBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         Destroy(collider.gameObject);
-        _player.PrimaryGrazeCount += 1;
-        _player.SpecialGrazeCount += 1;
+        _player.PrimaryGrazeCount += 3;
+        _player.SpecialGrazeCount += 10;
     }
 
     private IEnumerator ScaleUp()
     {
-        for(float i = 0.1f ; i < 0.5f ; i += 0.01f)
+        for(float i = 0.1f ; i < 0.5f ; i += Time.deltaTime)
         {
             this.transform.localScale = new Vector3(i * 5, i, 1);
             yield return null;
@@ -63,7 +63,7 @@ public class SpecialSquareBullet : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, 10.0f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, 2.0f, 0.0f);
             elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
@@ -78,7 +78,7 @@ public class SpecialSquareBullet : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            this.transform.localPosition += Time.deltaTime * new Vector3(-10.0f, 0.0f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(-2.0f, 0.0f, 0.0f);
             elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
@@ -93,7 +93,7 @@ public class SpecialSquareBullet : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, -10.0f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(0.0f, -2.0f, 0.0f);
             elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }
@@ -108,7 +108,7 @@ public class SpecialSquareBullet : MonoBehaviour
 
         while (elapsedTime < duration)
         {
-            this.transform.localPosition += Time.deltaTime * new Vector3(10.0f, 0.0f, 0.0f);
+            this.transform.localPosition += Time.deltaTime * new Vector3(2.0f, 0.0f, 0.0f);
             elapsedTime += Time.deltaTime; // 経過時間を加算
             yield return null;
         }

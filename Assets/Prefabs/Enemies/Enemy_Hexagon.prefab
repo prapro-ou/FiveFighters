@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHitPoint: 1000
+  _effectPrefab: {fileID: 5523554253423798234, guid: 849b7b989ceb2bf4f8517f9460008a12, type: 3}
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _attackCooltime: 2
 --- !u!95 &-5226222719145971260

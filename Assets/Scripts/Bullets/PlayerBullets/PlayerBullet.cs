@@ -24,4 +24,9 @@ public class PlayerBullet : MonoBehaviour
     {
         
     }
+
+    public virtual void DestroyWithParticle()
+    {
+        
+    }
 }

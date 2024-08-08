@@ -15,6 +15,9 @@ public class PrimaryTriangleBullet : PlayerBullet
 
     private Rigidbody2D rb;
 
+    [SerializeField]
+    private GameObject _triangleEffectPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,5 +42,11 @@ public class PrimaryTriangleBullet : PlayerBullet
     void Update()
     {
        
+    }
+
+    public override void DestroyWithParticle()
+    {
+        Instantiate(_triangleEffectPrefab, this.transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 }

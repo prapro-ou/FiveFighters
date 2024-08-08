@@ -21,7 +21,7 @@ public class Enemy_Diamond_RightCanon : MonoBehaviour
 
     private IEnumerator Shoot()
     {
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _beamPrefab.transform.position.z);
+        Vector3 pos = new Vector3(transform.position.x - 0.1f, transform.position.y, _beamPrefab.transform.position.z);
         Vector3 power = new Vector3(-5.0f, 0, 0);
 
         yield return new WaitForSeconds(5);

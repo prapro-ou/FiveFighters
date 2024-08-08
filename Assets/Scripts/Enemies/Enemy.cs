@@ -38,10 +38,10 @@ public abstract class Enemy : MonoBehaviour
             }
         }
     }
-
+/*
     [SerializeField]
     private GameObject _explodePrefab;
-
+*/
     void Awake()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();

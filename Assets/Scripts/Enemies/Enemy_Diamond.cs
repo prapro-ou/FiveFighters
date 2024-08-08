@@ -35,6 +35,9 @@ public class Enemy_Diamond : Enemy
     [SerializeField]
     private Enemy_Diamond_RightCanon _rightCanonPrefab;
 
+    [SerializeField]
+    private GameObject _generateEffectPrefab;
+
     private DiamondState _currentState;
 
     public DiamondState CurrentState
@@ -200,10 +203,10 @@ public class Enemy_Diamond : Enemy
         //中心部分の弾を生成
         EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
         //右側部分の弾を生成
-        pos.x += 1.2f;
+        pos.x += 1.3f;
         EnemyBullet bullet2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
         //左側部分の弾を生成
-        pos.x -= 2.4f;
+        pos.x -= 2.6f;
         EnemyBullet bullet3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
         //弾を発射
@@ -227,11 +230,13 @@ public class Enemy_Diamond : Enemy
         if(rnd_x == 1)
         {
             Vector3 pos = new Vector3(transform.position.x - 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 270));
             Enemy_Diamond_LeftCanon canon = Instantiate(_leftCanonPrefab, pos, Quaternion.Euler(0, 0, 270));
         }
         else
         {
             Vector3 pos = new Vector3(transform.position.x + 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 90));
             Enemy_Diamond_RightCanon canon = Instantiate(_rightCanonPrefab, pos, Quaternion.Euler(0, 0, 90));
         }
 

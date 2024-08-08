@@ -28,8 +28,8 @@ TagManager:
   - SpecialCircleBullet
   - SpecialCircleExplode
   - PermanentDestroyField
-  - 
-  - 
+  - Player
+  - Wall
   - 
   - 
   - 

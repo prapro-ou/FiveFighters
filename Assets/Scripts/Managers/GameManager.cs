@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
         }
         
         //登場演出を挟む
-        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(CurrentEnemy.StartSpawnAnimation());
 
         CurrentEnemy.StartAttacking();
 
@@ -282,7 +282,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
 
         //消滅演出待ち
-        yield return new WaitForSeconds(3f);
+        yield return StartCoroutine(CurrentEnemy.StartDeathAnimation());
 
         //カメラを戻す
         StartCoroutine(_overlayManager.AppearUICanvas(0.2f));

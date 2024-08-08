@@ -76,4 +76,8 @@ public abstract class Enemy : MonoBehaviour
     }
 
     public abstract void StartAttacking();
+
+    public abstract IEnumerator StartSpawnAnimation();
+
+    public abstract IEnumerator StartDeathAnimation();
 }

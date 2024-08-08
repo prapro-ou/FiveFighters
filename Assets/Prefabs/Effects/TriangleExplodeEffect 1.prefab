@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 109484681919038177}
   - component: {fileID: 4601584777245905503}
   m_Layer: 11
-  m_Name: ExplodeEffect 2
+  m_Name: TriangleExplodeEffect 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.435849, g: 0.7218006, b: 1, a: 1}
+      maxColor: {r: 1, g: 0.97341895, b: 0.49622637, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1367,7 +1367,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 0.27843142, g: 0.34924236, b: 1, a: 1}
+        key1: {r: 1, g: 0.9982997, b: 0.27843142, a: 1}
         key2: {r: 0.13962269, g: 0.03457068, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1375,7 +1375,7 @@ ParticleSystem:
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 41865
+        ctime1: 41557
         ctime2: 65535
         ctime3: 0
         ctime4: 0

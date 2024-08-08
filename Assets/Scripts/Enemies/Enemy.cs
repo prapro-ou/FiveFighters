@@ -39,6 +39,9 @@ public abstract class Enemy : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    private GameObject _effectPrefab;
+
     void Awake()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -65,6 +68,8 @@ public abstract class Enemy : MonoBehaviour
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
         if(bullet != null)
         {
+            Vector3 pos = new Vector3(bullet.transform.position.x, bullet.transform.position.y, bullet.transform.position.z);
+            MakeDamageParticle(pos);
             TakeDamage(bullet.DamageValue);
             Destroy(bullet.gameObject);
         }
@@ -73,6 +78,11 @@ public abstract class Enemy : MonoBehaviour
     public void TakeDamage(int value)
     {
         HitPoint -= value;
+    }
+
+    public void MakeDamageParticle(Vector3 pos)
+    {
+        Instantiate(_effectPrefab, pos, Quaternion.identity);
     }
 
     public abstract void StartAttacking();

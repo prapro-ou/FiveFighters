@@ -37,6 +37,9 @@ public class Enemy_Hexagon : Enemy
     [SerializeField]
     private GameObject _hexagonCautionEffectPrefab;
 
+    [SerializeField]
+    private GameObject _hexagonTeleportEffectPrefab;
+
     private HexagonState _currentState;
 
     public HexagonState CurrentState
@@ -216,8 +219,12 @@ public class Enemy_Hexagon : Enemy
         Debug.Log("Start HexagonLaser");
 
         //Playerを親にエフェクト
+        Instantiate(_hexagonTeleportEffectPrefab, _player.transform.position , Quaternion.identity, _player.transform);
 
         //中心にエフェクト
+        Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
+
+        yield return new WaitForSeconds(1f);
 
         //中心にPlayerをテレポート
         _player.transform.position = Vector3.zero;

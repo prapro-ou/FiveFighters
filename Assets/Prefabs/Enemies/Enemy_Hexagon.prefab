@@ -186,6 +186,7 @@ MonoBehaviour:
   _hexagonLaserPrefab: {fileID: -1511776850887659135, guid: 85312d3deaefc394d8988e7462f90b5b, type: 3}
   _hexagonLaserCautionPrefab: {fileID: -1511776850887659135, guid: a7ab61248bda7ef49a5490a497bc0b92, type: 3}
   _hexagonCautionEffectPrefab: {fileID: 4785698340915390335, guid: 48e5e7ba018f8fe4992eee82c980e918, type: 3}
+  _hexagonTeleportEffectPrefab: {fileID: 4785698340915390335, guid: bf429b195ad649b418ea6fc2e2c49f09, type: 3}
   _attackCooltime: 2
 --- !u!95 &-5226222719145971260
 Animator:

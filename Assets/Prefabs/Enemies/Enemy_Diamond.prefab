@@ -186,7 +186,7 @@ MonoBehaviour:
   _generateEffectPrefab: {fileID: 2842953011420832931, guid: 8b7c3acba81145746bfe379191c28966, type: 3}
   _flashEffectPrefab: {fileID: 3027249904341465956, guid: 60b6b7e7987a0a6439518de13c9f5add, type: 3}
   _explodePrefab: {fileID: 3230799239743624, guid: f00adec8820e8494eb5fae2abf212651, type: 3}
-  _attackCooltime: 4
+  _attackCooltime: 3
 --- !u!95 &-2191553245202046547
 Animator:
   serializedVersion: 5

@@ -126,11 +126,12 @@ public class Enemy_Diamond : Enemy
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack2:
-                //分身設置
+                //分身設置．時間さで射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_GenerateCanon());
@@ -138,7 +139,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack3:
-                //砲台を近くに展開し，三点からビーム
+                //砲台を近くに展開し，三点からビーム．角度を変えてもう一回．
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_BeamShoot());
@@ -146,7 +147,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack4:
-                //高速かすり値減少弾 発射時点のプレイヤーの位置に飛ぶ．
+                //高速かすり値減少弾10発 発射時点のプレイヤーの位置に飛ぶ．
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_AimingRapidShoot());
@@ -348,17 +349,24 @@ public class Enemy_Diamond : Enemy
     {
         //弾を敵の位置に生成
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
-        EnemyBullet bullet = Instantiate(_reduceBulletPrefab, pos, Quaternion.identity);
 
-        //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
-        Vector3 target = _player.transform.position;
-        Vector3 power = target - this.transform.position;
+        for(int i = 0; i < 10; i++)
+        {
+            EnemyBullet bullet = Instantiate(_reduceBulletPrefab, pos, Quaternion.identity);
 
-        //生成した弾を点滅させる
-        yield return StartCoroutine(_Flashing(bullet));
+            //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
+            Vector3 target = _player.transform.position;
+            Vector3 power = target - this.transform.position;
 
-        //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
-        bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 8.0f, ForceMode2D.Impulse);
+            //生成した弾を点滅させる(初回のみ)
+            if(i == 0)
+                yield return StartCoroutine(_Flashing(bullet));
+
+            //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
+            bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 8.0f, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(0.4f);
+        }
 
         yield return null;
     }
@@ -375,7 +383,7 @@ public class Enemy_Diamond : Enemy
             else
                 v.enabled = true;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
 
         yield return null;
@@ -391,7 +399,7 @@ public class Enemy_Diamond : Enemy
         yield return new WaitForSeconds(1.5f);
 
         //乱射
-        for(int i=0; i < 20; ++i)
+        for(int i=0; i < 30; ++i)
         {
             //自機の位置に弾を生成
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);

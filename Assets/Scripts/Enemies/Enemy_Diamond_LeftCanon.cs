@@ -7,6 +7,9 @@ public class Enemy_Diamond_LeftCanon : MonoBehaviour
     [SerializeField]
     private EnemyBullet _beamPrefab;
 
+    [SerializeField]
+    private GameObject _generateEffectPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +34,7 @@ public class Enemy_Diamond_LeftCanon : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
+        Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 270));
         Destroy(this.gameObject);
 
         yield break;

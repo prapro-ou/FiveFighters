@@ -36,7 +36,16 @@ public class Enemy_Diamond : Enemy
     private Enemy_Diamond_RightCanon _rightCanonPrefab;
 
     [SerializeField]
+    private GameObject _bitPrefab;
+
+    [SerializeField]
     private GameObject _generateEffectPrefab;
+
+    [SerializeField]
+    private GameObject _flashEffectPrefab;
+
+    [SerializeField]
+    private GameObject _explodePrefab;
 
     private DiamondState _currentState;
 
@@ -129,7 +138,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack3:
-                //ランダム方向へのビーム
+                //砲台を近くに展開し，三点からビーム
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_BeamShoot());
@@ -181,13 +190,26 @@ public class Enemy_Diamond : Enemy
         yield return new WaitForSeconds(5); //Sample
     }
 
+
     //死亡したときに、GameManagerによって実行されるコルーチン。
     //死亡したときの演出をこのメソッドに記述しよう。アニメーション自体はスクリプトで書かず、アニメーター(アニメーション)コンポーネントで実装することもできる。
     public override IEnumerator StartDeathAnimation()
     {
         Debug.Log("StartDeathAnimation");
 
-        yield return new WaitForSeconds(2); //Sample
+        Color startColor = Color.white;
+        Color endColor = Color.black;
+        SpriteRenderer rend = this.GetComponent<SpriteRenderer>();
+
+        for(float i = 0.0f; i < 30.0f; ++i)
+        {
+            rend.material.color = Color.Lerp(startColor, endColor, i / 30.0f);
+
+            yield return new WaitForSeconds(0.1f);
+        }
+        Instantiate(_explodePrefab, transform.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(0.5f); //Sample
 
         Destroy(this.gameObject);
 
@@ -245,18 +267,79 @@ public class Enemy_Diamond : Enemy
 
     private IEnumerator _BeamShoot()
     {
-        //適当な力
-        Vector3 power = new Vector3(2.0f, -5.0f, 0);
+        //下向きに進む力
+        Vector3 power = new Vector3(0, -5.0f, 0);
 
-       //ランダムな角度
-        var dir = Random.insideUnitCircle.normalized;
+        Vector3 power_l = new Vector3(5.0f, -5.0f, 0);
+        Vector3 power_r = new Vector3(-5.0f, -5.0f, 0);
 
-        //敵の位置に弾を生成
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _beamPrefab.transform.position.z);
-        EnemyBullet beam = Instantiate(_beamPrefab, pos, Quaternion.Euler(dir));
+        //座標設定
+        Vector3 pos_l = new Vector3(transform.position.x - 2.0f, transform.position.y, transform.position.z);
+        Vector3 pos_r = new Vector3(transform.position.x + 2.0f, transform.position.y, transform.position.z);
 
-        //弾を発射
-        beam.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
+        //砲台登場演出
+        GameObject leftflash = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        GameObject rightflash = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
+
+        yield return new WaitForSeconds(0.2f);
+
+        //砲台を生成
+        GameObject leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 180));
+        GameObject rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 180));
+
+        yield return new WaitForSeconds(1.5f);
+
+        for(int i = 0; i < 3; ++i)
+        {
+            //ビームを生成
+            EnemyBullet beam_l = Instantiate(_beamPrefab, pos_l, Quaternion.identity);
+            EnemyBullet beam_c = Instantiate(_beamPrefab, transform.position, Quaternion.identity);
+            EnemyBullet beam_r = Instantiate(_beamPrefab, pos_r, Quaternion.identity);
+
+            //ビームを発射
+            beam_l.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+            beam_c.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+            beam_r.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        GameObject leftflash2 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        GameObject rightflash2 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        Destroy(leftbit.gameObject);
+        Destroy(rightbit.gameObject);
+        GameObject leftflash3 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        GameObject rightflash3 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
+
+        yield return new WaitForSeconds(0.2f);
+
+        //砲台を生成
+        GameObject leftbit2 = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 225));
+        GameObject rightbit2 = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 135));
+
+        yield return new WaitForSeconds(1.5f);
+
+        for(int i = 0; i < 3; ++i)
+        {
+            //ビームを生成
+            EnemyBullet beam_l2 = Instantiate(_beamPrefab, pos_l, Quaternion.Euler(0,0,45));
+            EnemyBullet beam_c2 = Instantiate(_beamPrefab, transform.position, Quaternion.identity);
+            EnemyBullet beam_r2 = Instantiate(_beamPrefab, pos_r, Quaternion.Euler(0,0,135));
+
+            //ビームを発射
+            beam_l2.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
+            beam_c2.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+            beam_r2.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        GameObject leftflash4 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        GameObject rightflash4 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        Destroy(leftbit2.gameObject);
+        Destroy(rightbit2.gameObject);
+        GameObject leftflash5 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+        GameObject rightflash5 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
 
         yield return null;
     }

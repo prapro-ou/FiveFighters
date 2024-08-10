@@ -20,7 +20,12 @@ public class Enemy_Hexagon : Enemy
     private Player _player;
 
     [SerializeField]
-    private EnemyBullet _circleBulletPrefab; 
+    private Animator _animator;
+
+    private CameraManager _cameraManager;
+
+    [SerializeField]
+    private EnemyBullet _hexagonTriangleBullet;
 
     [SerializeField]
     private EnemyBullet _shrinkHexagonBulletPrefab; 
@@ -78,6 +83,8 @@ public class Enemy_Hexagon : Enemy
 
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.CurrentEnemy = this;
+
+        _cameraManager = GameObject.Find("CameraManager").GetComponent<CameraManager>();
     }
 
     // Update is called once per frame
@@ -159,7 +166,44 @@ public class Enemy_Hexagon : Enemy
     {
         Debug.Log("StartSpawnAnimation");
 
-        yield return new WaitForSeconds(5); //Sample
+        transform.position = Vector3.zero;
+
+        yield return new WaitForSeconds(2f);
+
+        Vector3[] cautionPositions = {new Vector3(0, 4, 0), new Vector3(3.4f, 2f, 0), new Vector3(3.4f, -2f, 0), new Vector3(0, -4, 0), new Vector3(-3.4f, -2f, 0), new Vector3(-3.4f, 2f, 0)};
+        for(int ic = 0; ic < 6; ic++)
+        {
+            Instantiate(_hexagonCautionEffectPrefab, cautionPositions[ic], Quaternion.identity);
+        }
+
+        yield return new WaitForSeconds(1.5f);
+
+        Rigidbody2D rb; 
+        Vector3[] positions = {new Vector3(0, 10, 0), new Vector3(8.66f, 5, 0), new Vector3(8.66f, -5, 0), new Vector3(0, -10, 0), new Vector3(-8.66f, -5, 0), new Vector3(-8.66f, 5, 0)};
+        for(int i = 0; i < 6; i++)
+        {
+            EnemyBullet bullet = Instantiate(_hexagonTriangleBullet, positions[i], Quaternion.Euler(0, 0, 180 + (60 * i)));
+            rb = bullet.GetComponent<Rigidbody2D>();
+            rb.velocity = positions[i].normalized * -10;
+            Destroy(bullet.gameObject, 1f);
+        }
+        yield return new WaitForSeconds(1f);
+
+        Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
+
+        _animator.SetTrigger("Appear");
+
+        StartCoroutine(_cameraManager.SetSizeOnCurve(3f, 0.2f));
+
+        // StartCoroutine(_cameraManager.RotateOnCurve(10, 10f));
+
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(transform.position));
+
+        // StartCoroutine(_cameraManager.RotateOnCurve(-10, 0.2f));
+        
+        StartCoroutine(_cameraManager.SetSizeOnCurve(5f));
+
+        yield return new WaitForSeconds(1f);
     }
 
     //死亡したときに、GameManagerによって実行されるコルーチン。
@@ -283,15 +327,15 @@ public class Enemy_Hexagon : Enemy
         Debug.Log("Finish HexagonLaser");
     }
 
-    private IEnumerator _ShootCircleBullet()
-    {
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
-        EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+    // private IEnumerator _ShootCircleBullet()
+    // {
+    //     Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+    //     EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
-        //弾に力を与える処理など
+    //     //弾に力を与える処理など
 
-        yield return null;
-    }
+    //     yield return null;
+    // }
 
     private GameObject _SummonWall()
     {

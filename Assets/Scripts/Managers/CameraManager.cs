@@ -36,13 +36,13 @@ public class CameraManager : MonoBehaviour
         _cameraTransform.position = new Vector3(endPoint.x, endPoint.y, _cameraTransform.position.z);
     }
 
-    public IEnumerator MoveToPointOnCurve(Vector3 endPoint)
+    public IEnumerator MoveToPointOnCurve(Vector3 endPoint, float duration = 1f)
     {
         Vector3 startPoint = _cameraTransform.position;
 
-        for(float i = 0; i <= 1; i += Time.deltaTime)
+        for(float i = 0; i <= duration; i += Time.deltaTime)
         {
-            Vector3 lerpVec3 = Vector3.Lerp(startPoint, endPoint, _curve.Evaluate(i));
+            Vector3 lerpVec3 = Vector3.Lerp(startPoint, endPoint, _curve.Evaluate(i / duration));
             lerpVec3.z = _cameraTransform.position.z;
             _cameraTransform.position = lerpVec3;
             yield return null;
@@ -53,14 +53,15 @@ public class CameraManager : MonoBehaviour
     {
         _camera.orthographicSize = size;
     }
-    public IEnumerator SetSizeOnCurve(float endSize)
+
+    public IEnumerator SetSizeOnCurve(float endSize, float duration = 1f)
     {
         float startSize = _camera.orthographicSize;
         float lerpSize = 0f;
 
-        for(float i = 0; i <= 1; i += Time.deltaTime)
+        for(float i = 0; i <= duration; i += Time.deltaTime)
         {
-            lerpSize = Mathf.Lerp(startSize, endSize, _curve.Evaluate(i));
+            lerpSize = Mathf.Lerp(startSize, endSize, _curve.Evaluate(i / duration));
             _camera.orthographicSize = lerpSize;
             yield return null;
         }
@@ -81,5 +82,19 @@ public class CameraManager : MonoBehaviour
         }
 
         _camera.transform.position = startPosition;
+    }
+
+    public IEnumerator RotateOnCurve(float angle, float duration = 1f)
+    {
+        Quaternion startRotation = _camera.transform.rotation;
+        Quaternion endRotation = _camera.transform.rotation * Quaternion.Euler(0, 0, angle);
+        Quaternion lerpRotation;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            lerpRotation = Quaternion.Lerp(startRotation, endRotation, _curve.Evaluate(i / duration));
+            _camera.transform.rotation = lerpRotation;
+            yield return null;
+        }
     }
 }

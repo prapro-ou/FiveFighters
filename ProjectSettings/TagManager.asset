@@ -30,7 +30,7 @@ TagManager:
   - PermanentDestroyField
   - Player
   - Wall
-  - 
+  - NondestructiveEnemyBullet
   - 
   - 
   - 
@@ -61,14 +61,14 @@ TagManager:
   - name: Enemy
     uniqueID: 340137213
     locked: 0
+  - name: EnemyBullet
+    uniqueID: 2681524431
+    locked: 0
   - name: PlayerEffect
     uniqueID: 1919366451
     locked: 0
   - name: EnemyEffect
     uniqueID: 3732045211
-    locked: 0
-  - name: EnemyBullet
-    uniqueID: 2681524431
     locked: 0
   - name: Player
     uniqueID: 305734323

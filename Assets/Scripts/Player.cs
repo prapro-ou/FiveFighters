@@ -115,6 +115,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed;
 
+    public float Speed
+    {
+        get {return _speed;}
+        set
+        {
+            // _speed = Mathf.Max(0, value);
+            _speed = value;
+        }
+    }
+
     [SerializeField]
     private float _dashTime;
 

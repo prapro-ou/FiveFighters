@@ -383,7 +383,7 @@ public class Player : MonoBehaviour
 
         for(float i = 0f; i < DashTime; i += Time.deltaTime)
         {
-            _rigidbody.MovePosition(transform.position + (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.deltaTime * DashSpeed));
+            _rigidbody.MovePosition(transform.position + (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.fixedDeltaTime * DashSpeed));
             yield return null;
         }
 

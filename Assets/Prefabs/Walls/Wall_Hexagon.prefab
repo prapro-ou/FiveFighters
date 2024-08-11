@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 199049740871370621}
   - component: {fileID: 3299846380581233193}
   - component: {fileID: -3992397990128791253}
+  - component: {fileID: -8837755118693779671}
   m_Layer: 19
   m_Name: Wall_Hexagon
   m_TagString: Untagged
@@ -650,3 +651,24 @@ PolygonCollider2D:
       - {x: 1.93, y: -3.37}
       - {x: -1.9599999, y: -3.37}
   m_UseDelaunayMesh: 0
+--- !u!95 &-8837755118693779671
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8705069139184459898}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c6b406305451aa640b3a2eec18fdb5b8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

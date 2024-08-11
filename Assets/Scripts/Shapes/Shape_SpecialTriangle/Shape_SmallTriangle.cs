@@ -24,7 +24,7 @@ public class Shape_SmallTriangle : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        IsRight = false;
+        // IsRight = false;
     }
 
     // Update is called once per frame

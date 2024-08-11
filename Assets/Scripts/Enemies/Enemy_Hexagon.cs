@@ -22,6 +22,8 @@ public class Enemy_Hexagon : Enemy
     [SerializeField]
     private Animator _animator;
 
+    private GameObject _hexagonWall;
+
     private CameraManager _cameraManager;
 
     [SerializeField]
@@ -212,6 +214,12 @@ public class Enemy_Hexagon : Enemy
     {
         Debug.Log("StartDeathAnimation");
 
+        if(_hexagonWall != null)
+        {
+            Destroy(_hexagonWall);
+            _hexagonWall = null;
+        }
+
         yield return new WaitForSeconds(2); //Sample
 
         Destroy(this.gameObject);
@@ -273,11 +281,12 @@ public class Enemy_Hexagon : Enemy
         //中心にPlayerをテレポート
         _player.transform.position = Vector3.zero;
 
-        GameObject wall = _SummonWall();
+        _hexagonWall = _SummonWall();
+        _hexagonWall.GetComponent<Animator>().SetTrigger("Appear");
 
         yield return new WaitForSeconds(1f);
 
-        Transform[] pointTransforms = wall.GetComponentsInChildren<Transform>();
+        Transform[] pointTransforms = _hexagonWall.GetComponentsInChildren<Transform>();
         
         Quaternion[] rotations = {Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 60), Quaternion.Euler(0, 0, 120)};
 
@@ -322,7 +331,10 @@ public class Enemy_Hexagon : Enemy
 
         yield return new WaitForSeconds(1f);
 
-        Destroy(wall);
+        _hexagonWall.GetComponent<Animator>().SetTrigger("Disappear");
+
+        Destroy(_hexagonWall, 1f);
+        _hexagonWall = null;
 
         Debug.Log("Finish HexagonLaser");
     }

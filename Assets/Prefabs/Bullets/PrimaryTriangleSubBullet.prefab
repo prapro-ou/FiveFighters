@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5565913505501750369}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbf5dd14f40a7724daf7ed53930d08f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _triangleEffectPrefab: {fileID: 8345390107593670481, guid: 0881150becb970a4dab9ccdd6359e78e, type: 3}
   _subBulletSpeed: 5
 --- !u!50 &5055391178636952858
 Rigidbody2D:
@@ -156,7 +157,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -168,7 +169,7 @@ PolygonCollider2D:
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_AutoTiling: 1
   m_Points:
     m_Paths:
     - - {x: 0, y: 0.5773587}

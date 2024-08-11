@@ -8,6 +8,9 @@ public class PrimaryTriangleSubBullet : PlayerBullet
     private Rigidbody2D rb;
 
     [SerializeField]
+    private GameObject _triangleEffectPrefab;
+
+    [SerializeField]
     private float _subBulletSpeed;
 
     // Start is called before the first frame update
@@ -22,5 +25,11 @@ public class PrimaryTriangleSubBullet : PlayerBullet
     void Update()
     {
         
+    }
+
+    public override void DestroyWithParticle()
+    {
+        Instantiate(_triangleEffectPrefab, this.transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 }

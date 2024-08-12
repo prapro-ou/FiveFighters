@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 2747690628134850419, guid: b670ab75dde984907b8570040daa08c5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -181,6 +181,31 @@ MonoBehaviour:
   _maxHitPoint: 1000
   _explodePrefab: {fileID: 0}
   _animator: {fileID: -5226222719145971260}
+  _movingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _enemyHexagonBullet: {fileID: -6450398580459616629, guid: 0afe18b7b620aa240806565a2ec8d5a3, type: 3}
   _hexagonTriangleBullet: {fileID: -937885088228772783, guid: e3b96bbe6dad71e4281a52f0ac2aa8f2, type: 3}
   _shrinkHexagonBulletPrefab: {fileID: 7486080687733238234, guid: 927b95bfe3b90214a84c3f70033926b3, type: 3}
   _hexagonWallPrefab: {fileID: 8705069139184459898, guid: 91bdeb17a83e8394fa7ec730026140c3, type: 3}

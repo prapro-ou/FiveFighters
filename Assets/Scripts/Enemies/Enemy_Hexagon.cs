@@ -8,8 +8,8 @@ public enum HexagonState
 {
     Wait,
     Attack1,
-    Attack2
-    // Attack3,
+    Attack2,
+    Attack3
     // Attack4,
     // Attack5,
     // Attack6
@@ -27,10 +27,16 @@ public class Enemy_Hexagon : Enemy
     private CameraManager _cameraManager;
 
     [SerializeField]
+    private AnimationCurve _movingCurve;
+
+    [SerializeField]
+    private EnemyBullet _enemyHexagonBullet;
+
+    [SerializeField]
     private EnemyBullet _hexagonTriangleBullet;
 
     [SerializeField]
-    private EnemyBullet _shrinkHexagonBulletPrefab; 
+    private ShrinkHexagonBullet _shrinkHexagonBulletPrefab; 
 
     [SerializeField]
     private GameObject _hexagonWallPrefab;
@@ -134,12 +140,12 @@ public class Enemy_Hexagon : Enemy
                     CurrentState = HexagonState.Wait;
                     break;
                 }
-                // case HexagonState.Attack3:
-                // {
-                //     yield return StartCoroutine(_BurstShoot());
-                //     CurrentState = HexagonState.Wait;
-                //     break;
-                // }
+                case HexagonState.Attack3:
+                {
+                    yield return StartCoroutine(_RotatingFire());
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
                 // case HexagonState.Attack4:
                 // {
                 //     yield return StartCoroutine(_BurstShoot());
@@ -205,6 +211,8 @@ public class Enemy_Hexagon : Enemy
         
         StartCoroutine(_cameraManager.SetSizeOnCurve(5f));
 
+        yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 3, 0), 0.5f));
+
         yield return new WaitForSeconds(1f);
     }
 
@@ -232,22 +240,29 @@ public class Enemy_Hexagon : Enemy
     //攻撃処理はその上に書く。メソッド内で”yield return StartCoroutine(_METHOD());”とすることで、そのメソッドが終わるまで待機ができる。
     private IEnumerator _ShrinkHexagon()
     {
-        EnemyBullet bullet;
+        ShrinkHexagonBullet bullet;
         Quaternion rotation;
 
         Debug.Log("Start ShrinkHexagon");
 
         //中央移動
+        yield return StartCoroutine(_MoveToPointOnCurve(Vector3.zero, 1f));
 
-        //回転
-
-        //パーティクル
+        yield return new WaitForSeconds(1f);
 
         for(int i = 0; i < 3; i++)
         {
             //弾
+            bool direction = Random.Range(0,2) == 0;
+
+            if(direction) {StartCoroutine(_RotateOnCurve(360f, 1f));}
+            else {StartCoroutine(_RotateOnCurve(-360f, 1f));}
+            
             rotation = Quaternion.Euler(0, 0, Random.Range(0, 6) * 60);
             bullet = Instantiate(_shrinkHexagonBulletPrefab, Vector3.zero, rotation);
+
+            bullet.IsRight = direction;
+
             yield return new WaitForSeconds(1.5f);
         }
 
@@ -256,8 +271,16 @@ public class Enemy_Hexagon : Enemy
         for(int i = 0; i < 3; i++)
         {
             //弾
+            bool direction = Random.Range(0,2) == 0;
+
+            // if(direction) {_animator.SetTrigger("SpinRight");}
+            // else {_animator.SetTrigger("SpinLeft");}
+
             rotation = Quaternion.Euler(0, 0, Random.Range(0, 6) * 60);
             bullet = Instantiate(_shrinkHexagonBulletPrefab, Vector3.zero, rotation);
+
+            bullet.IsRight = direction;
+            
             yield return new WaitForSeconds(1.5f);
         }
         
@@ -269,6 +292,8 @@ public class Enemy_Hexagon : Enemy
     private IEnumerator _HexagonLaser()
     {
         Debug.Log("Start HexagonLaser");
+
+        yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 4.5f, 0), 1f));
 
         //Playerを親にエフェクト
         Instantiate(_hexagonTeleportEffectPrefab, _player.transform.position , Quaternion.identity, _player.transform);
@@ -339,15 +364,55 @@ public class Enemy_Hexagon : Enemy
         Debug.Log("Finish HexagonLaser");
     }
 
-    // private IEnumerator _ShootCircleBullet()
-    // {
-    //     Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
-    //     EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+    private IEnumerator _RotatingFire()
+    {
+        Debug.Log("Start RotatingFire");
 
-    //     //弾に力を与える処理など
+        float delay = 0.1f;
+        float duration = 3f;
+        float speed;
 
-    //     yield return null;
-    // }
+        yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 0, 0), 1f));
+
+        yield return new WaitForSeconds(1f);
+
+        for(int times = 0; times < 3; times++)
+        {
+            speed = Random.Range(30f, 60f);
+            int direction = (Random.Range(0, 2) == 0) ? -1 : 1;
+
+            yield return StartCoroutine(_RotateOnCurve(direction * 180f, 1f));
+
+            StartCoroutine(_Rotate(duration, direction * speed));
+
+            for(float i = 0; i <= duration; i += delay)
+            {
+                StartCoroutine(_ShootHexagonShot(transform.position));
+                yield return new WaitForSeconds(delay);
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        yield return StartCoroutine(_ResetRotation());
+
+        Debug.Log("Finish RotatingFire");
+    }
+
+    private IEnumerator _ShootHexagonShot(Vector3 position)
+    {
+        float bulletSpeed = 8f;
+        Rigidbody2D rb;
+
+        for(int i = 0; i < 6; i++)
+        {
+            EnemyBullet bullet = Instantiate(_enemyHexagonBullet, position, Quaternion.Euler(0, 0, (60 * i)) * transform.rotation);
+            rb = bullet.GetComponent<Rigidbody2D>();
+            rb.velocity = bullet.transform.right * bulletSpeed;
+        }
+        
+        yield return null;
+    }
 
     private GameObject _SummonWall()
     {
@@ -369,5 +434,60 @@ public class Enemy_Hexagon : Enemy
 
         Destroy(laserCaution.gameObject);
         Destroy(laser.gameObject);
+    }
+
+    private IEnumerator _MoveToPointOnCurve(Vector3 endPoint, float duration = 1f)
+    {
+        Vector3 startPoint = transform.position;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            Vector3 lerpVec3 = Vector3.Lerp(startPoint, endPoint, _movingCurve.Evaluate(i / duration));
+            lerpVec3.z = transform.position.z;
+            transform.position = lerpVec3;
+            yield return null;
+        }
+    }
+    
+    private IEnumerator _Rotate(float duration = 1f, float speed = 1f)
+    {
+        Debug.Log("Start Rotate");
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            transform.Rotate(0, 0, speed * Time.deltaTime);
+            yield return null;
+        }
+
+        Debug.Log("Finish Rotate");
+    }
+
+    private IEnumerator _ResetRotation(float duration = 1f)
+    {
+        Quaternion startRotation = transform.rotation;
+        Quaternion endRotation = Quaternion.identity;
+        Quaternion lerpRotation;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            lerpRotation = Quaternion.Lerp(startRotation, endRotation, _movingCurve.Evaluate(i / duration));
+            transform.rotation = lerpRotation;
+            yield return null;
+        }
+    }
+
+    private IEnumerator _RotateOnCurve(float angle, float duration = 1f)
+    {
+        Quaternion startRotation = transform.rotation;
+        float startZ = transform.rotation.z;
+        float endZ = transform.rotation.z + angle;
+        float lerpZ;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            lerpZ = Mathf.Lerp(startZ, endZ, _movingCurve.Evaluate(i / duration));
+            transform.rotation = startRotation * Quaternion.Euler(0, 0, lerpZ);
+            yield return null;
+        }
     }
 }

@@ -24,7 +24,7 @@ public class Enemy_Diamond : Enemy
     private EnemyBullet _circleBulletPrefab;
 
     [SerializeField]
-    private EnemyBullet _beamPrefab;
+    private EnemyBullet _laserPrefab;
 
     [SerializeField]
     private EnemyBullet _reduceBulletPrefab;
@@ -131,7 +131,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack2:
-                //分身設置．時間さで射撃
+                //分身設置．時間差で射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
                     yield return StartCoroutine(_GenerateCanon());
@@ -142,7 +142,7 @@ public class Enemy_Diamond : Enemy
                 //砲台を近くに展開し，三点からビーム．角度を変えてもう一回．
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_BeamShoot());
+                    yield return StartCoroutine(_LaserShoot());
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -233,9 +233,9 @@ public class Enemy_Diamond : Enemy
         EnemyBullet bullet3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
         //弾を発射
-        bullet.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
-        bullet2.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
-        bullet3.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+        bullet.GetComponent<Rigidbody2D>().velocity = power;
+        bullet2.GetComponent<Rigidbody2D>().velocity = power;
+        bullet3.GetComponent<Rigidbody2D>().velocity = power;
 
         yield return new WaitForSeconds(0.3f);
         yield return null;
@@ -252,13 +252,13 @@ public class Enemy_Diamond : Enemy
         //弾の発射，砲台の削除は砲台側で制御する．
         if(rnd_x == 1)
         {
-            Vector3 pos = new Vector3(transform.position.x - 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Vector3 pos = new Vector3(transform.position.x - 4.0f, transform.position.y - (1.0f * rnd_y) , _laserPrefab.transform.position.z);
             Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 270));
             Enemy_Diamond_LeftCanon canon = Instantiate(_leftCanonPrefab, pos, Quaternion.Euler(0, 0, 270));
         }
         else
         {
-            Vector3 pos = new Vector3(transform.position.x + 4.0f, transform.position.y - (1.0f * rnd_y) , _beamPrefab.transform.position.z);
+            Vector3 pos = new Vector3(transform.position.x + 4.0f, transform.position.y - (1.0f * rnd_y) , _laserPrefab.transform.position.z);
             Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 90));
             Enemy_Diamond_RightCanon canon = Instantiate(_rightCanonPrefab, pos, Quaternion.Euler(0, 0, 90));
         }
@@ -266,82 +266,50 @@ public class Enemy_Diamond : Enemy
         yield return null;
     }
 
-    private IEnumerator _BeamShoot()
+    private IEnumerator _LaserShoot()
     {
-        //下向きに進む力
-        Vector3 power = new Vector3(0, -5.0f, 0);
-
-        Vector3 power_l = new Vector3(5.0f, -5.0f, 0);
-        Vector3 power_r = new Vector3(-5.0f, -5.0f, 0);
-
         //座標設定
         Vector3 pos_l = new Vector3(transform.position.x - 2.0f, transform.position.y, transform.position.z);
         Vector3 pos_r = new Vector3(transform.position.x + 2.0f, transform.position.y, transform.position.z);
 
-        //砲台登場演出
-        GameObject leftflash = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        GameObject rightflash = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
-
-        yield return new WaitForSeconds(0.2f);
-
-        //砲台を生成
-        GameObject leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 180));
-        GameObject rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 180));
-
-        yield return new WaitForSeconds(1.5f);
-
-        for(int i = 0; i < 3; ++i)
+        for(int i = 0; i < 4; ++i)
         {
-            //ビームを生成
-            EnemyBullet beam_l = Instantiate(_beamPrefab, pos_l, Quaternion.identity);
-            EnemyBullet beam_c = Instantiate(_beamPrefab, transform.position, Quaternion.identity);
-            EnemyBullet beam_r = Instantiate(_beamPrefab, pos_r, Quaternion.identity);
+            GameObject leftflash = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+            GameObject rightflash = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
 
-            //ビームを発射
-            beam_l.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
-            beam_c.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
-            beam_r.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+            yield return new WaitForSeconds(0.2f);
 
-            yield return new WaitForSeconds(0.3f);
+            GameObject leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 180 + (15 * i)));
+            GameObject rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 180 - (15 * i)));
+            yield return new WaitForSeconds(1.0f);
+
+            //下向きに進む力
+            Vector3 power = new Vector3(0, -5.0f, 0);
+
+            Vector3 power_l = new Vector3(0.7f * i, -5.0f, 0);
+            Vector3 power_r = new Vector3(-0.7f * i, -5.0f, 0);
+
+            for(int j = 0; j < 3; ++j)
+            {
+                //ビームを生成
+                EnemyBullet laser_l = Instantiate(_laserPrefab, pos_l, Quaternion.Euler(0, 0, i * 14));
+                EnemyBullet laser_c = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                EnemyBullet laser_r = Instantiate(_laserPrefab, pos_r, Quaternion.Euler(0, 0, 180 - (i * 14)));
+
+                //ビームを発射
+                laser_l.GetComponent<Rigidbody2D>().velocity = power_l;
+                laser_c.GetComponent<Rigidbody2D>().velocity = power;
+                laser_r.GetComponent<Rigidbody2D>().velocity = power_r;
+
+                yield return new WaitForSeconds(0.6f);
+            }
+
+            GameObject leftflash2 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
+            GameObject rightflash2 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
+            Destroy(leftbit.gameObject);
+            Destroy(rightbit.gameObject);
+
         }
-
-        GameObject leftflash2 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        GameObject rightflash2 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        Destroy(leftbit.gameObject);
-        Destroy(rightbit.gameObject);
-        GameObject leftflash3 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        GameObject rightflash3 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
-
-        yield return new WaitForSeconds(0.2f);
-
-        //砲台を生成
-        GameObject leftbit2 = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 225));
-        GameObject rightbit2 = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 135));
-
-        yield return new WaitForSeconds(1.5f);
-
-        for(int i = 0; i < 3; ++i)
-        {
-            //ビームを生成
-            EnemyBullet beam_l2 = Instantiate(_beamPrefab, pos_l, Quaternion.Euler(0,0,45));
-            EnemyBullet beam_c2 = Instantiate(_beamPrefab, transform.position, Quaternion.identity);
-            EnemyBullet beam_r2 = Instantiate(_beamPrefab, pos_r, Quaternion.Euler(0,0,135));
-
-            //ビームを発射
-            beam_l2.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
-            beam_c2.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
-            beam_r2.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
-
-            yield return new WaitForSeconds(0.3f);
-        }
-
-        GameObject leftflash4 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        GameObject rightflash4 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        Destroy(leftbit2.gameObject);
-        Destroy(rightbit2.gameObject);
-        GameObject leftflash5 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
-        GameObject rightflash5 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
-
         yield return null;
     }
 
@@ -363,7 +331,7 @@ public class Enemy_Diamond : Enemy
                 yield return StartCoroutine(_Flashing(bullet));
 
             //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
-            bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 8.0f, ForceMode2D.Impulse);
+            bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 8.0f;
 
             yield return new WaitForSeconds(0.4f);
         }
@@ -383,7 +351,7 @@ public class Enemy_Diamond : Enemy
             else
                 v.enabled = true;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         yield return null;
@@ -399,19 +367,34 @@ public class Enemy_Diamond : Enemy
         yield return new WaitForSeconds(1.5f);
 
         //乱射
-        for(int i=0; i < 30; ++i)
+        for(int i = 1; i < 30; ++i)
         {
+            int rnd_x = Random.Range(0, 2);
+            int rnd_y = Random.Range(0, 2);
+
             //自機の位置に弾を生成
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
-            Vector3 power = new Vector3(2.0f, -5.0f, 0);
+            Vector3 power;
 
-            //ランダムな方向
-            var dir = Random.insideUnitCircle.normalized;
+            if(rnd_x == 0)
+            {
+                if(rnd_y == 0)
+                    power = new Vector3(Random.Range(1, 8), -5.0f, 0);
+                else
+                    power = new Vector3(Random.Range(1, 8), 5.0f, 0);
+            }
+            else
+            {
+                if(rnd_y == 0)
+                    power = new Vector3(Random.Range(-8, -1), -5.0f, 0);
+                else
+                    power = new Vector3(Random.Range(-8, -1), 5.0f, 0);
+            }
 
             //弾を発射
-            bullet.GetComponent<Rigidbody2D>().AddForce(power * dir, ForceMode2D.Impulse);
+            bullet.GetComponent<Rigidbody2D>().velocity = power;
 
             yield return new WaitForSeconds(0.2f);
         }
@@ -468,19 +451,19 @@ public class Enemy_Diamond : Enemy
         EnemyBullet bullet_l3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
         //各部分の直進する弾を発射
-        bullet_c1.GetComponent<Rigidbody2D>().AddForce(power_c, ForceMode2D.Impulse);
-        bullet_c2.GetComponent<Rigidbody2D>().AddForce(power_c, ForceMode2D.Impulse);
-        bullet_c3.GetComponent<Rigidbody2D>().AddForce(power_c, ForceMode2D.Impulse);
+        bullet_c1.GetComponent<Rigidbody2D>().velocity = power_c;
+        bullet_c2.GetComponent<Rigidbody2D>().velocity = power_c;
+        bullet_c3.GetComponent<Rigidbody2D>().velocity = power_c;
 
         //各部分の右側へ向かう弾を発射
-        bullet_r1.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
-        bullet_r2.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
-        bullet_r3.GetComponent<Rigidbody2D>().AddForce(power_r, ForceMode2D.Impulse);
+        bullet_r1.GetComponent<Rigidbody2D>().velocity = power_r;
+        bullet_r2.GetComponent<Rigidbody2D>().velocity = power_r;
+        bullet_r3.GetComponent<Rigidbody2D>().velocity = power_r;
 
         //各部分の左側へ向かう弾を発射
-        bullet_l1.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
-        bullet_l2.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
-        bullet_l3.GetComponent<Rigidbody2D>().AddForce(power_l, ForceMode2D.Impulse);
+        bullet_l1.GetComponent<Rigidbody2D>().velocity = power_l;
+        bullet_l2.GetComponent<Rigidbody2D>().velocity = power_l;
+        bullet_l3.GetComponent<Rigidbody2D>().velocity = power_l;
 
         yield return new WaitForSeconds(1);
         yield return null;
@@ -502,7 +485,7 @@ public class Enemy_Diamond : Enemy
             Vector3 power = target - this.transform.position;
 
             //弾を発射 正規化した位置ベクトルに乱数を乗算して速さを調整．
-            bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * rnd, ForceMode2D.Impulse);
+            bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * rnd;
 
             yield return new WaitForSeconds(0.4f);
         }

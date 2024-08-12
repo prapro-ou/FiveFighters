@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy_Diamond_LeftCanon : MonoBehaviour
 {
     [SerializeField]
-    private EnemyBullet _beamPrefab;
+    private EnemyBullet _laserPrefab;
 
     [SerializeField]
     private GameObject _generateEffectPrefab;
@@ -24,13 +24,13 @@ public class Enemy_Diamond_LeftCanon : MonoBehaviour
 
     private IEnumerator Shoot()
     {
-        Vector3 pos = new Vector3(transform.position.x + 0.1f, transform.position.y, _beamPrefab.transform.position.z);
+        Vector3 pos = new Vector3(transform.position.x + 0.1f, transform.position.y, _laserPrefab.transform.position.z);
         Vector3 power = new Vector3(5.0f, 0, 0);
 
         yield return new WaitForSeconds(5);
 
-        EnemyBullet beam = Instantiate(_beamPrefab, pos, Quaternion.Euler(0, 0, 90));
-        beam.GetComponent<Rigidbody2D>().AddForce(power, ForceMode2D.Impulse);
+        EnemyBullet beam = Instantiate(_laserPrefab, pos, Quaternion.Euler(0, 0, 90));
+        beam.GetComponent<Rigidbody2D>().velocity = power;
 
         yield return new WaitForSeconds(3);
 

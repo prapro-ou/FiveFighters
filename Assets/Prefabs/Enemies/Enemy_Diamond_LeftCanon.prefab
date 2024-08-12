@@ -143,5 +143,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e406af23e258364fb7b02a97ac0a05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _beamPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}
+  _laserPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}
   _generateEffectPrefab: {fileID: 2842953011420832931, guid: 8b7c3acba81145746bfe379191c28966, type: 3}

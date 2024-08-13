@@ -30,6 +30,9 @@ public class Enemy_Hexagon : Enemy
     private AnimationCurve _movingCurve;
 
     [SerializeField]
+    private AnimationCurve _beatingCurve;
+
+    [SerializeField]
     private EnemyBullet _enemyHexagonBullet;
 
     [SerializeField]
@@ -59,6 +62,14 @@ public class Enemy_Hexagon : Enemy
     {
         get {return _currentState;}
         set {_currentState = value;}
+    }
+
+    private float _currentPosition;
+
+    public float CurrentPosition
+    {
+        get {return _currentPosition;}
+        set {_currentPosition = value;}
     }
 
     private int _numberOfAttacks;
@@ -197,7 +208,10 @@ public class Enemy_Hexagon : Enemy
         }
         yield return new WaitForSeconds(1f);
 
-        Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
+        // Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
+        StartCoroutine(_BeatOnCurve(0.5f, 1f));
+
+        // StartCoroutine(_cameraManager.Vibrate(0.5f, 1f));
 
         _animator.SetTrigger("Appear");
 
@@ -212,6 +226,8 @@ public class Enemy_Hexagon : Enemy
         StartCoroutine(_cameraManager.SetSizeOnCurve(5f));
 
         yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 3, 0), 0.5f));
+
+        CurrentPosition = 0;
 
         yield return new WaitForSeconds(1f);
     }
@@ -245,46 +261,36 @@ public class Enemy_Hexagon : Enemy
 
         Debug.Log("Start ShrinkHexagon");
 
-        //中央移動
-        yield return StartCoroutine(_MoveToPointOnCurve(Vector3.zero, 1f));
+        if(CurrentPosition != 1)
+        {
+            //中央移動
+            yield return StartCoroutine(_MoveToPointOnCurve(Vector3.zero, 1f));
+            CurrentPosition = 1;
+        }
 
         yield return new WaitForSeconds(1f);
 
-        for(int i = 0; i < 3; i++)
+        for(int times = 0; times < 2; times++)
         {
-            //弾
-            bool direction = Random.Range(0,2) == 0;
+            for(int i = 0; i < 3; i++)
+            {
+                //弾
+                bool direction = Random.Range(0,2) == 0;
 
-            if(direction) {StartCoroutine(_RotateOnCurve(360f, 1f));}
-            else {StartCoroutine(_RotateOnCurve(-360f, 1f));}
-            
-            rotation = Quaternion.Euler(0, 0, Random.Range(0, 6) * 60);
-            bullet = Instantiate(_shrinkHexagonBulletPrefab, Vector3.zero, rotation);
+                if(direction) {StartCoroutine(_RotateOnCurve(360f, 1f));}
+                else {StartCoroutine(_RotateOnCurve(-360f, 1f));}
+                
+                rotation = Quaternion.Euler(0, 0, Random.Range(0, 6) * 60);
+                bullet = Instantiate(_shrinkHexagonBulletPrefab, Vector3.zero, rotation);
 
-            bullet.IsRight = direction;
+                bullet.IsRight = direction;
 
-            yield return new WaitForSeconds(1.5f);
-        }
-
-        yield return new WaitForSeconds(2f);
-
-        for(int i = 0; i < 3; i++)
-        {
-            //弾
-            bool direction = Random.Range(0,2) == 0;
-
-            // if(direction) {_animator.SetTrigger("SpinRight");}
-            // else {_animator.SetTrigger("SpinLeft");}
-
-            rotation = Quaternion.Euler(0, 0, Random.Range(0, 6) * 60);
-            bullet = Instantiate(_shrinkHexagonBulletPrefab, Vector3.zero, rotation);
-
-            bullet.IsRight = direction;
-            
-            yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(1.5f);
+            }
+            yield return new WaitForSeconds(2f);
         }
         
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
     
         Debug.Log("Finish ShringHexagon");
     }
@@ -293,18 +299,14 @@ public class Enemy_Hexagon : Enemy
     {
         Debug.Log("Start HexagonLaser");
 
-        yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 4.5f, 0), 1f));
+        if(CurrentPosition != 2)
+        {
+            //画面上移動
+            yield return StartCoroutine(_MoveToPointOnCurve(Vector3.zero, 1f));
+            CurrentPosition = 2;
+        }
 
-        //Playerを親にエフェクト
-        Instantiate(_hexagonTeleportEffectPrefab, _player.transform.position , Quaternion.identity, _player.transform);
-
-        //中心にエフェクト
-        Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
-
-        yield return new WaitForSeconds(1f);
-
-        //中心にPlayerをテレポート
-        _player.transform.position = Vector3.zero;
+        yield return StartCoroutine(_TeleportPlayer(Vector3.zero));
 
         _hexagonWall = _SummonWall();
         _hexagonWall.GetComponent<Animator>().SetTrigger("Appear");
@@ -320,6 +322,7 @@ public class Enemy_Hexagon : Enemy
             Vector3 position = pointTransforms[Random.Range(0,6)].position;
             Quaternion rotation = rotations[Random.Range(0,3)];
             StartCoroutine(_Laser(position, rotation));
+            StartCoroutine(_BeatOnCurve(1f, 0.5f));
             yield return new WaitForSeconds(2f);
         }
 
@@ -350,8 +353,10 @@ public class Enemy_Hexagon : Enemy
 
             StartCoroutine(_Laser(pointTransforms[rp1].position, rotations[rr1]));
             StartCoroutine(_Laser(pointTransforms[rp2].position, rotations[rr2]));
+
+            StartCoroutine(_BeatOnCurve(1f, 0.5f));
             
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2.5f);
         }
 
         yield return new WaitForSeconds(1f);
@@ -367,6 +372,43 @@ public class Enemy_Hexagon : Enemy
     private IEnumerator _RotatingFire()
     {
         Debug.Log("Start RotatingFire");
+
+        float delay = 0.1f;
+        float duration = 3f;
+        float speed;
+
+        if(CurrentPosition != 1)
+        {
+            yield return StartCoroutine(_MoveToPointOnCurve(Vector3.zero, 1f));
+            CurrentPosition = 1;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        for(int times = 0; times < 3; times++)
+        {
+            speed = Random.Range(30f, 60f);
+            int direction = (Random.Range(0, 2) == 0) ? -1 : 1;
+
+            yield return StartCoroutine(_RotateOnCurve(direction * 180f, 1f));
+
+            StartCoroutine(_Rotate(duration, direction * speed));
+
+            for(float i = 0; i <= duration; i += delay)
+            {
+                StartCoroutine(_ShootHexagonShot(transform.position));
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
+        yield return StartCoroutine(_ResetRotation());
+
+        Debug.Log("Finish RotatingFire");
+    }
+
+    private IEnumerator _DiagonalFire()
+    {
+        Debug.Log("Start DiagonalFire");
 
         float delay = 0.1f;
         float duration = 3f;
@@ -390,13 +432,11 @@ public class Enemy_Hexagon : Enemy
                 StartCoroutine(_ShootHexagonShot(transform.position));
                 yield return new WaitForSeconds(delay);
             }
-
-            yield return new WaitForSeconds(1f);
         }
 
         yield return StartCoroutine(_ResetRotation());
 
-        Debug.Log("Finish RotatingFire");
+        Debug.Log("Finish DiagonalFire");
     }
 
     private IEnumerator _ShootHexagonShot(Vector3 position)
@@ -489,5 +529,40 @@ public class Enemy_Hexagon : Enemy
             transform.rotation = startRotation * Quaternion.Euler(0, 0, lerpZ);
             yield return null;
         }
+    }
+
+    private IEnumerator _BeatOnCurve(float duration = 1f, float power = 1f)
+    {
+        Vector3 startScale = transform.localScale;
+        float lerpScaleX;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            lerpScaleX = startScale.x + (_beatingCurve.Evaluate(i / duration) * power);
+            transform.localScale = new Vector3(lerpScaleX, lerpScaleX, 1);
+            yield return null;
+        }
+    }
+
+    private IEnumerator _TeleportPlayer(Vector3 position)
+    {
+        //Playerを親にエフェクト
+        GameObject playerEffect = Instantiate(_hexagonTeleportEffectPrefab, _player.transform.position , Quaternion.identity, _player.transform);
+
+        //中心にエフェクト
+        Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
+
+        yield return new WaitForSeconds(1f);
+
+        //中心にPlayerをテレポート
+        playerEffect.transform.parent = null;
+        float currentSpeed = _player.CurrentSpeed;
+        _player.transform.position = Vector3.zero;
+        _player.CurrentSpeed = 0;
+
+        yield return new WaitForSeconds(0.5f);
+        _player.CurrentSpeed = currentSpeed;
+
+        yield return null;
     }
 }

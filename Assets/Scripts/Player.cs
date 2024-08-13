@@ -113,15 +113,17 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField]
-    private float _speed;
+    private float _defaultSpeed;
 
-    public float Speed
+    private float _currentSpeed;
+
+    public float CurrentSpeed
     {
-        get {return _speed;}
+        get {return _currentSpeed;}
         set
         {
             // _speed = Mathf.Max(0, value);
-            _speed = value;
+            _currentSpeed = value;
         }
     }
 
@@ -291,6 +293,8 @@ public class Player : MonoBehaviour
 
         MyShape = _ownShapes[0];
 
+        CurrentSpeed = _defaultSpeed;
+
         PrimaryGrazeCount = 0;
         SpecialGrazeCount = 0;
 
@@ -351,11 +355,11 @@ public class Player : MonoBehaviour
         //Directionから次の位置に移動
         if(IsSlowingDown == false)
         {
-            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (_speed * Time.fixedDeltaTime)));
+            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (CurrentSpeed * Time.fixedDeltaTime)));
         }
         else
         {
-            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (_speed * Time.fixedDeltaTime * _slowDownRate))); 
+            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (CurrentSpeed * Time.fixedDeltaTime * _slowDownRate))); 
         }
     }
 
@@ -584,6 +588,7 @@ public class Player : MonoBehaviour
         HitPoint = MaxHitPoint;
         PrimaryGrazeCount = 0;
         SpecialGrazeCount = 0;
+        CurrentSpeed = _defaultSpeed;
 
         if(SmallLeftTriangle != null) Destroy(SmallLeftTriangle.gameObject);
         if(SmallRightTriangle != null) Destroy(SmallRightTriangle.gameObject);

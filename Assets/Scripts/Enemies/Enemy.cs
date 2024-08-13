@@ -38,10 +38,10 @@ public abstract class Enemy : MonoBehaviour
             }
         }
     }
-
+/*
     [SerializeField]
     private GameObject _explodePrefab;
-
+*/
     void Awake()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -80,12 +80,12 @@ public abstract class Enemy : MonoBehaviour
     {
         HitPoint -= value;
     }
-
+/*
     public void MakeDamageParticle(Vector3 pos)
     {
         Instantiate(_explodePrefab, pos, Quaternion.identity);
     }
-
+*/
     public abstract void StartAttacking();
 
     public abstract IEnumerator StartSpawnAnimation();

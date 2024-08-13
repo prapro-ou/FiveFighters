@@ -182,10 +182,11 @@ MonoBehaviour:
   _reduceBulletPrefab: {fileID: 1347029831895677856, guid: 0fd17d92bbf593b4a9071eabcbf4daeb, type: 3}
   _leftCanonPrefab: {fileID: 7128881001000578774, guid: 9b57f8f1880659b4b8eea79794e12e1d, type: 3}
   _rightCanonPrefab: {fileID: 7911420778804385291, guid: 6918a7b4b5a03974e9843e014afced4b, type: 3}
-  _bitPrefab: {fileID: 1697434013065630301, guid: 0239195c37b70d444bf2dd0a5002cb49, type: 3}
+  _bitPrefab: {fileID: -2057636919555189189, guid: 0239195c37b70d444bf2dd0a5002cb49, type: 3}
   _generateEffectPrefab: {fileID: 2842953011420832931, guid: 8b7c3acba81145746bfe379191c28966, type: 3}
   _flashEffectPrefab: {fileID: 3027249904341465956, guid: 60b6b7e7987a0a6439518de13c9f5add, type: 3}
   _explodePrefab: {fileID: 3230799239743624, guid: f00adec8820e8494eb5fae2abf212651, type: 3}
+  _scopePrefab: {fileID: 4511148257293849951, guid: d76576b39aeffa14cbc017f0faa26799, type: 3}
   _attackCooltime: 3
 --- !u!95 &-2191553245202046547
 Animator:

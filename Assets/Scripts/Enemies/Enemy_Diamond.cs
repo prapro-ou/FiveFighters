@@ -36,7 +36,7 @@ public class Enemy_Diamond : Enemy
     private Enemy_Diamond_RightCanon _rightCanonPrefab;
 
     [SerializeField]
-    private GameObject _bitPrefab;
+    private Enemy_Diamond_Bit _bitPrefab;
 
     [SerializeField]
     private GameObject _generateEffectPrefab;
@@ -46,6 +46,9 @@ public class Enemy_Diamond : Enemy
 
     [SerializeField]
     private GameObject _explodePrefab;
+
+    [SerializeField]
+    private Enemy_Scope _scopePrefab;
 
     private DiamondState _currentState;
 
@@ -279,8 +282,8 @@ public class Enemy_Diamond : Enemy
 
             yield return new WaitForSeconds(0.2f);
 
-            GameObject leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 180 + (15 * i)));
-            GameObject rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 180 - (15 * i)));
+            Enemy_Diamond_Bit leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 180 + (15 * i)));
+            Enemy_Diamond_Bit rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 180 - (15 * i)));
             yield return new WaitForSeconds(1.0f);
 
             //下向きに進む力
@@ -329,6 +332,9 @@ public class Enemy_Diamond : Enemy
             //生成した弾を点滅させる(初回のみ)
             if(i == 0)
                 yield return StartCoroutine(_Flashing(bullet));
+
+            //照準を表示
+            Enemy_Scope scope = Instantiate(_scopePrefab, target, Quaternion.identity);
 
             //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
             bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 8.0f;
@@ -381,16 +387,16 @@ public class Enemy_Diamond : Enemy
             if(rnd_x == 0)
             {
                 if(rnd_y == 0)
-                    power = new Vector3(Random.Range(1, 8), -5.0f, 0);
+                    power = new Vector3(Random.Range(0, 8), -5.0f, 0);
                 else
-                    power = new Vector3(Random.Range(1, 8), 5.0f, 0);
+                    power = new Vector3(Random.Range(0, 8), 5.0f, 0);
             }
             else
             {
                 if(rnd_y == 0)
-                    power = new Vector3(Random.Range(-8, -1), -5.0f, 0);
+                    power = new Vector3(Random.Range(-8, 0), -5.0f, 0);
                 else
-                    power = new Vector3(Random.Range(-8, -1), 5.0f, 0);
+                    power = new Vector3(Random.Range(-8, 0), 5.0f, 0);
             }
 
             //弾を発射
@@ -483,6 +489,9 @@ public class Enemy_Diamond : Enemy
             //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
             Vector3 target = _player.transform.position;
             Vector3 power = target - this.transform.position;
+
+            //照準を表示
+            Enemy_Scope scope = Instantiate(_scopePrefab, target, Quaternion.identity);
 
             //弾を発射 正規化した位置ベクトルに乱数を乗算して速さを調整．
             bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * rnd;

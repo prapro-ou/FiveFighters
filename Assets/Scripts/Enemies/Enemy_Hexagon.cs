@@ -7,10 +7,10 @@ using UnityEngine;
 public enum HexagonState
 {
     Wait,
-    Attack1,
-    Attack2,
-    Attack3
-    // Attack4,
+    // Attack1,
+    // Attack2,
+    // Attack3,
+    Attack4
     // Attack5,
     // Attack6
 }
@@ -40,6 +40,9 @@ public class Enemy_Hexagon : Enemy
 
     [SerializeField]
     private ShrinkHexagonBullet _shrinkHexagonBulletPrefab; 
+
+    [SerializeField]
+    private MoveHexagonBullet _moveHexagonBulletPrefab; 
 
     [SerializeField]
     private GameObject _hexagonWallPrefab;
@@ -139,30 +142,30 @@ public class Enemy_Hexagon : Enemy
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
-                case HexagonState.Attack1:
-                {
-                    yield return StartCoroutine(_ShrinkHexagon());
-                    CurrentState = HexagonState.Wait;
-                    break;
-                }
-                case HexagonState.Attack2:
-                {
-                    yield return StartCoroutine(_HexagonLaser());
-                    CurrentState = HexagonState.Wait;
-                    break;
-                }
-                case HexagonState.Attack3:
-                {
-                    yield return StartCoroutine(_RotatingFire());
-                    CurrentState = HexagonState.Wait;
-                    break;
-                }
-                // case HexagonState.Attack4:
+                // case HexagonState.Attack1:
                 // {
-                //     yield return StartCoroutine(_BurstShoot());
+                //     yield return StartCoroutine(_ShrinkHexagon());
                 //     CurrentState = HexagonState.Wait;
                 //     break;
                 // }
+                // case HexagonState.Attack2:
+                // {
+                //     yield return StartCoroutine(_HexagonLaser());
+                //     CurrentState = HexagonState.Wait;
+                //     break;
+                // }
+                // case HexagonState.Attack3:
+                // {
+                //     yield return StartCoroutine(_RotatingFire());
+                //     CurrentState = HexagonState.Wait;
+                //     break;
+                // }
+                case HexagonState.Attack4:
+                {
+                    yield return StartCoroutine(_DiagonalFire());
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
                 // case HexagonState.Attack5:
                 // {
                 //     yield return StartCoroutine(_BurstShoot());
@@ -302,7 +305,7 @@ public class Enemy_Hexagon : Enemy
         if(CurrentPosition != 2)
         {
             //画面上移動
-            yield return StartCoroutine(_MoveToPointOnCurve(Vector3.zero, 1f));
+            yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 4.5f, 0), 1f));
             CurrentPosition = 2;
         }
 
@@ -410,31 +413,64 @@ public class Enemy_Hexagon : Enemy
     {
         Debug.Log("Start DiagonalFire");
 
-        float delay = 0.1f;
-        float duration = 3f;
-        float speed;
+        // float delay = 0.1f;
+        // float duration = 3f;
+        // // float speed;
 
-        yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 0, 0), 1f));
+        if(CurrentPosition != 2)
+        {
+            //画面上移動
+            yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 4.5f, 0), 1f));
+            CurrentPosition = 2;
+        }
+
+        yield return StartCoroutine(_TeleportPlayer(Vector3.zero));
+
+        _hexagonWall = _SummonWall();
+        _hexagonWall.GetComponent<Animator>().SetTrigger("Appear");
 
         yield return new WaitForSeconds(1f);
 
-        for(int times = 0; times < 3; times++)
+        List<Transform> pointTransforms1 = (_hexagonWall.GetComponentsInChildren<Transform>()).ToList();
+        List<Transform> pointTransforms2 = (_hexagonWall.GetComponentsInChildren<Transform>()).ToList();
+        pointTransforms1.RemoveAt(0);
+        pointTransforms2.RemoveAt(0);
+
+        for(int times = 0; times < 2; times++)
         {
-            speed = Random.Range(30f, 60f);
-            int direction = (Random.Range(0, 2) == 0) ? -1 : 1;
+            // シャッフル
+            _ShuffleTransformList(pointTransforms1);
+            _ShuffleTransformList(pointTransforms2);
 
-            yield return StartCoroutine(_RotateOnCurve(direction * 180f, 1f));
+            Instantiate(_hexagonCautionEffectPrefab, pointTransforms1[0].position, Quaternion.identity);
+            Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[0].position, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
 
-            StartCoroutine(_Rotate(duration, direction * speed));
+            MoveHexagonBullet bullet1 = Instantiate(_moveHexagonBulletPrefab, pointTransforms1[0].position, Quaternion.identity);
+            MoveHexagonBullet bullet2 = Instantiate(_moveHexagonBulletPrefab, pointTransforms2[0].position, Quaternion.identity);
 
-            for(float i = 0; i <= duration; i += delay)
+            yield return new WaitForSeconds(0.5f);
+
+            for(int i = 1; i < 6; i++)
             {
-                StartCoroutine(_ShootHexagonShot(transform.position));
-                yield return new WaitForSeconds(delay);
+                Instantiate(_hexagonCautionEffectPrefab, pointTransforms1[i].position, Quaternion.identity);
+                Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[i].position, Quaternion.identity);
+                yield return new WaitForSeconds(0.8f);
+
+                StartCoroutine(bullet1.MoveToPointOnCurve(pointTransforms1[i].position, 1f));
+                yield return StartCoroutine(bullet2.MoveToPointOnCurve(pointTransforms2[i].position, 1f));
             }
+
+            Destroy(bullet1.gameObject);
+            Destroy(bullet2.gameObject);
         }
 
-        yield return StartCoroutine(_ResetRotation());
+        yield return new WaitForSeconds(1f);
+
+        _hexagonWall.GetComponent<Animator>().SetTrigger("Disappear");
+
+        Destroy(_hexagonWall, 1f);
+        _hexagonWall = null;
 
         Debug.Log("Finish DiagonalFire");
     }
@@ -564,5 +600,16 @@ public class Enemy_Hexagon : Enemy
         _player.CurrentSpeed = currentSpeed;
 
         yield return null;
+    }
+
+    private void _ShuffleTransformList(List<Transform> list)
+    {
+        for (var i = list.Count - 1; i > 0; --i)
+        {
+            var j = Random.Range(0, i + 1);
+            var tmp = list[i];
+            list[i] = list[j];
+            list[j] = tmp;
+        }
     }
 }

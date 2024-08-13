@@ -322,6 +322,7 @@ MonoBehaviour:
   _enemyHexagonBullet: {fileID: -6450398580459616629, guid: 0afe18b7b620aa240806565a2ec8d5a3, type: 3}
   _hexagonTriangleBullet: {fileID: -937885088228772783, guid: e3b96bbe6dad71e4281a52f0ac2aa8f2, type: 3}
   _shrinkHexagonBulletPrefab: {fileID: 7486080687733238234, guid: 927b95bfe3b90214a84c3f70033926b3, type: 3}
+  _moveHexagonBulletPrefab: {fileID: -5545216764653278581, guid: 2f1834db0d7434c4da1eba745933f8d9, type: 3}
   _hexagonWallPrefab: {fileID: 8705069139184459898, guid: 91bdeb17a83e8394fa7ec730026140c3, type: 3}
   _hexagonLaserPrefab: {fileID: -1511776850887659135, guid: 85312d3deaefc394d8988e7462f90b5b, type: 3}
   _hexagonLaserCautionPrefab: {fileID: -1511776850887659135, guid: a7ab61248bda7ef49a5490a497bc0b92, type: 3}

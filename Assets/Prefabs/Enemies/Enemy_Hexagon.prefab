@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b119b93a4d83e4282d166b8672216a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   _maxHitPoint: 2000
   _explodePrefab: {fileID: 0}
   _animator: {fileID: -5226222719145971260}
@@ -971,6 +972,10 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enemyHexagonBullet: {fileID: -6450398580459616629, guid: 0afe18b7b620aa240806565a2ec8d5a3, type: 3}
+=======
+  _maxHitPoint: 1000
+  _animator: {fileID: 0}
+>>>>>>> main
   _hexagonTriangleBullet: {fileID: -937885088228772783, guid: e3b96bbe6dad71e4281a52f0ac2aa8f2, type: 3}
   _shrinkHexagonBulletPrefab: {fileID: 7486080687733238234, guid: 927b95bfe3b90214a84c3f70033926b3, type: 3}
   _moveHexagonBulletPrefab: {fileID: -5545216764653278581, guid: 2f1834db0d7434c4da1eba745933f8d9, type: 3}
@@ -982,7 +987,11 @@ MonoBehaviour:
   _hexagonLaserCautionPrefab: {fileID: -1511776850887659135, guid: a7ab61248bda7ef49a5490a497bc0b92, type: 3}
   _hexagonCautionEffectPrefab: {fileID: 4785698340915390335, guid: 48e5e7ba018f8fe4992eee82c980e918, type: 3}
   _hexagonTeleportEffectPrefab: {fileID: 4785698340915390335, guid: bf429b195ad649b418ea6fc2e2c49f09, type: 3}
+<<<<<<< HEAD
   _attackCooltime: 1
+=======
+  _attackCooltime: 4
+>>>>>>> main
 --- !u!95 &-5226222719145971260
 Animator:
   serializedVersion: 5

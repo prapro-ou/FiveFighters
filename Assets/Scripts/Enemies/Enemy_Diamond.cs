@@ -18,6 +18,8 @@ public enum DiamondState
 
 public class Enemy_Diamond : Enemy
 {
+    private CameraManager _cameraManager;
+
     private Player _player;
 
     [SerializeField]
@@ -77,6 +79,14 @@ public class Enemy_Diamond : Enemy
         set {_attackCooltime = value;}
     }
 
+    private Coroutine _currentCoroutine;
+
+    public Coroutine CurrentCoroutine
+    {
+        get {return _currentCoroutine;}
+        set {_currentCoroutine = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -87,6 +97,9 @@ public class Enemy_Diamond : Enemy
 
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.CurrentEnemy = this;
+
+        _cameraManager = GameObject.Find("CameraManager").GetComponent<CameraManager>();
+
     }
 
     // Update is called once per frame
@@ -123,13 +136,29 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack1:
-                //3つの頂点から平行に射撃
+                //3つの頂点から平行に射撃.1セットごとに移動．
                 {
                     Debug.Log("Attack:" + CurrentState);
+                    CurrentCoroutine = StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
+                    yield return new WaitForSeconds(1);
+                    yield return StartCoroutine(_Move('l'));
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
+                    yield return new WaitForSeconds(1);
+                    yield return StartCoroutine(_Move('r'));
+                    yield return StartCoroutine(_3VerticesShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
+                    yield return new WaitForSeconds(1);
+                    yield return StartCoroutine(_Move('r'));
+                    yield return StartCoroutine(_3VerticesShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
+                    yield return new WaitForSeconds(1);
+                    yield return StartCoroutine(_Move('l'));
+                    yield return StartCoroutine(_3VerticesShoot());
+                    yield return StartCoroutine(_3VerticesShoot());
+
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -137,7 +166,8 @@ public class Enemy_Diamond : Enemy
                 //分身設置．時間差で射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_GenerateCanon());
+                    CurrentCoroutine = StartCoroutine(_GenerateCanon());
+                    yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -145,7 +175,8 @@ public class Enemy_Diamond : Enemy
                 //砲台を近くに展開し，三点からビーム．角度を変えてもう一回．
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_LaserShoot());
+                    CurrentCoroutine = StartCoroutine(_LaserShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -153,15 +184,17 @@ public class Enemy_Diamond : Enemy
                 //高速かすり値減少弾10発 発射時点のプレイヤーの位置に飛ぶ．
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_AimingRapidShoot());
+                    CurrentCoroutine = StartCoroutine(_AimingRapidShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
                 case DiamondState.Attack5:
-                //画面中央で乱れ撃ち
+                //画面中央で乱れ撃ち.ビームも混入
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_RandomShoot());
+                    CurrentCoroutine = StartCoroutine(_RandomShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -169,7 +202,8 @@ public class Enemy_Diamond : Enemy
                 //3つの頂点から扇形に射撃
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_FanShoot());
+                    CurrentCoroutine = StartCoroutine(_FanShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -177,7 +211,8 @@ public class Enemy_Diamond : Enemy
                 //弾速が違う弾が混ざった射撃を10発 1発ごとにホーミング
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_ChangeSpeedShoot());
+                    CurrentCoroutine = StartCoroutine(_ChangeSpeedShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
                 }
@@ -190,8 +225,19 @@ public class Enemy_Diamond : Enemy
     public override IEnumerator StartSpawnAnimation()
     {
         Debug.Log("StartSpawnAnimation");
+        Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.identity);
+        Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.Euler(0, 0, 90));
+        Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.Euler(0, 0, 180));
+        Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.Euler(0, 0, 270));
 
-        yield return new WaitForSeconds(5); //Sample
+        for(int i = 0; i <= 100; ++i){
+            transform.localScale = new Vector3(0.02f * i, 0.02f * i, 0.01f * i);
+            transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
+            yield return new WaitForSeconds(0.025f);
+        }
+
+        yield return new WaitForSeconds(3);
+        yield break;
     }
 
 
@@ -200,6 +246,8 @@ public class Enemy_Diamond : Enemy
     public override IEnumerator StartDeathAnimation()
     {
         Debug.Log("StartDeathAnimation");
+
+        StopCoroutine(CurrentCoroutine);
 
         Color startColor = Color.white;
         Color endColor = Color.black;
@@ -277,42 +325,57 @@ public class Enemy_Diamond : Enemy
 
         for(int i = 0; i < 4; ++i)
         {
+            //砲台登場演出
             GameObject leftflash = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
             GameObject rightflash = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
 
             yield return new WaitForSeconds(0.2f);
 
-            Enemy_Diamond_Bit leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.Euler(0, 0, 180 + (15 * i)));
-            Enemy_Diamond_Bit rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.Euler(0, 0, 180 - (15 * i)));
+            //プレイヤーの方を向けるための角度計算
+            Vector3 aim_c = _player.transform.position - transform.position;
+            float angle_c = Mathf.Atan2(aim_c.x, aim_c.y);
+            Vector3 aim_l = _player.transform.position - pos_l;
+            float angle_l = Mathf.Atan2(aim_l.x, aim_l.y);
+            Vector3 aim_r = _player.transform.position - pos_r;
+            float angle_r = Mathf.Atan2(aim_r.x, aim_r.y);
+
+            //砲台生成
+            Enemy_Diamond_Bit leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.AngleAxis(angle_l * Mathf.Rad2Deg, Vector3.back));
+            Enemy_Diamond_Bit rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.AngleAxis(angle_r * Mathf.Rad2Deg, Vector3.back));
+
+            //照準表示
+            Enemy_Scope scope = Instantiate(_scopePrefab, _player.transform.position, Quaternion.identity);
+
             yield return new WaitForSeconds(1.0f);
 
-            //下向きに進む力
-            Vector3 power = new Vector3(0, -5.0f, 0);
-
-            Vector3 power_l = new Vector3(0.7f * i, -5.0f, 0);
-            Vector3 power_r = new Vector3(-0.7f * i, -5.0f, 0);
+            Vector3 power_c = aim_c.normalized * 6.0f;
+            Vector3 power_l = aim_l.normalized * 6.0f;
+            Vector3 power_r = aim_r.normalized * 6.0f;
 
             for(int j = 0; j < 3; ++j)
             {
                 //ビームを生成
-                EnemyBullet laser_l = Instantiate(_laserPrefab, pos_l, Quaternion.Euler(0, 0, i * 14));
-                EnemyBullet laser_c = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
-                EnemyBullet laser_r = Instantiate(_laserPrefab, pos_r, Quaternion.Euler(0, 0, 180 - (i * 14)));
+                EnemyBullet laser_l = Instantiate(_laserPrefab, pos_l, Quaternion.AngleAxis(angle_l * Mathf.Rad2Deg, Vector3.back));
+                EnemyBullet laser_c = Instantiate(_laserPrefab, transform.position, Quaternion.AngleAxis(angle_c * Mathf.Rad2Deg, Vector3.back));
+                EnemyBullet laser_r = Instantiate(_laserPrefab, pos_r, Quaternion.AngleAxis(angle_r * Mathf.Rad2Deg, Vector3.back));
 
                 //ビームを発射
                 laser_l.GetComponent<Rigidbody2D>().velocity = power_l;
-                laser_c.GetComponent<Rigidbody2D>().velocity = power;
+                laser_c.GetComponent<Rigidbody2D>().velocity = power_c;
                 laser_r.GetComponent<Rigidbody2D>().velocity = power_r;
 
-                yield return new WaitForSeconds(0.6f);
+                yield return new WaitForSeconds(0.4f);
             }
 
+            //退場演出
             GameObject leftflash2 = Instantiate(_flashEffectPrefab, pos_l + new Vector3(0.5f, 0, 0), Quaternion.identity);
             GameObject rightflash2 = Instantiate(_flashEffectPrefab, pos_r + new Vector3(0.5f, 0, 0), Quaternion.identity);
+
+            //砲台消滅
             Destroy(leftbit.gameObject);
             Destroy(rightbit.gameObject);
-
         }
+
         yield return null;
     }
 
@@ -369,21 +432,26 @@ public class Enemy_Diamond : Enemy
         Vector3 startPos = this.transform.position;
 
         //画面中央に移動
-        yield return StartCoroutine(_Move(0));
+        yield return StartCoroutine(_Move('f'));
         yield return new WaitForSeconds(1.5f);
 
+        for(int i = 0; i <= 200; ++i)
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
+            yield return new WaitForSeconds(0.01f);
+        }
+
         //乱射
-        for(int i = 1; i < 30; ++i)
+        for(int i = 0; i < 30; ++i)
         {
             int rnd_x = Random.Range(0, 2);
             int rnd_y = Random.Range(0, 2);
 
             //自機の位置に弾を生成
-            Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+            Vector3 pos = transform.position;
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
             Vector3 power;
-
             if(rnd_x == 0)
             {
                 if(rnd_y == 0)
@@ -402,11 +470,19 @@ public class Enemy_Diamond : Enemy
             //弾を発射
             bullet.GetComponent<Rigidbody2D>().velocity = power;
 
+            if(i % 5 == 0)
+            {
+                Vector3 aim = _player.transform.position - transform.position;
+                float angle = Mathf.Atan2(aim.x, aim.y);
+                EnemyBullet laser = Instantiate(_laserPrefab, pos, Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.back));
+                laser.GetComponent<Rigidbody2D>().velocity = aim.normalized * 6.0f;
+            }
+
             yield return new WaitForSeconds(0.2f);
         }
 
         //元の位置に戻る
-        yield return StartCoroutine(_Move(1));
+        yield return StartCoroutine(_Move('b'));
         yield return new WaitForSeconds(1);
 
         yield return null;
@@ -415,15 +491,39 @@ public class Enemy_Diamond : Enemy
     private IEnumerator _Move(int n)
     {
         //進行方向管理用
-        float mode = 1.0f;
+        float mode_x = 0;
+        float mode_y = 0;
+
+        int cnt = 0;
 
         //引数が0だったら前進，1だったら後退．
-        if(n == 1)
-            mode *= -1.0f;
-
-        for(int i = 0; i <= 25; ++i)
+        switch(n)
         {
-            this.transform.position +=  new Vector3(0, -0.1f * mode, 0);
+            case 'f':
+                mode_x = 0;
+                mode_y = -1;
+                cnt = 25;
+                break;
+            case 'r':
+                mode_x = 1;
+                mode_y = 0;
+                cnt = 15;
+                break;
+            case 'b':
+                mode_x = 0;
+                mode_y = 1;
+                cnt = 25;
+                break;
+            case 'l':
+                mode_x = -1;
+                mode_y = 0;
+                cnt =15;
+                break;
+        }
+
+        for(int i = 0; i <= cnt; ++i)
+        {
+            this.transform.position +=  new Vector3(0.1f * mode_x, 0.1f * mode_y, 0);
             yield return null;
         }
 
@@ -432,46 +532,48 @@ public class Enemy_Diamond : Enemy
 
     private IEnumerator _FanShoot()
     {
-        //各方向 c(直進) r(右) l(左)へ向かう力
-        Vector3 power_c = new Vector3(0, -5.0f, 0);
-        Vector3 power_r = new Vector3(4.0f, -5.0f, 0);
-        Vector3 power_l = new Vector3(-4.0f, -5.0f, 0);
+        for(int i = 0; i < 3; ++i){
+            //各方向 c(直進) r(右) l(左)へ向かう力
+            Vector3 power_c = new Vector3(0, -5.0f, 0);
+            Vector3 power_r = new Vector3(4.0f - 0.7f * i, -5.0f, 0);
+            Vector3 power_l = new Vector3(-4.0f + 0.7f * i , -5.0f, 0);
 
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+            Vector3 pos = transform.position;
 
-        //中心部分の弾を生成
-        EnemyBullet bullet_c1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-        EnemyBullet bullet_r1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-        EnemyBullet bullet_l1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            //中心部分の弾を生成
+            EnemyBullet bullet_c1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet_r1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet_l1 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
-        //右側部分の弾を生成
-        pos.x += 1.2f;
-        EnemyBullet bullet_c2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-        EnemyBullet bullet_r2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-        EnemyBullet bullet_l2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            //右側部分の弾を生成
+            pos.x += 1.2f;
+            EnemyBullet bullet_c2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet_r2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet_l2 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
-        //左側部分の弾を生成
-        pos.x -= 2.4f;
-        EnemyBullet bullet_c3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-        EnemyBullet bullet_r3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-        EnemyBullet bullet_l3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            //左側部分の弾を生成
+            pos.x -= 2.4f;
+            EnemyBullet bullet_c3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet_r3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet_l3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
-        //各部分の直進する弾を発射
-        bullet_c1.GetComponent<Rigidbody2D>().velocity = power_c;
-        bullet_c2.GetComponent<Rigidbody2D>().velocity = power_c;
-        bullet_c3.GetComponent<Rigidbody2D>().velocity = power_c;
+            //各部分の直進する弾を発射
+            bullet_c1.GetComponent<Rigidbody2D>().velocity = power_c;
+            bullet_c2.GetComponent<Rigidbody2D>().velocity = power_c;
+            bullet_c3.GetComponent<Rigidbody2D>().velocity = power_c;
 
-        //各部分の右側へ向かう弾を発射
-        bullet_r1.GetComponent<Rigidbody2D>().velocity = power_r;
-        bullet_r2.GetComponent<Rigidbody2D>().velocity = power_r;
-        bullet_r3.GetComponent<Rigidbody2D>().velocity = power_r;
+            //各部分の右側へ向かう弾を発射
+            bullet_r1.GetComponent<Rigidbody2D>().velocity = power_r;
+            bullet_r2.GetComponent<Rigidbody2D>().velocity = power_r;
+            bullet_r3.GetComponent<Rigidbody2D>().velocity = power_r;
 
-        //各部分の左側へ向かう弾を発射
-        bullet_l1.GetComponent<Rigidbody2D>().velocity = power_l;
-        bullet_l2.GetComponent<Rigidbody2D>().velocity = power_l;
-        bullet_l3.GetComponent<Rigidbody2D>().velocity = power_l;
+            //各部分の左側へ向かう弾を発射
+            bullet_l1.GetComponent<Rigidbody2D>().velocity = power_l;
+            bullet_l2.GetComponent<Rigidbody2D>().velocity = power_l;
+            bullet_l3.GetComponent<Rigidbody2D>().velocity = power_l;
 
-        yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1);
+        }
         yield return null;
     }
 

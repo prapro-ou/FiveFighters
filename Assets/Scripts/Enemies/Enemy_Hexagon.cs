@@ -10,8 +10,8 @@ public enum HexagonState
     // Attack1,
     // Attack2,
     // Attack3,
-    Attack4
-    // Attack5,
+    // Attack4,
+    Attack5
     // Attack6
 }
 
@@ -24,6 +24,8 @@ public class Enemy_Hexagon : Enemy
 
     private GameObject _hexagonWall;
 
+    private GameObject _hexagonLine;
+
     private CameraManager _cameraManager;
 
     [SerializeField]
@@ -31,6 +33,12 @@ public class Enemy_Hexagon : Enemy
 
     [SerializeField]
     private AnimationCurve _beatingCurve;
+
+    [SerializeField]
+    private AnimationCurve _vibrateCurveX;
+    
+    [SerializeField]
+    private AnimationCurve _vibrateCurveY;
 
     [SerializeField]
     private EnemyBullet _enemyHexagonBullet;
@@ -46,6 +54,9 @@ public class Enemy_Hexagon : Enemy
 
     [SerializeField]
     private GameObject _hexagonWallPrefab;
+
+    [SerializeField]
+    private GameObject _hexagonLinePrefab;
 
     [SerializeField]
     private EnemyBullet _hexagonLaserPrefab;
@@ -160,18 +171,18 @@ public class Enemy_Hexagon : Enemy
                 //     CurrentState = HexagonState.Wait;
                 //     break;
                 // }
-                case HexagonState.Attack4:
-                {
-                    yield return StartCoroutine(_DiagonalFire());
-                    CurrentState = HexagonState.Wait;
-                    break;
-                }
-                // case HexagonState.Attack5:
+                // case HexagonState.Attack4:
                 // {
-                //     yield return StartCoroutine(_BurstShoot());
+                //     yield return StartCoroutine(_DiagonalFire());
                 //     CurrentState = HexagonState.Wait;
                 //     break;
                 // }
+                case HexagonState.Attack5:
+                {
+                    yield return StartCoroutine(_WallFire());
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
                 // case HexagonState.Attack6:
                 // {
                 //     yield return StartCoroutine(_BurstShoot());
@@ -247,7 +258,18 @@ public class Enemy_Hexagon : Enemy
             _hexagonWall = null;
         }
 
-        yield return new WaitForSeconds(2); //Sample
+        if(_hexagonLine != null)
+        {
+            Destroy(_hexagonLine);
+            _hexagonLine = null;
+        }
+
+        yield return new WaitForSeconds(1.5f); //Sample
+
+        _animator.SetTrigger("Defeat");
+        StartCoroutine(_Vibrate(2.5f, 0.2f));
+
+        yield return new WaitForSeconds(2.5f);
 
         Destroy(this.gameObject);
 
@@ -449,6 +471,9 @@ public class Enemy_Hexagon : Enemy
             MoveHexagonBullet bullet1 = Instantiate(_moveHexagonBulletPrefab, pointTransforms1[0].position, Quaternion.identity);
             MoveHexagonBullet bullet2 = Instantiate(_moveHexagonBulletPrefab, pointTransforms2[0].position, Quaternion.identity);
 
+            bullet1.GetComponent<Animator>().SetTrigger("Appear");
+            bullet2.GetComponent<Animator>().SetTrigger("Appear");
+
             yield return new WaitForSeconds(0.5f);
 
             for(int i = 1; i < 6; i++)
@@ -457,12 +482,17 @@ public class Enemy_Hexagon : Enemy
                 Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[i].position, Quaternion.identity);
                 yield return new WaitForSeconds(0.8f);
 
+                StartCoroutine(_BeatOnCurve(1f, 0.3f));
+
                 StartCoroutine(bullet1.MoveToPointOnCurve(pointTransforms1[i].position, 1f));
                 yield return StartCoroutine(bullet2.MoveToPointOnCurve(pointTransforms2[i].position, 1f));
             }
 
-            Destroy(bullet1.gameObject);
-            Destroy(bullet2.gameObject);
+            bullet1.GetComponent<Animator>().SetTrigger("Disappear");
+            bullet2.GetComponent<Animator>().SetTrigger("Disappear");
+
+            Destroy(bullet1.gameObject, 1f);
+            Destroy(bullet2.gameObject, 1f);
         }
 
         yield return new WaitForSeconds(1f);
@@ -475,19 +505,68 @@ public class Enemy_Hexagon : Enemy
         Debug.Log("Finish DiagonalFire");
     }
 
-    private IEnumerator _ShootHexagonShot(Vector3 position)
+    private IEnumerator _WallFire()
     {
-        float bulletSpeed = 8f;
+        Debug.Log("Start WallFire");
+
+        float delay = 0.3f;
+        // float duration = 3f;
+        float speed = 3f;
+
+        if(CurrentPosition != 3)
+        {
+            yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 4, 0), 1f));
+            CurrentPosition = 3;
+        }
+
+        _hexagonLine = _SummonLine();
+        _hexagonLine.GetComponent<Animator>().SetTrigger("Appear");
+
+        yield return new WaitForSeconds(1f);
+
+        List<Transform> pointTransforms = (_hexagonLine.GetComponentsInChildren<Transform>()).ToList();
+        pointTransforms.RemoveAt(0);
+
+        _ShuffleTransformList(pointTransforms);
+
+        StartCoroutine(_BeatOnCurve(6f, 0.3f));
+        StartCoroutine(_RotateOnCurve(720f, 6f));
+
+        for(int i = 0; i < 20; i++)
+        {
+            StartCoroutine(_ShootHexagonShotWithCaution(pointTransforms[i % pointTransforms.Count].position, speed));
+            yield return new WaitForSeconds(delay);
+        }
+
+        _hexagonLine.GetComponent<Animator>().SetTrigger("Disappear");
+
+        Destroy(_hexagonLine, 1f);
+        _hexagonLine = null;
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator _ShootHexagonShot(Vector3 position, float speed = 8f)
+    {
         Rigidbody2D rb;
 
         for(int i = 0; i < 6; i++)
         {
             EnemyBullet bullet = Instantiate(_enemyHexagonBullet, position, Quaternion.Euler(0, 0, (60 * i)) * transform.rotation);
             rb = bullet.GetComponent<Rigidbody2D>();
-            rb.velocity = bullet.transform.right * bulletSpeed;
+            rb.velocity = bullet.transform.right * speed;
         }
         
         yield return null;
+    }
+
+    private IEnumerator _ShootHexagonShotWithCaution(Vector3 position, float speed)
+    {
+        Instantiate(_hexagonCautionEffectPrefab, position, Quaternion.identity);
+        
+        yield return new WaitForSeconds(1f);
+
+        yield return StartCoroutine(_ShootHexagonShot(position, speed));
     }
 
     private GameObject _SummonWall()
@@ -495,6 +574,13 @@ public class Enemy_Hexagon : Enemy
         GameObject wall = Instantiate(_hexagonWallPrefab, Vector3.zero, Quaternion.identity);
 
         return wall;
+    }
+
+    private GameObject _SummonLine()
+    {
+        GameObject line = Instantiate(_hexagonLinePrefab, Vector3.zero, Quaternion.identity);
+
+        return line;
     }
 
     private IEnumerator _Laser(Vector3 position, Quaternion rotation)
@@ -578,6 +664,23 @@ public class Enemy_Hexagon : Enemy
             transform.localScale = new Vector3(lerpScaleX, lerpScaleX, 1);
             yield return null;
         }
+    }
+
+    private IEnumerator _Vibrate(float duration, float power)
+    {
+        Vector3 startPosition = transform.position;
+
+        Vector3 nextPosition = startPosition;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            nextPosition.x = startPosition.x + (_vibrateCurveX.Evaluate(i / duration) * power);
+            nextPosition.y = startPosition.y + (_vibrateCurveY.Evaluate(i / duration) * power);
+            transform.position = nextPosition;
+            yield return null;
+        }
+
+        transform.position = startPosition;
     }
 
     private IEnumerator _TeleportPlayer(Vector3 position)

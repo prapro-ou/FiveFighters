@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b119b93a4d83e4282d166b8672216a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHitPoint: 1000
+  _maxHitPoint: 2000
   _explodePrefab: {fileID: 0}
   _animator: {fileID: -5226222719145971260}
   _movingCurve:
@@ -974,6 +974,8 @@ MonoBehaviour:
   _hexagonTriangleBullet: {fileID: -937885088228772783, guid: e3b96bbe6dad71e4281a52f0ac2aa8f2, type: 3}
   _shrinkHexagonBulletPrefab: {fileID: 7486080687733238234, guid: 927b95bfe3b90214a84c3f70033926b3, type: 3}
   _moveHexagonBulletPrefab: {fileID: -5545216764653278581, guid: 2f1834db0d7434c4da1eba745933f8d9, type: 3}
+  _hexagonMineCautionTilesPrefab: {fileID: 3244776975619382985, guid: 616e8271379e57347aa650da6e7399bb, type: 3}
+  _hexagonDefeatEffectPrefab: {fileID: 6141918197384672487, guid: 2208675a56adee6469ce24e1da9e6672, type: 3}
   _hexagonWallPrefab: {fileID: 8705069139184459898, guid: 91bdeb17a83e8394fa7ec730026140c3, type: 3}
   _hexagonLinePrefab: {fileID: 5982314469264280746, guid: 5799aa3e2d45b594fbcec7c6abc0ab49, type: 3}
   _hexagonLaserPrefab: {fileID: -1511776850887659135, guid: 85312d3deaefc394d8988e7462f90b5b, type: 3}

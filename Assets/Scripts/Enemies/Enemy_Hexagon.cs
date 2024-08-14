@@ -7,12 +7,12 @@ using UnityEngine;
 public enum HexagonState
 {
     Wait,
-    // Attack1,
-    // Attack2,
-    // Attack3,
-    // Attack4,
-    Attack5
-    // Attack6
+    Attack1,
+    Attack2,
+    Attack3,
+    Attack4,
+    Attack5,
+    Attack6
 }
 
 public class Enemy_Hexagon : Enemy
@@ -25,6 +25,8 @@ public class Enemy_Hexagon : Enemy
     private GameObject _hexagonWall;
 
     private GameObject _hexagonLine;
+
+    private GameObject _hexagonMineTiles;
 
     private CameraManager _cameraManager;
 
@@ -53,6 +55,12 @@ public class Enemy_Hexagon : Enemy
     private MoveHexagonBullet _moveHexagonBulletPrefab; 
 
     [SerializeField]
+    private GameObject _hexagonMineCautionTilesPrefab; 
+
+    [SerializeField]
+    private GameObject _hexagonDefeatEffectPrefab; 
+
+    [SerializeField]
     private GameObject _hexagonWallPrefab;
 
     [SerializeField]
@@ -76,6 +84,14 @@ public class Enemy_Hexagon : Enemy
     {
         get {return _currentState;}
         set {_currentState = value;}
+    }
+
+    private Coroutine _currentCoroutine;
+
+    public Coroutine CurrentCoroutine
+    {
+        get {return _currentCoroutine;}
+        set {_currentCoroutine = value;}
     }
 
     private float _currentPosition;
@@ -153,42 +169,48 @@ public class Enemy_Hexagon : Enemy
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
-                // case HexagonState.Attack1:
-                // {
-                //     yield return StartCoroutine(_ShrinkHexagon());
-                //     CurrentState = HexagonState.Wait;
-                //     break;
-                // }
-                // case HexagonState.Attack2:
-                // {
-                //     yield return StartCoroutine(_HexagonLaser());
-                //     CurrentState = HexagonState.Wait;
-                //     break;
-                // }
-                // case HexagonState.Attack3:
-                // {
-                //     yield return StartCoroutine(_RotatingFire());
-                //     CurrentState = HexagonState.Wait;
-                //     break;
-                // }
-                // case HexagonState.Attack4:
-                // {
-                //     yield return StartCoroutine(_DiagonalFire());
-                //     CurrentState = HexagonState.Wait;
-                //     break;
-                // }
-                case HexagonState.Attack5:
+                case HexagonState.Attack1:
                 {
-                    yield return StartCoroutine(_WallFire());
+                    CurrentCoroutine = StartCoroutine(_ShrinkHexagon());
+                    yield return CurrentCoroutine;
                     CurrentState = HexagonState.Wait;
                     break;
                 }
-                // case HexagonState.Attack6:
-                // {
-                //     yield return StartCoroutine(_BurstShoot());
-                //     CurrentState = HexagonState.Wait;
-                //     break;
-                // }
+                case HexagonState.Attack2:
+                {
+                    CurrentCoroutine = StartCoroutine(_HexagonLaser());
+                    yield return CurrentCoroutine;
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
+                case HexagonState.Attack3:
+                {
+                    CurrentCoroutine = StartCoroutine(_RotatingFire());
+                    yield return CurrentCoroutine;
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
+                case HexagonState.Attack4:
+                {
+                    CurrentCoroutine = StartCoroutine(_DiagonalFire());
+                    yield return CurrentCoroutine;
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
+                case HexagonState.Attack5:
+                {
+                    CurrentCoroutine = StartCoroutine(_WallFire());
+                    yield return CurrentCoroutine;
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
+                case HexagonState.Attack6:
+                {
+                    CurrentCoroutine = StartCoroutine(_HexagonMine());
+                    yield return CurrentCoroutine;
+                    CurrentState = HexagonState.Wait;
+                    break;
+                }
             }
         }
     }
@@ -264,10 +286,20 @@ public class Enemy_Hexagon : Enemy
             _hexagonLine = null;
         }
 
+        if(_hexagonMineTiles != null)
+        {
+            Destroy(_hexagonMineTiles);
+            _hexagonMineTiles = null;
+        }
+
+        StopCoroutine(CurrentCoroutine);
+
         yield return new WaitForSeconds(1.5f); //Sample
 
         _animator.SetTrigger("Defeat");
         StartCoroutine(_Vibrate(2.5f, 0.2f));
+
+        Instantiate(_hexagonDefeatEffectPrefab, transform.position, Quaternion.identity, transform);
 
         yield return new WaitForSeconds(2.5f);
 
@@ -544,6 +576,58 @@ public class Enemy_Hexagon : Enemy
         _hexagonLine = null;
 
         yield return new WaitForSeconds(1f);
+
+        Debug.Log("Finish WallFire");
+    }
+
+    private IEnumerator _HexagonMine()
+    {
+        Debug.Log("Start HexagonMine");
+
+        float delay = 0.1f;
+        // float duration = 3f;
+        // float speed = 3f;
+
+        if(CurrentPosition != 2)
+        {
+            yield return StartCoroutine(_MoveToPointOnCurve(new Vector3(0, 4.5f, 0), 1f));
+            CurrentPosition = 2;
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        _hexagonMineTiles = _SummonMineTiles();
+        List<MineCautionTile> tileList = (_hexagonMineTiles.GetComponentsInChildren<MineCautionTile>()).ToList();
+
+        foreach(MineCautionTile tile in tileList)
+        {
+            tile.PlayAppearAnimation();
+            yield return new WaitForSeconds(0.03f);
+        }
+
+        _ShuffleMineTileList(tileList);
+
+        StartCoroutine(_RotateOnCurve(720f, 19f * delay));
+
+        for(int i = 0; i < 19; i++)
+        {
+            StartCoroutine(tileList[i].SpawnMine());
+            yield return new WaitForSeconds(delay);
+        }
+
+        tileList = (_hexagonMineTiles.GetComponentsInChildren<MineCautionTile>()).ToList();
+        foreach(MineCautionTile tile in tileList)
+        {
+            tile.PlayDisappearAnimation();
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        Destroy(_hexagonMineTiles, 1f);
+        _hexagonMineTiles = null;
+
+        yield return new WaitForSeconds(4f);
+
+        Debug.Log("Finish HexagonMine");
     }
 
     private IEnumerator _ShootHexagonShot(Vector3 position, float speed = 8f)
@@ -581,6 +665,13 @@ public class Enemy_Hexagon : Enemy
         GameObject line = Instantiate(_hexagonLinePrefab, Vector3.zero, Quaternion.identity);
 
         return line;
+    }
+
+    private GameObject _SummonMineTiles()
+    {
+        GameObject tiles = Instantiate(_hexagonMineCautionTilesPrefab, Vector3.zero, Quaternion.identity);
+
+        return tiles;
     }
 
     private IEnumerator _Laser(Vector3 position, Quaternion rotation)
@@ -706,6 +797,17 @@ public class Enemy_Hexagon : Enemy
     }
 
     private void _ShuffleTransformList(List<Transform> list)
+    {
+        for (var i = list.Count - 1; i > 0; --i)
+        {
+            var j = Random.Range(0, i + 1);
+            var tmp = list[i];
+            list[i] = list[j];
+            list[j] = tmp;
+        }
+    }
+
+    private void _ShuffleMineTileList(List<MineCautionTile> list)
     {
         for (var i = list.Count - 1; i > 0; --i)
         {

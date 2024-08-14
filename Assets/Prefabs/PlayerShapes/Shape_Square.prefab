@@ -47,7 +47,7 @@ MonoBehaviour:
   _mySprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   _myColor: {r: 0.0036903776, g: 0, b: 0.8679245, a: 1}
   _primaryAttackCost: 8
-  _primaryAttackDamage: 6
+  _primaryAttackDamage: 4
   _destroyField: {fileID: 8351723773996737352, guid: 3f2df12ca171f9d488ae031c030831de, type: 3}
   _specialSkillCost: 300
   _grazeColliderSize: {x: 1.5, y: 1.5, z: 1.5}

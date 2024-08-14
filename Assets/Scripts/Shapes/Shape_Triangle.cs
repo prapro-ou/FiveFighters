@@ -53,15 +53,15 @@ public class Shape_Triangle : PlayerShape
         if(_player.SmallRightTriangle == null)
         {
             Shape_SmallTriangle smallRightTriangle = Instantiate(_smallTriangle, rightPosition, Quaternion.identity, _player.transform);
+            smallRightTriangle.IsRight = true;
             _player.SmallRightTriangle = smallRightTriangle;
-            smallRightTriangle.IsRight = true;    
         }
         
         if(_player.SmallLeftTriangle == null)
         {
             Shape_SmallTriangle smallLeftTriangle = Instantiate(_smallTriangle, leftPosition , Quaternion.identity, _player.transform);
-            _player.SmallLeftTriangle = smallLeftTriangle;
             smallLeftTriangle.IsRight = false;
+            _player.SmallLeftTriangle = smallLeftTriangle;
         }
 
         Debug.Log($"SpecialSkill {name}");

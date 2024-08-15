@@ -312,11 +312,14 @@ public class GameManager : MonoBehaviour
         //InputManagerのモードをUIに移行する
         _inputManager.SwitchCurrentActionMap("UI");
 
-        //カメラを敵に寄せる
+        //カメラをプレイヤーに寄せる
         _cameraManager.MoveToPoint(_player.transform.position);
         _cameraManager.SetSize(3);
 
         _overlayManager.DisappearUICanvas();
+
+        //敵の行動を止める
+        CurrentEnemy.StopAllCoroutines();
 
         //フラッシュ
         StartCoroutine(_overlayManager.PlayRedFlash());
@@ -324,14 +327,15 @@ public class GameManager : MonoBehaviour
         //振動
         StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
 
-        yield return new WaitForSeconds(3f);
+        //Playerの演出を待つ
+        yield return StartCoroutine(_player.StartDeathAnimation());
 
         //カメラを戻す
         StartCoroutine(_overlayManager.AppearUICanvas(0.2f));
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
-        //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
+        //「Game Over」を出現させる(アニメーションを仕込み、左から右に移動させる)
         //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);
         // Destroy(text, 10f);
         yield return new WaitForSeconds(1.5f);

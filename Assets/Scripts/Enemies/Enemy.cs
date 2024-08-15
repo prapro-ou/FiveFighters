@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -38,10 +40,10 @@ public abstract class Enemy : MonoBehaviour
             }
         }
     }
-/*
+
     [SerializeField]
-    private GameObject _explodePrefab;
-*/
+    private GameObject _damageTextPrefab;
+
     void Awake()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -68,24 +70,23 @@ public abstract class Enemy : MonoBehaviour
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
         if(bullet != null)
         {
-            //Vector3 pos = new Vector3(bullet.transform.position.x, bullet.transform.position.y, bullet.transform.position.z);
-            //MakeDamageParticle(pos);
             bullet.DestroyWithParticle();
             TakeDamage(bullet.DamageValue);
-            //Destroy(bullet.gameObject);
+            GenerateDamageText(bullet.DamageValue, bullet.transform.position);
         }
     }
 
-    public void TakeDamage(int value)
+    public void TakeDamage(int damage)
     {
-        HitPoint -= value;
+        HitPoint -= damage;
     }
-/*
-    public void MakeDamageParticle(Vector3 pos)
+
+    public void GenerateDamageText(int damage, Vector3 pos)
     {
-        Instantiate(_explodePrefab, pos, Quaternion.identity);
+        _damageTextPrefab.GetComponent<TextMeshPro>().text = damage.ToString();
+        GameObject text = Instantiate(_damageTextPrefab, pos, Quaternion.identity);
     }
-*/
+
     public abstract void StartAttacking();
 
     public abstract IEnumerator StartSpawnAnimation();

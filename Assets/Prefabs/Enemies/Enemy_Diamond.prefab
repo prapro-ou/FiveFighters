@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7361cc111a7a242843235511806746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: Diamond
   _maxHitPoint: 2000
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _laserPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}

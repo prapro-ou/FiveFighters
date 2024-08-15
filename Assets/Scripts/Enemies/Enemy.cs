@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Enemy : MonoBehaviour
 {
@@ -9,7 +10,18 @@ public abstract class Enemy : MonoBehaviour
     private Collider2D _collider;
 
     [SerializeField]
+    private string _name;
+
+    public string Name
+    {
+        get {return _name;}
+        set {_name = value;}
+    }
+
+    [SerializeField]
     private int _maxHitPoint;
+
+    private Slider _hitPointBar;
 
     public int MaxHitPoint
     {
@@ -28,6 +40,13 @@ public abstract class Enemy : MonoBehaviour
         set
         {
             _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
+            
+            if(_hitPointBar == null)
+            {
+                _hitPointBar = GameObject.Find("EnemyHpBar").GetComponent<Slider>();
+            }
+            _hitPointBar.value = (float)_hitPoint / (float)MaxHitPoint;
+
             Debug.Log($"EnemyHP: {HitPoint}");
 
             if(_hitPoint <= 0)

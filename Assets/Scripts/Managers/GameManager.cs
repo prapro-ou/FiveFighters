@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -79,10 +80,13 @@ public class GameManager : MonoBehaviour
     private Transform _battleEnemyTransform;
 
     [SerializeField]
-    private GameObject _stageClearText;
+    private TMP_Text _enemyNameText;
 
     [SerializeField]
-    private GameObject _gameOverText;
+    private GameObject _stageClearTextPrefab;
+
+    [SerializeField]
+    private GameObject _gameOverTextPrefab;
 
     [SerializeField]
     private Canvas _clearResultCanvas;
@@ -160,7 +164,7 @@ public class GameManager : MonoBehaviour
 
         yield return StartCoroutine(_overlayManager.CloseTransition());
 
-        _ShiftObjects(1);
+        _ShiftObjects(1, nextEnemy);
 
         yield return StartCoroutine(_overlayManager.OpenTransition());
 
@@ -185,7 +189,7 @@ public class GameManager : MonoBehaviour
         IsRunningShift = false;
     }
 
-    private void _ShiftObjects(int state)
+    private void _ShiftObjects(int state, Enemy enemy = null)
     {
         switch(state)
         {
@@ -218,6 +222,9 @@ public class GameManager : MonoBehaviour
 
                 //右側UIの表示
                 _overlayManager.EnableRightUICanvas();
+
+                //敵名テキストの変更
+                _enemyNameText.SetText(enemy.Name);
 
                 break;
             }

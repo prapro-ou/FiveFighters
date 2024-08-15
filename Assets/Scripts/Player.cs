@@ -52,6 +52,10 @@ public class Player : MonoBehaviour
 
     private TMP_Text _moneyText;
 
+    private TMP_Text _powerText;
+
+    private PlayerPowerTile _powerTile;
+
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
@@ -227,7 +231,23 @@ public class Player : MonoBehaviour
     public float PowerMultiplier
     {
         get {return _powerMultiplier;}
-        set {_powerMultiplier = value;}
+        set
+        {
+            _powerMultiplier = value;
+
+            if(_powerText == null)
+            {
+                _powerText = GameObject.Find("PlayerPowerText").GetComponent<TMP_Text>();
+            }
+
+            _powerText.SetText($"×{_powerMultiplier:.0}");
+
+            if(_powerTile == null)
+            {
+                _powerTile = GameObject.Find("PowerTile").GetComponent<PlayerPowerTile>();
+            }
+            _powerTile.UpdatePowerTile();
+        }
     }
 
     [SerializeField]

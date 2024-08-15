@@ -8,6 +8,8 @@ public abstract class Enemy : MonoBehaviour
 {
     private GameManager _gameManager;
 
+    private Player _playerForStatus;
+
     private Collider2D _collider;
 
     [SerializeField]
@@ -48,6 +50,8 @@ public abstract class Enemy : MonoBehaviour
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        _playerForStatus = GameObject.Find("Player").GetComponent<Player>();
+
         _collider = GetComponent<Collider2D>();
 
         HitPoint = MaxHitPoint;
@@ -71,8 +75,8 @@ public abstract class Enemy : MonoBehaviour
         if(bullet != null)
         {
             bullet.DestroyWithParticle();
-            TakeDamage(bullet.DamageValue);
-            GenerateDamageText(bullet.DamageValue, bullet.transform.position);
+            TakeDamage((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier));
+            GenerateDamageText((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier), bullet.transform.position);
         }
     }
 

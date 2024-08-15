@@ -23,9 +23,23 @@ public class DamageText : MonoBehaviour
 
     private IEnumerator _DisplayDamage()
     {
-        for(int i = 0; i < 255; ++i)
+        int n = 1;
+        int rnd = Random.Range(0,2);
+        for(int i = 0; i < 86; ++i)
         {
-            _text.color -= new Color32(0, 0, 0, 1);
+            int lr;
+            if(rnd == 0)
+                lr = -1;
+            else
+                lr = 1;
+
+            if(i > 20)
+                _text.color -= new Color32(0, 0, 0, 4);
+
+            if(i == 43)
+                n = -1;
+
+            this.transform.position += new Vector3(0.03f * lr, 0.02f * n, 0);
             yield return new WaitForSeconds(0.001f);
         }
 

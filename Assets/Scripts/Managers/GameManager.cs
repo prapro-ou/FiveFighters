@@ -200,6 +200,9 @@ public class GameManager : MonoBehaviour
                 //背景色の変更
                 _backgroundImage.color = _shopImageColor;
 
+                //右側UIの非表示
+                _overlayManager.DisenableRightUICanvas();
+
                 break;
             }
             case 1:
@@ -212,6 +215,9 @@ public class GameManager : MonoBehaviour
 
                 //背景色の変更
                 _backgroundImage.color = _battleImageColor;
+
+                //右側UIの表示
+                _overlayManager.EnableRightUICanvas();
 
                 break;
             }

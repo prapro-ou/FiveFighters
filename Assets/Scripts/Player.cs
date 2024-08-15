@@ -56,6 +56,8 @@ public class Player : MonoBehaviour
 
     private PlayerPowerTile _powerTile;
 
+    private PlayerShiftCooltimeImage _cooltimeImage;
+
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
@@ -556,7 +558,16 @@ public class Player : MonoBehaviour
         Debug.Log("Start ShiftCooldown");
         IsInShiftCooldown = true;
 
-        yield return new WaitForSeconds(ShiftCooldown);
+        if(_cooltimeImage == null)
+        {
+            _cooltimeImage = GameObject.Find("CooltimeImage").GetComponent<PlayerShiftCooltimeImage>();
+        }
+
+        for(float time = 0; time <= ShiftCooldown; time += Time.deltaTime)
+        {
+            _cooltimeImage.UpdateCooltimeImage(time / ShiftCooldown);
+            yield return null;
+        }
 
         Debug.Log("Finish ShiftCooldown");
         IsInShiftCooldown = false;

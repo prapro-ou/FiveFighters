@@ -24,6 +24,9 @@ public class OverlayManager : MonoBehaviour
     private Canvas _uICanvas;
 
     [SerializeField]
+    private Canvas _rightUICanvas;
+
+    [SerializeField]
     private AnimationCurve _curve;
 
     // Start is called before the first frame update
@@ -96,6 +99,16 @@ public class OverlayManager : MonoBehaviour
         CanvasGroup canvasGroup = _uICanvas.GetComponent<CanvasGroup>();
 
         canvasGroup.alpha = 0;
+    }
+
+    public void EnableRightUICanvas()
+    {
+        _rightUICanvas.enabled = true;
+    }
+
+    public void DisenableRightUICanvas()
+    {
+        _rightUICanvas.enabled = false;
     }
 
     public IEnumerator AppearUICanvas(float duration)

@@ -52,6 +52,30 @@ public class GameManager : MonoBehaviour
 
     private int _lockedEnemy; //DEBUG!!!!!!!!!!
 
+    private float _timerValue;
+
+    public float TimerValue
+    {
+        get {return _timerValue;}
+        set
+        {
+            _timerValue = value;
+
+            string formatedText = _FormatTime(_timerValue);
+            _timerText.SetText(formatedText);
+            _clearTimeText.SetText($"経過時間： {formatedText}");
+            _deathTimeText.SetText($"経過時間： {formatedText}");
+        }
+    }
+
+    private Coroutine _timerCoroutine;
+
+    public Coroutine TimerCoroutine
+    {
+        get {return _timerCoroutine;}
+        set {_timerCoroutine = value;}
+    }
+
     [SerializeField]
     private List<Enemy> _enemies;
 
@@ -83,6 +107,15 @@ public class GameManager : MonoBehaviour
     private TMP_Text _enemyNameText;
 
     [SerializeField]
+    private TMP_Text _timerText;
+
+    [SerializeField]
+    private TMP_Text _clearTimeText;
+
+    [SerializeField]
+    private TMP_Text _deathTimeText;
+
+    [SerializeField]
     private Canvas _clearResultCanvas;
 
     [SerializeField]
@@ -105,6 +138,8 @@ public class GameManager : MonoBehaviour
         IsRunningShift = false;
 
         _lockedEnemy = -1;
+
+        TimerValue = 0f;
 
         _FirstShiftToShop();
     }
@@ -179,6 +214,8 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(CurrentEnemy.StartSpawnAnimation());
 
         CurrentEnemy.StartAttacking();
+
+        TimerCoroutine = StartCoroutine(_StartTimer());
 
         IsRunningShift = false;
     }
@@ -256,6 +293,8 @@ public class GameManager : MonoBehaviour
             Destroy(obj);
         }
 
+        _StopTimer();
+
         StartCoroutine(_PopUpOnClear());
     }
 
@@ -309,6 +348,8 @@ public class GameManager : MonoBehaviour
     public void DiePlayer()
     {
         Debug.Log("DiePlayer");
+
+        _StopTimer();
 
         StartCoroutine(_PopUpOnDeath());
     }
@@ -368,5 +409,30 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _sceneController.LoadNextScene(0);
+    }
+
+    private IEnumerator _StartTimer()
+    {
+        Debug.Log("StartTimer");
+        while(true)
+        {
+            TimerValue += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private void _StopTimer()
+    {
+        Debug.Log("StopTimer");
+        StopCoroutine(TimerCoroutine);
+    }
+
+    private string _FormatTime(float time)
+    {
+        int minutes = Mathf.FloorToInt(time / 60F);
+        int seconds = Mathf.FloorToInt(time % 60F);
+        int milliseconds = Mathf.FloorToInt((time * 100F) % 100F);
+
+        return string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
     }
 }

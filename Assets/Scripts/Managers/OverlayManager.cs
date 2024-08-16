@@ -18,6 +18,12 @@ public class OverlayManager : MonoBehaviour
     private Image _redFlashImage;
 
     [SerializeField]
+    private GameObject _stageClearTextPrefab;
+
+    [SerializeField]
+    private GameObject _gameOverTextPrefab;
+
+    [SerializeField]
     private Animator _transitionAnimator;
 
     [SerializeField]
@@ -92,6 +98,18 @@ public class OverlayManager : MonoBehaviour
 
         color.a = 0;
         _redFlashImage.color = color;
+    }
+
+    public void SpawnStageClearText()
+    {
+        GameObject text = Instantiate(_stageClearTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
+        Destroy(text, 5f);
+    }
+
+    public void SpawnGameOverText()
+    {
+        GameObject text = Instantiate(_gameOverTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
+        Destroy(text, 5f);
     }
 
     public void DisappearUICanvas()

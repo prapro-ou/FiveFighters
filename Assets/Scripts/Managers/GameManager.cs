@@ -83,12 +83,6 @@ public class GameManager : MonoBehaviour
     private TMP_Text _enemyNameText;
 
     [SerializeField]
-    private GameObject _stageClearTextPrefab;
-
-    [SerializeField]
-    private GameObject _gameOverTextPrefab;
-
-    [SerializeField]
     private Canvas _clearResultCanvas;
 
     [SerializeField]
@@ -291,8 +285,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
         //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
-        //GameObject text = Instantiate(_stageClearText, Vector3.zero, Quaternion.identity);
-        // Destroy(text, 10f);
+        _overlayManager.SpawnStageClearText();
         yield return new WaitForSeconds(1.5f);
 
         //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
@@ -349,8 +342,7 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
         //「Game Over」を出現させる(アニメーションを仕込み、左から右に移動させる)
-        //GameObject text = Instantiate(_gameOverText, Vector3.zero, Quaternion.identity);
-        // Destroy(text, 10f);
+        _overlayManager.SpawnGameOverText();
         yield return new WaitForSeconds(1.5f);
 
         //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)

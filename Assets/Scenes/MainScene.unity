@@ -4000,8 +4000,6 @@ MonoBehaviour:
   _shopPlayerTransform: {fileID: 1653885788}
   _battleEnemyTransform: {fileID: 1634889170}
   _enemyNameText: {fileID: 528326620}
-  _stageClearTextPrefab: {fileID: 0}
-  _gameOverTextPrefab: {fileID: 0}
   _clearResultCanvas: {fileID: 2786041}
   _clearResultButton: {fileID: 1262787156}
   _deathResultCanvas: {fileID: 1734318035}
@@ -12799,6 +12797,8 @@ MonoBehaviour:
   _transitionObject: {fileID: 282819266}
   _whiteFlashImage: {fileID: 1976041482}
   _redFlashImage: {fileID: 993967501}
+  _stageClearTextPrefab: {fileID: 3683286836030368035, guid: 76a9d042a84dfca4f87bdf3c1f3a697b, type: 3}
+  _gameOverTextPrefab: {fileID: 3683286836030368035, guid: b0ccd7122ab43fd45b75cb2a8ce843fb, type: 3}
   _transitionAnimator: {fileID: 282819268}
   _uICanvas: {fileID: 1594103087}
   _rightUICanvas: {fileID: 2025005803}

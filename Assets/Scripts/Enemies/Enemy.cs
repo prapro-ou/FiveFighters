@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public abstract class Enemy : MonoBehaviour
 {
     private GameManager _gameManager;
+
+    private Player _playerForStatus;
 
     private Collider2D _collider;
 
@@ -38,13 +42,15 @@ public abstract class Enemy : MonoBehaviour
             }
         }
     }
-/*
+
     [SerializeField]
-    private GameObject _explodePrefab;
-*/
+    private GameObject _damageTextPrefab;
+
     void Awake()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        _playerForStatus = GameObject.Find("Player").GetComponent<Player>();
 
         _collider = GetComponent<Collider2D>();
 
@@ -68,24 +74,23 @@ public abstract class Enemy : MonoBehaviour
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
         if(bullet != null)
         {
-            //Vector3 pos = new Vector3(bullet.transform.position.x, bullet.transform.position.y, bullet.transform.position.z);
-            //MakeDamageParticle(pos);
             bullet.DestroyWithParticle();
-            TakeDamage(bullet.DamageValue);
-            //Destroy(bullet.gameObject);
+            TakeDamage((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier));
+            GenerateDamageText((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier), bullet.transform.position);
         }
     }
 
-    public void TakeDamage(int value)
+    public void TakeDamage(int damage)
     {
-        HitPoint -= value;
+        HitPoint -= damage;
     }
-/*
-    public void MakeDamageParticle(Vector3 pos)
+
+    public void GenerateDamageText(int damage, Vector3 pos)
     {
-        Instantiate(_explodePrefab, pos, Quaternion.identity);
+        _damageTextPrefab.GetComponent<TextMeshPro>().text = damage.ToString();
+        GameObject text = Instantiate(_damageTextPrefab, pos, Quaternion.identity);
     }
-*/
+
     public abstract void StartAttacking();
 
     public abstract IEnumerator StartSpawnAnimation();

@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHitPoint: 2000
+  _damageTextPrefab: {fileID: 1357132420661731487, guid: 3602cd5f5faf8574ab9bda571d05f0d8, type: 3}
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _laserPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}
   _reduceBulletPrefab: {fileID: 1347029831895677856, guid: 0fd17d92bbf593b4a9071eabcbf4daeb, type: 3}

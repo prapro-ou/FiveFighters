@@ -16,6 +16,15 @@ public class GameManager : MonoBehaviour
         set {_stateNumber = value;}
     }
 
+    [SerializeField]
+    private int _maxStateNumber;
+
+    public int MaxStateNumber
+    {
+        get {return _maxStateNumber;}
+        set {_maxStateNumber = value;}
+    }
+
     private bool _isRunningShift;
 
     public bool IsRunningShift
@@ -68,6 +77,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private float _timerSumValue;
+
+    public float TimerSumValue
+    {
+        get {return _timerSumValue;}
+        set
+        {
+            _timerSumValue = value;
+
+            string formatedText = _FormatTime(_timerSumValue);
+            // _timerSumText.SetText(formatedText);
+            _clearSumTimeText.SetText($"合計時間： {formatedText}");
+            _deathSumTimeText.SetText($"合計時間： {formatedText}");
+        }
+    }
+
     private Coroutine _timerCoroutine;
 
     public Coroutine TimerCoroutine
@@ -78,6 +103,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private List<Enemy> _enemies;
+
+    [SerializeField]
+    private List<int> _moneysPerBattle;
+
+    [SerializeField]
+    private int _moneyPerBonusTime;
+
+    [SerializeField]
+    private float _bonusTimeBorder;
 
     [SerializeField]
     private Image _backgroundImage;
@@ -115,6 +149,24 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMP_Text _deathTimeText;
 
+    // [SerializeField]
+    // private TMP_Text _timerText;
+
+    [SerializeField]
+    private TMP_Text _clearSumTimeText;
+
+    [SerializeField]
+    private TMP_Text _deathSumTimeText;
+
+    [SerializeField]
+    private ProgressBar _clearProgressBar;
+
+    [SerializeField]
+    private ProgressBar _deathProgressBar;
+
+    [SerializeField]
+    private TMP_Text _clearCoinText;
+
     [SerializeField]
     private Canvas _clearResultCanvas;
 
@@ -140,6 +192,7 @@ public class GameManager : MonoBehaviour
         _lockedEnemy = -1;
 
         TimerValue = 0f;
+        TimerSumValue = 0f;
 
         _FirstShiftToShop();
     }
@@ -238,6 +291,9 @@ public class GameManager : MonoBehaviour
                 //右側UIの非表示
                 _overlayManager.DisenableRightUICanvas();
 
+                //タイマーのリセット、合計タイマーの加算
+                TimerValue = 0;
+
                 break;
             }
             case 1:
@@ -294,6 +350,7 @@ public class GameManager : MonoBehaviour
         }
 
         _StopTimer();
+        TimerSumValue += TimerValue;
 
         StartCoroutine(_PopUpOnClear());
     }
@@ -302,6 +359,9 @@ public class GameManager : MonoBehaviour
     {
         //InputManagerのモードをUIに移行する
         _inputManager.SwitchCurrentActionMap("UI");
+
+        //Stateを進める
+        StateNumber += 1;
 
         //カメラを敵に寄せる
         _cameraManager.MoveToPoint(CurrentEnemy.transform.position);
@@ -328,9 +388,19 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
+        _deathProgressBar.SetSliderOnDeath();
+
+        _clearCoinText.SetText($"獲得コイン：{CalculateGiveMoney()} ({_moneysPerBattle[StateNumber]}+{(int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime))})");
+        
         _clearResultCanvas.gameObject.SetActive(true);
 
         _eventSystem.SetSelectedGameObject(_clearResultButton);
+
+        yield return StartCoroutine(_clearProgressBar.UpdateProgress());
+
+        yield return new WaitForSeconds(0.5f);
+
+        _GiveMoney();
 
         yield return null;
     }
@@ -350,6 +420,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("DiePlayer");
 
         _StopTimer();
+        TimerSumValue += TimerValue;
 
         StartCoroutine(_PopUpOnDeath());
     }
@@ -391,6 +462,8 @@ public class GameManager : MonoBehaviour
 
         _eventSystem.SetSelectedGameObject(_deathResultButton);
 
+        yield return StartCoroutine(_deathProgressBar.UpdateProgressOnDeath());
+
         yield return null;
     }
 
@@ -409,6 +482,17 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _sceneController.LoadNextScene(0);
+    }
+
+    private void _GiveMoney()
+    {
+        int moneyValue = CalculateGiveMoney();
+        _player.AddMoney(moneyValue);
+    }
+
+    private int CalculateGiveMoney()
+    {
+        return _moneysPerBattle[StateNumber] + (int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime));
     }
 
     private IEnumerator _StartTimer()

@@ -4021,6 +4021,7 @@ MonoBehaviour:
   _enemies:
   - {fileID: -8352821498467316285, guid: bf23582edfd82a24fa1c0419dbd9f711, type: 3}
   - {fileID: 8178231971346529793, guid: 9aa55f5bac0c39e4185235f4f6fa828a, type: 3}
+  - {fileID: 490121446994705174, guid: 559fd58d0638f5a4385b467a319a108c, type: 3}
   _backgroundImage: {fileID: 1494604933}
   _battleImageColor: {r: 0.3773585, g: 0.1263795, b: 0.1263795, a: 1}
   _shopImageColor: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}

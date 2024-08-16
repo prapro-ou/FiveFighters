@@ -23,6 +23,21 @@ public class Player : MonoBehaviour
     [SerializeField]
     private CameraManager _cameraManager;
 
+    [SerializeField]
+    private OverlayManager _overlayManager;
+
+    [SerializeField]
+    private AnimationCurve _vibrateCurveX;
+
+    [SerializeField]
+    private AnimationCurve _vibrateCurveY;
+
+    [SerializeField]
+    private GameObject _playerDefeatEffectPrefab;
+
+    [SerializeField]
+    private GameObject _playerDeathExplodeEffectPrefab;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
@@ -408,6 +423,25 @@ public class Player : MonoBehaviour
         _gameManager.DiePlayer();
     }
 
+    public IEnumerator StartDeathAnimation()
+    {
+        Debug.Log("StartDeathAnimation: Player");
+        yield return new WaitForSeconds(1.5f);
+
+        for(int i = 0; i < 2; i++)
+        {
+            Instantiate(_playerDeathExplodeEffectPrefab, transform.position, Quaternion.identity);
+            yield return StartCoroutine(_Vibrate(0.5f, 0.2f));
+        }
+
+        StartCoroutine(_cameraManager.Vibrate(2f, 2f));
+
+        Instantiate(_playerDefeatEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
+
+        yield return new WaitForSeconds(1.5f);
+    }
+
     //通常攻撃
     public void PrimaryAttack()
     {
@@ -592,5 +626,22 @@ public class Player : MonoBehaviour
 
         if(SmallLeftTriangle != null) Destroy(SmallLeftTriangle.gameObject);
         if(SmallRightTriangle != null) Destroy(SmallRightTriangle.gameObject);
+    }
+
+    private IEnumerator _Vibrate(float duration, float power)
+    {
+        Vector3 startPosition = transform.position;
+
+        Vector3 nextPosition = startPosition;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            nextPosition.x = startPosition.x + (_vibrateCurveX.Evaluate(i / duration) * power);
+            nextPosition.y = startPosition.y + (_vibrateCurveY.Evaluate(i / duration) * power);
+            transform.position = nextPosition;
+            yield return null;
+        }
+
+        transform.position = startPosition;
     }
 }

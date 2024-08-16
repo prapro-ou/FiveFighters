@@ -332,11 +332,19 @@ public class Enemy_Diamond : Enemy
             yield return new WaitForSeconds(0.2f);
 
             //プレイヤーの方を向けるための角度計算
-            Vector3 aim_c = _player.transform.position - transform.position;
+            Vector3 aim_c = (_player.transform.position - transform.position).normalized;
+            if(aim_c == Vector3.zero)
+                aim_c = _player.transform.position - transform.position;
             float angle_c = Mathf.Atan2(aim_c.x, aim_c.y);
-            Vector3 aim_l = _player.transform.position - pos_l;
+
+            Vector3 aim_l = (_player.transform.position - pos_l).normalized;
+            if(aim_l == Vector3.zero)
+                aim_l = _player.transform.position - pos_l;
             float angle_l = Mathf.Atan2(aim_l.x, aim_l.y);
-            Vector3 aim_r = _player.transform.position - pos_r;
+
+            Vector3 aim_r = (_player.transform.position - pos_r).normalized;
+            if(aim_r == Vector3.zero)
+                aim_r = _player.transform.position - pos_r;
             float angle_r = Mathf.Atan2(aim_r.x, aim_r.y);
 
             //砲台生成
@@ -348,9 +356,9 @@ public class Enemy_Diamond : Enemy
 
             yield return new WaitForSeconds(1.0f);
 
-            Vector3 power_c = aim_c.normalized * 6.0f;
-            Vector3 power_l = aim_l.normalized * 6.0f;
-            Vector3 power_r = aim_r.normalized * 6.0f;
+            Vector3 power_c = aim_c * 6.0f;
+            Vector3 power_l = aim_l * 6.0f;
+            Vector3 power_r = aim_r * 6.0f;
 
             for(int j = 0; j < 3; ++j)
             {
@@ -388,9 +396,13 @@ public class Enemy_Diamond : Enemy
         {
             EnemyBullet bullet = Instantiate(_reduceBulletPrefab, pos, Quaternion.identity);
 
-            //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
+            //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成し，正規化
             Vector3 target = _player.transform.position;
-            Vector3 power = target - this.transform.position;
+            Vector3 power = (target - this.transform.position).normalized;
+
+            //正規化の結果零ベクトルとなった場合，正規化しない
+            if(power == Vector3.zero)
+                power = (target - this.transform.position);
 
             //生成した弾を点滅させる(初回のみ)
             if(i == 0)
@@ -472,10 +484,15 @@ public class Enemy_Diamond : Enemy
 
             if(i % 5 == 0)
             {
-                Vector3 aim = _player.transform.position - transform.position;
+                Vector3 aim = (_player.transform.position - transform.position).normalized;
+                //正規化の結果零ベクトルとなった場合，正規化しない．
+                if(aim == Vector3.zero)
+                    aim = _player.transform.position - transform.position;
+
                 float angle = Mathf.Atan2(aim.x, aim.y);
                 EnemyBullet laser = Instantiate(_laserPrefab, pos, Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.back));
-                laser.GetComponent<Rigidbody2D>().velocity = aim.normalized * 6.0f;
+
+                laser.GetComponent<Rigidbody2D>().velocity = aim * 6.0f;
             }
 
             yield return new WaitForSeconds(0.2f);
@@ -590,13 +607,15 @@ public class Enemy_Diamond : Enemy
 
             //プレイヤーの位置を取得し，敵の位置と減算することで敵から自機へ向かうベクトルを生成
             Vector3 target = _player.transform.position;
-            Vector3 power = target - this.transform.position;
+            Vector3 power = (target - this.transform.position).normalized;
+            if(power == Vector3.zero)
+                power = target - this.transform.position;
 
             //照準を表示
             Enemy_Scope scope = Instantiate(_scopePrefab, target, Quaternion.identity);
 
             //弾を発射 正規化した位置ベクトルに乱数を乗算して速さを調整．
-            bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * rnd;
+            bullet.GetComponent<Rigidbody2D>().velocity = power * rnd;
 
             yield return new WaitForSeconds(0.4f);
         }

@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
     private OverlayManager _overlayManager;
 
     [SerializeField]
+    private SoundManager _soundManager;
+
+    [SerializeField]
     private AnimationCurve _vibrateCurveX;
 
     [SerializeField]
@@ -615,6 +618,7 @@ public class Player : MonoBehaviour
     public void AddMoney(int reward)
     {
         Money += reward;
+        _PlaySound("GetMoney");
     }
 
     public void UseMoney(int cost)
@@ -674,5 +678,15 @@ public class Player : MonoBehaviour
         }
 
         transform.position = startPosition;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

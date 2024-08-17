@@ -11,6 +11,8 @@ public class TitleManager : MonoBehaviour
     [SerializeField]
     private GameObject _transitionCanvas;
 
+    private Canvas _volumeSliderCanvas;
+
     [SerializeField]
     private GameObject _transitionObject;
 
@@ -21,17 +23,25 @@ public class TitleManager : MonoBehaviour
     {
         _transitionCanvas.SetActive(true);
         _transitionAnimator = _transitionObject.GetComponent<Animator>();
+
+        StartCoroutine(_OpenTransition());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private IEnumerator _OpenTransition()
     {
         _transitionAnimator.SetBool("Close", false);
+
+        if(_volumeSliderCanvas == null)
+        {
+            _volumeSliderCanvas = GameObject.Find("Canvas_VolumeSlider").GetComponent<Canvas>();
+        }
+        _volumeSliderCanvas.enabled = true;
 
         AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
         float animationLength = animationState.length;
@@ -57,6 +67,13 @@ public class TitleManager : MonoBehaviour
     private IEnumerator _StartShiftToGame()
     {
         yield return StartCoroutine(_CloseTransition());
+
+        if(_volumeSliderCanvas == null)
+        {
+            _volumeSliderCanvas = GameObject.Find("Canvas_VolumeSlider").GetComponent<Canvas>();
+        }
+        _volumeSliderCanvas.enabled = false;
+
         _sceneController.LoadNextScene(1);
     }
 }

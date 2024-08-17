@@ -116,6 +116,9 @@ public class GameManager : MonoBehaviour
     private float _bonusTimeBorder;
 
     [SerializeField]
+    private int _firstMoney;
+
+    [SerializeField]
     private Image _backgroundImage;
 
     [SerializeField]
@@ -225,7 +228,7 @@ public class GameManager : MonoBehaviour
     {
         _ShiftObjects(0);
 
-        _player.AddMoney(3);
+        _player.Money = _firstMoney;
 
         StartCoroutine(_overlayManager.OpenTransition());
     }

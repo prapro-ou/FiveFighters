@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5577603450124561913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3806178270400891873}
+  - component: {fileID: 9160272310058036254}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3806178270400891873
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5577603450124561913}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9160272310058036254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5577603450124561913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef196a726cdeb904db934f34ec7a4146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bgmDatas:
+  - name: 
+    audioClip: {fileID: 0}
+    playedTime: 0
+  _seDatas:
+  - name: Submit
+    audioClip: {fileID: 8300000, guid: 17d17d2bf63ad6648a91732d638bffe3, type: 3}
+    playedTime: 0
+    delay: 0.3
+  - name: CannotBuy
+    audioClip: {fileID: 8300000, guid: db8a9b8e470542f4dba532364cc3544b, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: PowerUp
+    audioClip: {fileID: 8300000, guid: 673315336ee485144886d2354b9139fa, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: GetMoney
+    audioClip: {fileID: 8300000, guid: 20ea8222165f70e4288054cd9a78d7ad, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Death
+    audioClip: {fileID: 8300000, guid: 8f5031f983af8954cb9330d92ab60a7c, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Explosion1
+    audioClip: {fileID: 8300000, guid: 8b38331a0d052b14787746bd7908b482, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Explosion2
+    audioClip: {fileID: 8300000, guid: b2bee98ac713ee34194f263cfdd2bd96, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Explosion3
+    audioClip: {fileID: 8300000, guid: ededcf562e5184d4790477e553ff6246, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Explosion4
+    audioClip: {fileID: 8300000, guid: 72bb6254688c91b4ea90cbca066934d5, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Spawn1
+    audioClip: {fileID: 8300000, guid: e9f770c7d64b0244ab360f9ad0310ee9, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Spawn2
+    audioClip: {fileID: 8300000, guid: f0bb2288c0833d44692e165b16b6e229, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Spawn3
+    audioClip: {fileID: 8300000, guid: 1c720164d68c82749a78c8ccc11afa0a, type: 3}
+    playedTime: 0
+    delay: 0
+  - name: Spawn4
+    audioClip: {fileID: 8300000, guid: a3d8d3f826a34eb4a91f224b1fd6fa0a, type: 3}
+    playedTime: 0
+    delay: 0
+  _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
+  _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
+  _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

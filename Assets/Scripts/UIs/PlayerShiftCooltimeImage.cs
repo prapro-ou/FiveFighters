@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerPowerBar : MonoBehaviour
+public class PlayerShiftCooltimeImage : MonoBehaviour
 {
     [SerializeField]
-    private Player _player;
-
-    [SerializeField]
-    private Slider _powerBarSlider;
+    private Image _image;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +20,8 @@ public class PlayerPowerBar : MonoBehaviour
         
     }
 
-    public void UpdatePowerMultiplier()
+    public void UpdateCooltimeImage(float progress)
     {
-        _powerBarSlider.value = (float)_player.PowerMultiplier / (float)100;
+        _image.fillAmount = progress;
     }
 }

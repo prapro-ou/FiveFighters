@@ -52,6 +52,12 @@ public class Player : MonoBehaviour
 
     private TMP_Text _moneyText;
 
+    private TMP_Text _powerText;
+
+    private PlayerPowerTile _powerTile;
+
+    private PlayerShiftCooltimeImage _cooltimeImage;
+
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
@@ -227,7 +233,23 @@ public class Player : MonoBehaviour
     public float PowerMultiplier
     {
         get {return _powerMultiplier;}
-        set {_powerMultiplier = value;}
+        set
+        {
+            _powerMultiplier = value;
+
+            if(_powerText == null)
+            {
+                _powerText = GameObject.Find("PlayerPowerText").GetComponent<TMP_Text>();
+            }
+
+            _powerText.SetText($"×{_powerMultiplier:.0}");
+
+            if(_powerTile == null)
+            {
+                _powerTile = GameObject.Find("PowerTile").GetComponent<PlayerPowerTile>();
+            }
+            _powerTile.UpdatePowerTile();
+        }
     }
 
     [SerializeField]
@@ -536,7 +558,16 @@ public class Player : MonoBehaviour
         Debug.Log("Start ShiftCooldown");
         IsInShiftCooldown = true;
 
-        yield return new WaitForSeconds(ShiftCooldown);
+        if(_cooltimeImage == null)
+        {
+            _cooltimeImage = GameObject.Find("CooltimeImage").GetComponent<PlayerShiftCooltimeImage>();
+        }
+
+        for(float time = 0; time <= ShiftCooldown; time += Time.deltaTime)
+        {
+            _cooltimeImage.UpdateCooltimeImage(time / ShiftCooldown);
+            yield return null;
+        }
 
         Debug.Log("Finish ShiftCooldown");
         IsInShiftCooldown = false;

@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b119b93a4d83e4282d166b8672216a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: Hexagon
   _maxHitPoint: 2000
   _damageTextPrefab: {fileID: 1357132420661731487, guid: 3602cd5f5faf8574ab9bda571d05f0d8, type: 3}
   _animator: {fileID: -5226222719145971260}

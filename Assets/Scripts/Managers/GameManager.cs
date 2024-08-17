@@ -74,6 +74,7 @@ public class GameManager : MonoBehaviour
             _timerText.SetText(formatedText);
             _clearTimeText.SetText($"経過時間： {formatedText}");
             _deathTimeText.SetText($"経過時間： {formatedText}");
+            _gameClearTimeText.SetText($"経過時間： {formatedText}");
         }
     }
 
@@ -90,6 +91,7 @@ public class GameManager : MonoBehaviour
             // _timerSumText.SetText(formatedText);
             _clearSumTimeText.SetText($"合計時間： {formatedText}");
             _deathSumTimeText.SetText($"合計時間： {formatedText}");
+            _gameClearSumTimeText.SetText($"合計時間： {formatedText}");
         }
     }
 
@@ -149,6 +151,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TMP_Text _deathTimeText;
 
+    [SerializeField]
+    private TMP_Text _gameClearTimeText;
+
     // [SerializeField]
     // private TMP_Text _timerText;
 
@@ -159,10 +164,16 @@ public class GameManager : MonoBehaviour
     private TMP_Text _deathSumTimeText;
 
     [SerializeField]
+    private TMP_Text _gameClearSumTimeText;
+
+    [SerializeField]
     private ProgressBar _clearProgressBar;
 
     [SerializeField]
     private ProgressBar _deathProgressBar;
+
+    [SerializeField]
+    private ProgressBar _gameClearProgressBar;
 
     [SerializeField]
     private TMP_Text _clearCoinText;
@@ -178,6 +189,13 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _deathResultButton;
+
+    [SerializeField]
+    private Canvas _gameClearResultCanvas;
+
+    [SerializeField]
+    private GameObject _gameClearResultButton;
+
 
     [SerializeField]
     private Canvas _uICanvas;
@@ -383,26 +401,45 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
-        //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
-        _overlayManager.SpawnStageClearText();
-        yield return new WaitForSeconds(1.5f);
+        //ゲームクリアか分岐
+        if(StateNumber != MaxStateNumber)
+        {
+            //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
+            _overlayManager.SpawnStageClearText();
+            yield return new WaitForSeconds(1.5f);
 
-        //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
-        _deathProgressBar.SetSliderOnDeath();
+            //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
+            _clearCoinText.SetText($"獲得コイン：{CalculateGiveMoney()} ({_moneysPerBattle[StateNumber]}+{(int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime))})");
+            
+            _clearResultCanvas.gameObject.SetActive(true);
 
-        _clearCoinText.SetText($"獲得コイン：{CalculateGiveMoney()} ({_moneysPerBattle[StateNumber]}+{(int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime))})");
-        
-        _clearResultCanvas.gameObject.SetActive(true);
+            _eventSystem.SetSelectedGameObject(_clearResultButton);
 
-        _eventSystem.SetSelectedGameObject(_clearResultButton);
+            _GiveMoney();
 
-        yield return StartCoroutine(_clearProgressBar.UpdateProgress());
+            yield return StartCoroutine(_clearProgressBar.UpdateProgress());
 
-        yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
 
-        _GiveMoney();
+            yield return null;
+        }
+        else
+        {
+            //「Game Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
+            _overlayManager.SpawnGameClearText();
+            yield return new WaitForSeconds(1.5f);
 
-        yield return null;
+            //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
+            // _clearCoinText.SetText($"獲得コイン：{CalculateGiveMoney()} ({_moneysPerBattle[StateNumber]}+{(int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime))})");
+            
+            _gameClearResultCanvas.gameObject.SetActive(true);
+
+            _eventSystem.SetSelectedGameObject(_gameClearResultButton);
+
+            yield return StartCoroutine(_gameClearProgressBar.UpdateProgress());
+
+            yield return null;
+        }
     }
 
     public void ShiftToShopWithClearResult()
@@ -458,6 +495,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
+        _deathProgressBar.SetSliderOnDeath();
+
         _deathResultCanvas.gameObject.SetActive(true);
 
         _eventSystem.SetSelectedGameObject(_deathResultButton);
@@ -474,14 +513,24 @@ public class GameManager : MonoBehaviour
 
         _clearResultCanvas.gameObject.SetActive(false);
 
-        StartCoroutine(_LoadTitleAfterTransition());
+        StartCoroutine(_LoadSceneAfterTransition(0));
     }
 
-    private IEnumerator _LoadTitleAfterTransition()
+    public void LoadMainWithResult()
+    {
+        //InputManagerのモードをPlayerに移行する
+        _inputManager.SwitchCurrentActionMap("Player");
+
+        _gameClearResultCanvas.gameObject.SetActive(false);
+
+        StartCoroutine(_LoadSceneAfterTransition(1));
+    }
+
+    private IEnumerator _LoadSceneAfterTransition(int number)
     {
         yield return StartCoroutine(_overlayManager.CloseTransition());
 
-        _sceneController.LoadNextScene(0);
+        _sceneController.LoadNextScene(number);
     }
 
     private void _GiveMoney()

@@ -24,6 +24,9 @@ public class OverlayManager : MonoBehaviour
     private GameObject _gameOverTextPrefab;
 
     [SerializeField]
+    private GameObject _gameClearTextPrefab;
+
+    [SerializeField]
     private Animator _transitionAnimator;
 
     [SerializeField]
@@ -109,6 +112,12 @@ public class OverlayManager : MonoBehaviour
     public void SpawnGameOverText()
     {
         GameObject text = Instantiate(_gameOverTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
+        Destroy(text, 5f);
+    }
+
+    public void SpawnGameClearText()
+    {
+        GameObject text = Instantiate(_gameClearTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
         Destroy(text, 5f);
     }
 

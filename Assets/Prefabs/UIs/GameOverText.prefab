@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3497114513544412107}
   - component: {fileID: 4620801569915876573}
   - component: {fileID: 5289077581929307597}
-  - component: {fileID: -5449352298593311402}
+  - component: {fileID: 3333488885981678730}
   m_Layer: 5
-  m_Name: StageClearText
+  m_Name: GameOverText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -50, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1000, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4620801569915876573
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "STAGE\n   CLEAR"
+  m_text: "GAME\n   OVER"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
   m_sharedMaterial: {fileID: -7980660139348290943, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!95 &-5449352298593311402
+--- !u!95 &3333488885981678730
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ Animator:
   m_GameObject: {fileID: 3683286836030368035}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f460fde3f755da94a91e1a45d812681b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4b96fdf22fe71a34aac6a8532e5b1e39, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

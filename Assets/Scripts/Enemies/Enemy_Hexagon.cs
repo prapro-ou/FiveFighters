@@ -299,7 +299,7 @@ public class Enemy_Hexagon : Enemy
         _animator.SetTrigger("Defeat");
         StartCoroutine(_Vibrate(2.5f, 0.2f));
 
-        Instantiate(_hexagonDefeatEffectPrefab, transform.position, Quaternion.identity, transform);
+        Instantiate(_hexagonDefeatEffectPrefab, transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(2.5f);
 

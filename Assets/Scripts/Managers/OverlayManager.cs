@@ -18,10 +18,22 @@ public class OverlayManager : MonoBehaviour
     private Image _redFlashImage;
 
     [SerializeField]
+    private GameObject _stageClearTextPrefab;
+
+    [SerializeField]
+    private GameObject _gameOverTextPrefab;
+
+    [SerializeField]
+    private GameObject _gameClearTextPrefab;
+
+    [SerializeField]
     private Animator _transitionAnimator;
 
     [SerializeField]
     private Canvas _uICanvas;
+
+    [SerializeField]
+    private Canvas _rightUICanvas;
 
     [SerializeField]
     private AnimationCurve _curve;
@@ -91,11 +103,39 @@ public class OverlayManager : MonoBehaviour
         _redFlashImage.color = color;
     }
 
+    public void SpawnStageClearText()
+    {
+        GameObject text = Instantiate(_stageClearTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
+        Destroy(text, 5f);
+    }
+
+    public void SpawnGameOverText()
+    {
+        GameObject text = Instantiate(_gameOverTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
+        Destroy(text, 5f);
+    }
+
+    public void SpawnGameClearText()
+    {
+        GameObject text = Instantiate(_gameClearTextPrefab, Vector3.zero, Quaternion.identity, _uICanvas.transform);
+        Destroy(text, 5f);
+    }
+
     public void DisappearUICanvas()
     {
         CanvasGroup canvasGroup = _uICanvas.GetComponent<CanvasGroup>();
 
         canvasGroup.alpha = 0;
+    }
+
+    public void EnableRightUICanvas()
+    {
+        _rightUICanvas.enabled = true;
+    }
+
+    public void DisenableRightUICanvas()
+    {
+        _rightUICanvas.enabled = false;
     }
 
     public IEnumerator AppearUICanvas(float duration)

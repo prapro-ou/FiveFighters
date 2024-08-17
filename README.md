@@ -33,7 +33,8 @@ URL：[URL]
 URL：[URL]
 
 ## 音声
-###システム音
+システム音
+
 効果音：魔王魂
 素材名：システム49
 URL：[https://maou.audio/se_system49/]
@@ -58,7 +59,8 @@ URL：[https://sounds.udonko.net/sounds/mp3/Powerup57.mp3]
 素材名：いろいろ64.mp3
 URL：[https://sounds.udonko.net/sounds/mp3/Randomize64.mp3]
 
-###ゲーム内音
+ゲーム内音
+
 効果音：魔王魂
 素材名：爆発07
 URL：[https://maou.audio/se_battle_explosion07/]

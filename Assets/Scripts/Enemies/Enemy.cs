@@ -12,6 +12,8 @@ public abstract class Enemy : MonoBehaviour
 
     private Collider2D _collider;
 
+    private SpriteRenderer _sr;
+
     [SerializeField]
     private string _name;
 
@@ -72,6 +74,8 @@ public abstract class Enemy : MonoBehaviour
 
         _collider = GetComponent<Collider2D>();
 
+        _sr = GetComponent<SpriteRenderer>();
+
         HitPoint = MaxHitPoint;
     }
 
@@ -101,12 +105,35 @@ public abstract class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         HitPoint -= damage;
+        StartCoroutine("DamageAction");
     }
 
     public void GenerateDamageText(int damage, Vector3 pos)
     {
         _damageTextPrefab.GetComponent<TextMeshPro>().text = damage.ToString();
         GameObject text = Instantiate(_damageTextPrefab, pos, Quaternion.identity);
+    }
+
+    public IEnumerator DamageAction()
+    {
+        for(int h = 0; h < 2; ++h)
+        {
+            for(int i = 0; i < 100; ++i)
+            {
+                _sr.material.color -= new Color32(0, 0, 0, 1);
+            }
+
+            yield return new WaitForSeconds(0.05f);
+
+            for(int j = 0; j < 100; ++j)
+            {
+                _sr.material.color += new Color32(0, 0, 0, 1);
+            }
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        yield break;
     }
 
     public abstract void StartAttacking();

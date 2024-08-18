@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy_Diamond_RightCanon : MonoBehaviour
 {
+    private SoundManager _soundManager;
+
     [SerializeField]
     private EnemyBullet _laserPrefab;
 
@@ -30,6 +32,7 @@ public class Enemy_Diamond_RightCanon : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         EnemyBullet beam = Instantiate(_laserPrefab, pos, Quaternion.Euler(0, 0, 90));
+        _PlaySound("Laser");
         beam.GetComponent<Rigidbody2D>().velocity = power;
 
         yield return new WaitForSeconds(3);
@@ -38,5 +41,15 @@ public class Enemy_Diamond_RightCanon : MonoBehaviour
         Destroy(this.gameObject);
 
         yield break;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

@@ -47,59 +47,51 @@ MonoBehaviour:
   _bgmDatas:
   - name: 
     audioClip: {fileID: 0}
-    playedTime: 0
   _seDatas:
   - name: Submit
-    audioClip: {fileID: 8300000, guid: 17d17d2bf63ad6648a91732d638bffe3, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 4f37c76666245734384879ce4a226b14, type: 3}
     delay: 0.3
   - name: CannotBuy
-    audioClip: {fileID: 8300000, guid: db8a9b8e470542f4dba532364cc3544b, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: bd38e7054ec04d1458f6421291557d01, type: 3}
     delay: 0
   - name: PowerUp
-    audioClip: {fileID: 8300000, guid: 673315336ee485144886d2354b9139fa, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 3eb066f71458fc2478adaf128f9a57ea, type: 3}
     delay: 0
   - name: GetMoney
-    audioClip: {fileID: 8300000, guid: 20ea8222165f70e4288054cd9a78d7ad, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: bc4333e32fc86314fab22d694be1fe05, type: 3}
     delay: 0
   - name: Death
-    audioClip: {fileID: 8300000, guid: 8f5031f983af8954cb9330d92ab60a7c, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 767e62559679c924e94f559ffb79da8e, type: 3}
     delay: 0
   - name: Explosion1
-    audioClip: {fileID: 8300000, guid: 8b38331a0d052b14787746bd7908b482, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 97089fd647c4a62469070ecf3b9f02f7, type: 3}
     delay: 0
   - name: Explosion2
-    audioClip: {fileID: 8300000, guid: b2bee98ac713ee34194f263cfdd2bd96, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 0b16556c9915d44479b57d7e216dd7ce, type: 3}
     delay: 0
   - name: Explosion3
-    audioClip: {fileID: 8300000, guid: ededcf562e5184d4790477e553ff6246, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 6f4810091f6e50a4d8e80acbff0a04e3, type: 3}
     delay: 0
   - name: Explosion4
-    audioClip: {fileID: 8300000, guid: 72bb6254688c91b4ea90cbca066934d5, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 9d93f957acf01104ea65c8a12c4d40ea, type: 3}
     delay: 0
   - name: Spawn1
-    audioClip: {fileID: 8300000, guid: e9f770c7d64b0244ab360f9ad0310ee9, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: a15e5331d680a6c47bca8003bc6754d4, type: 3}
     delay: 0
   - name: Spawn2
-    audioClip: {fileID: 8300000, guid: f0bb2288c0833d44692e165b16b6e229, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: d777121483398144494fde5420c91721, type: 3}
     delay: 0
   - name: Spawn3
-    audioClip: {fileID: 8300000, guid: 1c720164d68c82749a78c8ccc11afa0a, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: c58f8034bfd323c4f83466026efb68d4, type: 3}
     delay: 0
   - name: Spawn4
-    audioClip: {fileID: 8300000, guid: a3d8d3f826a34eb4a91f224b1fd6fa0a, type: 3}
-    playedTime: 0
+    audioClip: {fileID: 8300000, guid: 032026580ef4049479fdc8ee2f513c17, type: 3}
+    delay: 0
+  - name: NormalBullet
+    audioClip: {fileID: 8300000, guid: cf5f2ef325780594fadb03b770181fa7, type: 3}
+    delay: 0
+  - name: Laser
+    audioClip: {fileID: 8300000, guid: ea6c37dd1c445ba498d6773ceaca8a08, type: 3}
     delay: 0
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}

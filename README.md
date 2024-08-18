@@ -89,5 +89,10 @@ URL：[https://sounds.udonko.net/sounds/mp3/Randomize50.mp3]
 素材名：戦闘04
 URL：[https://maou.audio/se_battle04/]
 
+効果音：8BITSOUNDS
+素材名：攻撃90.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Hit_Hurt90.mp3]
 
-
+効果音：8BITSOUNDS
+素材名：レーザー38.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Laser_Shoot38.mp3]

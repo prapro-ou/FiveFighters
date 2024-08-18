@@ -116,22 +116,19 @@ public abstract class Enemy : MonoBehaviour
 
     public IEnumerator DamageAction()
     {
-        for(int h = 0; h < 2; ++h)
+        for(int i = 0; i < 100; ++i)
         {
-            for(int i = 0; i < 100; ++i)
-            {
-                _sr.material.color -= new Color32(0, 0, 0, 1);
-            }
-
-            yield return new WaitForSeconds(0.05f);
-
-            for(int j = 0; j < 100; ++j)
-            {
-                _sr.material.color += new Color32(0, 0, 0, 1);
-            }
-
-            yield return new WaitForSeconds(0.05f);
+            _sr.material.color -= new Color32(0, 0, 0, 1);
         }
+
+        yield return new WaitForSeconds(0.05f);
+
+        for(int j = 0; j < 100; ++j)
+        {
+            _sr.material.color += new Color32(0, 0, 0, 1);
+        }
+
+        yield return new WaitForSeconds(0.05f);
 
         yield break;
     }

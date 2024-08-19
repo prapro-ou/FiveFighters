@@ -21,7 +21,9 @@ URL: https://prapro-ou.github.io/FiveFighters/ (テストビルド)
 # 使用素材
 ## フォント
 素材名：M PLUS 1
-URL：https://fonts.google.com/specimen/M+PLUS+1?preview.size=18&query=Coji+Morishita&stroke=Sans+Serif&subset=japanese&noto.script=Hira
+SIL Open Font License Version 1.1に準拠
+URL：https://fonts.google.com/specimen/M+PLUS+1?query=m+Plus+1
+Copyright 2021 The M+ FONTS Project Authors (https://github.com/coz-m/MPLUS_FONTS)
 
 ## 画像
 素材名：[素材名]

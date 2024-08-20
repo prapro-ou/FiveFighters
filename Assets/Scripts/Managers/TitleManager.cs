@@ -13,6 +13,8 @@ public class TitleManager : MonoBehaviour
 
     private Canvas _volumeSliderCanvas;
 
+    private Canvas _tutorialCanvas;
+
     [SerializeField]
     private GameObject _transitionObject;
 
@@ -42,6 +44,12 @@ public class TitleManager : MonoBehaviour
             _volumeSliderCanvas = GameObject.Find("Canvas_VolumeSlider").GetComponent<Canvas>();
         }
         _volumeSliderCanvas.enabled = true;
+
+        if(_tutorialCanvas == null)
+        {
+            _tutorialCanvas = GameObject.Find("Canvas_Tutorial").GetComponent<Canvas>();
+        }
+        _tutorialCanvas.enabled = false;
 
         AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
         float animationLength = animationState.length;

@@ -9,6 +9,8 @@ TagManager:
   - EnemyBullet
   - GrazeCollider
   - DamageCollider
+  - EnemyHealBullet
+  - EnemyStuckBullet
   layers:
   - Default
   - TransparentFX

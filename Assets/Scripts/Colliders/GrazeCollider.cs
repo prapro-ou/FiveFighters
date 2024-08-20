@@ -11,9 +11,6 @@ public class GrazeCollider : MonoBehaviour
     private List<PlayerShape> _ownShapes;
 
     [SerializeField]
-    private SoundManager _soundManager;
-
-    [SerializeField]
     private GameObject _playerAvailableSpecialCircleEffectPrefab;
 
     [SerializeField]

@@ -10,7 +10,6 @@ public class GrazeCollider : MonoBehaviour
     [SerializeField]
     private List<PlayerShape> _ownShapes;
 
-    [SerializeField]
     private SoundManager _soundManager;
 
     [SerializeField]

@@ -67,7 +67,7 @@ public class UIObject_Seller_Graze : UIObject
         if(_player.Money >= BuyCount)
         {
             _player.UseMoney(BuyCount);
-            _player.ExpansionValue += 0.2f;
+            _player.EnhanceGrazeCollider(0.2f);
             Test();
             BuyCount++;
         }

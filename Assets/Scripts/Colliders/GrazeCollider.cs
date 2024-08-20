@@ -26,6 +26,8 @@ public class GrazeCollider : MonoBehaviour
 
     private int _grazeCount;
 
+    private SoundManager _soundManager;
+
     public int GrazeCount
     {
         get {return _grazeCount;}
@@ -52,6 +54,10 @@ public class GrazeCollider : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(GrazeCount > 0)
+        {
+            _PlaySound("Graze");
+        }
         _player.PrimaryGrazeCount += GrazeCount;
         _player.SpecialGrazeCount += GrazeCount;
 

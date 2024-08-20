@@ -412,6 +412,8 @@ public class Player : MonoBehaviour
 
         StartCoroutine(_cameraManager.Vibrate(0.2f, 0.1f));
 
+        _PlaySound("Damage");
+        
         Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
     }
 
@@ -458,10 +460,12 @@ public class Player : MonoBehaviour
 
         for(int i = 0; i < 2; i++)
         {
+            _PlaySound("Damage");
             Instantiate(_playerDeathExplodeEffectPrefab, transform.position, Quaternion.identity);
             yield return StartCoroutine(_Vibrate(0.5f, 0.2f));
         }
 
+        _PlaySound("Explosion1");
         StartCoroutine(_cameraManager.Vibrate(2f, 2f));
 
         Instantiate(_playerDefeatEffectPrefab, transform.position, Quaternion.identity);
@@ -637,11 +641,19 @@ public class Player : MonoBehaviour
     {
         MaxHitPoint += boost;
         HitPoint += boost;
+        _PlaySound("PowerUp");
     }
 
     public void EnhancePower(float coefficient)
     {
         PowerMultiplier += coefficient;
+        _PlaySound("PowerUp");
+    }
+
+    public void EnhanceGrazeCollider(float coefficient)
+    {
+        ExpansionValue += coefficient;
+        _PlaySound("PowerUp");
     }
 
     public void OnSubmit(InputAction.CallbackContext context)

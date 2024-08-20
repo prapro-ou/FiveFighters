@@ -102,6 +102,27 @@ MonoBehaviour:
   - name: Special
     audioClip: {fileID: 8300000, guid: 1ed849ee6fa03f843bfba2ba0b633445, type: 3}
     delay: 0
+  - name: Damage
+    audioClip: {fileID: 8300000, guid: b6518e88f93371245ab2749f7d7b0d70, type: 3}
+    delay: 0
+  - name: Dash
+    audioClip: {fileID: 8300000, guid: 1ef60f4ad6e77c34abf4ef80c315e41d, type: 3}
+    delay: 0
+  - name: Shield
+    audioClip: {fileID: 8300000, guid: 5289a58323cf26b4ab3ae912f03b15df, type: 3}
+    delay: 0.3
+  - name: ShootSpecialCircleBullet
+    audioClip: {fileID: 8300000, guid: cc26dfb515c44b14998dabe6806fbfc3, type: 3}
+    delay: 0
+  - name: ExplodeSpecialCircleBullet
+    audioClip: {fileID: 8300000, guid: 149bc70c0f994f8478382f6c17acb524, type: 3}
+    delay: 0
+  - name: DestroyBullet
+    audioClip: {fileID: 8300000, guid: b884c86882e566f4f852cf039a74cd8e, type: 3}
+    delay: 0.05
+  - name: Graze
+    audioClip: {fileID: 8300000, guid: 21d4442fc3051c14daad4f507668e83f, type: 3}
+    delay: 0.08
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

@@ -8,6 +8,8 @@ public class Shape_Square : PlayerShape
 
     private GameObject _squareDestroyField;
 
+    private SoundManager _soundManager;
+
     [SerializeField]
     private PrimarySquareBullet _primarySquareBullet;
 
@@ -40,6 +42,8 @@ public class Shape_Square : PlayerShape
     {
         GameObject bullet;
 
+        _PlaySound("Shield");
+
         bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 2.0f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
         bullet.GetComponent<SpecialSquareBullet>().Direction = 0;
 
@@ -59,9 +63,21 @@ public class Shape_Square : PlayerShape
     {
         GameObject bullet;
 
+        _PlaySound("Shield");
+
         _squareDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
         Destroy(_squareDestroyField, 0.5f);
         bullet = Instantiate(_squareSpecialBullet, new Vector3(_player.transform.localPosition.x + 0.0f, _player.transform.localPosition.y + 2.0f, _player.transform.localPosition.z + 0.0f), Quaternion.identity);
         bullet.GetComponent<SpecialSquareBullet>().Direction = 0;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

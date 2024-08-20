@@ -93,6 +93,15 @@ MonoBehaviour:
   - name: Laser
     audioClip: {fileID: 8300000, guid: ea6c37dd1c445ba498d6773ceaca8a08, type: 3}
     delay: 0
+  - name: Transform
+    audioClip: {fileID: 8300000, guid: 84de76255a770aa4f908b87e124c089b, type: 3}
+    delay: 0
+  - name: Transformable
+    audioClip: {fileID: 8300000, guid: fd51b6713a363d34b8c73581f6ba6d40, type: 3}
+    delay: 0
+  - name: Special
+    audioClip: {fileID: 8300000, guid: 1ed849ee6fa03f843bfba2ba0b633445, type: 3}
+    delay: 0
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

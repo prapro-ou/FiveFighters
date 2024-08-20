@@ -134,3 +134,7 @@ URL：[https://maou.audio/se_8bit08/]
 効果音：魔王魂
 素材名：レトロ13
 URL：[https://maou.audio/se_8bit13/]
+
+効果音：8BITSOUNDS
+素材名：いろいろ94.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize94.mp3]

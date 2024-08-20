@@ -47,60 +47,67 @@ MonoBehaviour:
   _bgmDatas:
   - name: 
     audioClip: {fileID: 0}
-    playedTime: 0
   _seDatas:
   - name: Submit
     audioClip: {fileID: 8300000, guid: 17d17d2bf63ad6648a91732d638bffe3, type: 3}
-    playedTime: 0
     delay: 0.3
   - name: CannotBuy
     audioClip: {fileID: 8300000, guid: db8a9b8e470542f4dba532364cc3544b, type: 3}
-    playedTime: 0
-    delay: 0
+    delay: 0.7
   - name: PowerUp
     audioClip: {fileID: 8300000, guid: 673315336ee485144886d2354b9139fa, type: 3}
-    playedTime: 0
-    delay: 0
+    delay: 0.7
   - name: GetMoney
     audioClip: {fileID: 8300000, guid: 20ea8222165f70e4288054cd9a78d7ad, type: 3}
-    playedTime: 0
     delay: 0
   - name: Death
     audioClip: {fileID: 8300000, guid: 8f5031f983af8954cb9330d92ab60a7c, type: 3}
-    playedTime: 0
     delay: 0
   - name: Explosion1
     audioClip: {fileID: 8300000, guid: 8b38331a0d052b14787746bd7908b482, type: 3}
-    playedTime: 0
     delay: 0
   - name: Explosion2
     audioClip: {fileID: 8300000, guid: b2bee98ac713ee34194f263cfdd2bd96, type: 3}
-    playedTime: 0
     delay: 0
   - name: Explosion3
     audioClip: {fileID: 8300000, guid: ededcf562e5184d4790477e553ff6246, type: 3}
-    playedTime: 0
     delay: 0
   - name: Explosion4
     audioClip: {fileID: 8300000, guid: 72bb6254688c91b4ea90cbca066934d5, type: 3}
-    playedTime: 0
     delay: 0
   - name: Spawn1
     audioClip: {fileID: 8300000, guid: e9f770c7d64b0244ab360f9ad0310ee9, type: 3}
-    playedTime: 0
     delay: 0
   - name: Spawn2
     audioClip: {fileID: 8300000, guid: f0bb2288c0833d44692e165b16b6e229, type: 3}
-    playedTime: 0
     delay: 0
   - name: Spawn3
     audioClip: {fileID: 8300000, guid: 1c720164d68c82749a78c8ccc11afa0a, type: 3}
-    playedTime: 0
     delay: 0
   - name: Spawn4
     audioClip: {fileID: 8300000, guid: a3d8d3f826a34eb4a91f224b1fd6fa0a, type: 3}
-    playedTime: 0
     delay: 0
+  - name: Damage
+    audioClip: {fileID: 8300000, guid: b6518e88f93371245ab2749f7d7b0d70, type: 3}
+    delay: 0
+  - name: Dash
+    audioClip: {fileID: 8300000, guid: 1ef60f4ad6e77c34abf4ef80c315e41d, type: 3}
+    delay: 0
+  - name: Shield
+    audioClip: {fileID: 8300000, guid: 5289a58323cf26b4ab3ae912f03b15df, type: 3}
+    delay: 0.3
+  - name: ShootSpecialCircleBullet
+    audioClip: {fileID: 8300000, guid: cc26dfb515c44b14998dabe6806fbfc3, type: 3}
+    delay: 0
+  - name: ExplodeSpecialCircleBullet
+    audioClip: {fileID: 8300000, guid: 149bc70c0f994f8478382f6c17acb524, type: 3}
+    delay: 0
+  - name: DestroyBullet
+    audioClip: {fileID: 8300000, guid: b884c86882e566f4f852cf039a74cd8e, type: 3}
+    delay: 0.05
+  - name: Graze
+    audioClip: {fileID: 8300000, guid: 21d4442fc3051c14daad4f507668e83f, type: 3}
+    delay: 0.08
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

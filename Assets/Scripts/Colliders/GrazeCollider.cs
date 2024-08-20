@@ -8,6 +8,8 @@ public class GrazeCollider : MonoBehaviour
     private Player _player;
     private int _grazeCount;
 
+    private SoundManager _soundManager;
+
     public int GrazeCount
     {
         get {return _grazeCount;}
@@ -27,6 +29,10 @@ public class GrazeCollider : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(GrazeCount > 0)
+        {
+            _PlaySound("Graze");
+        }
         _player.PrimaryGrazeCount += GrazeCount;
         _player.SpecialGrazeCount += GrazeCount;
     }
@@ -39,5 +45,15 @@ public class GrazeCollider : MonoBehaviour
     public void OnTriggerExit2D(Collider2D collider)
     {
         GrazeCount -= 1;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

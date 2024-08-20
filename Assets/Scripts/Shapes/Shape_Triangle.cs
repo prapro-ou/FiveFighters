@@ -7,6 +7,8 @@ public class Shape_Triangle : PlayerShape
     private Player _player;
     private GameObject _triangleDestroyField;
     
+    private SoundManager _soundManager;
+    
     [SerializeField]
     private Shape_SmallTriangle _smallTriangle;
 
@@ -45,7 +47,9 @@ public class Shape_Triangle : PlayerShape
     }
 
     public override void SpecialSkill()
-    {         
+    {
+        _PlaySound("Spawn2");
+
         Vector3 rightPosition = new Vector3(_player.transform.position.x + _smallTrianglePosition, _player.transform.position.y + _smallTrianglePosition);
         Vector3 leftPosition  = new Vector3(_player.transform.position.x - _smallTrianglePosition, _player.transform.position.y + _smallTrianglePosition);
 
@@ -69,11 +73,23 @@ public class Shape_Triangle : PlayerShape
 
     public override void ShiftSkill()
     {
+        _PlaySound("Dash");
+
         _triangleDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
         Destroy(_triangleDestroyField, _player.DashTime);
 
         _player.Dash();
 
         Debug.Log($"ShiftSkill {name}");
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

@@ -87,5 +87,26 @@ URL：[https://sounds.udonko.net/sounds/mp3/Randomize50.mp3]
 素材名：戦闘04
 URL：[https://maou.audio/se_battle04/]
 
+効果音：8BITSOUNDS
+素材名：攻撃14.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Hit_Hurt14.mp3]
 
+効果音：8BITSOUNDS
+素材名：パワーアップ29.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Powerup29.mp3]
 
+効果音：8BITSOUNDS
+素材名：いろいろ41.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize41.mp3]
+
+効果音：8BITSOUNDS
+素材名：いろいろ53.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize53.mp3]
+
+効果音：8BITSOUNDS
+素材名：いろいろ62.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize62.mp3]
+
+効果音：8BITSOUNDS
+素材名：攻撃34.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Hit_Hurt34.mp3]

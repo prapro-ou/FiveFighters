@@ -41,6 +41,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _playerDeathExplodeEffectPrefab;
 
+    [SerializeField]
+    private GameObject _playerTransformableEffectPrefab;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
@@ -97,7 +100,7 @@ public class Player : MonoBehaviour
     public PlayerShape MyShape
     {
         get {return _myShape;}
-        set 
+        set
         {
             _myShape = value;
             _ShiftShapeOfColliders(MyShape);
@@ -192,7 +195,7 @@ public class Player : MonoBehaviour
     {
         get {return _isInShiftCooldown;}
         set {_isInShiftCooldown = value;}
-    }   
+    }
 
     [SerializeField]
     private float _slowDownRate;
@@ -211,7 +214,7 @@ public class Player : MonoBehaviour
     {
         get {return _isDead;}
         set {_isDead = value;}
-    }    
+    }
 
     private int _money = 0;
 
@@ -269,7 +272,7 @@ public class Player : MonoBehaviour
     public int PrimaryGrazeCount
     {
         get {return _primaryGrazeCount;}
-        set 
+        set
         {
             _primaryGrazeCount = value;
 
@@ -369,7 +372,7 @@ public class Player : MonoBehaviour
 
     // 方向入力を受ける関数
     public void OnMove(InputAction.CallbackContext context)
-    {  
+    {
         //[TODO]アニメーションを入れる
 
         //十字キーを放したときに方向をリセット
@@ -475,7 +478,7 @@ public class Player : MonoBehaviour
     public void PrimaryAttack()
     {
         MyShape.PrimaryAttack();
-        
+
         if (SmallRightTriangle != null)
         {
             SmallRightTriangle.PrimaryAttack();
@@ -533,6 +536,7 @@ public class Player : MonoBehaviour
         }
 
         MyShape = _ownShapes[mode];
+        _PlaySound("Transform");
 
         MyShape.ShiftSkill();
 
@@ -558,6 +562,7 @@ public class Player : MonoBehaviour
         MyShape.SpecialSkill();
 
         SpecialGrazeCount = 0;
+        _grazeCollider.SpecialSkillFlag = false;
     }
 
     private IEnumerator StartShiftCooldown()
@@ -577,6 +582,8 @@ public class Player : MonoBehaviour
         }
 
         Debug.Log("Finish ShiftCooldown");
+        GameObject transEffect = Instantiate(_playerTransformableEffectPrefab, this.transform.position, Quaternion.identity, this.transform);
+        _PlaySound("Transformable");
         IsInShiftCooldown = false;
     }
 

@@ -21,7 +21,9 @@ URL: https://prapro-ou.github.io/FiveFighters/ (テストビルド)
 # 使用素材
 ## フォント
 素材名：M PLUS 1
-URL：https://fonts.google.com/specimen/M+PLUS+1?preview.size=18&query=Coji+Morishita&stroke=Sans+Serif&subset=japanese&noto.script=Hira
+SIL Open Font License Version 1.1に準拠
+URL：https://fonts.google.com/specimen/M+PLUS+1?query=m+Plus+1
+Copyright 2021 The M+ FONTS Project Authors (https://github.com/coz-m/MPLUS_FONTS)
 
 ## 画像
 素材名：[素材名]
@@ -33,7 +35,8 @@ URL：[URL]
 URL：[URL]
 
 ## 音声
-###システム音
+システム音
+
 効果音：魔王魂
 素材名：システム49
 URL：[https://maou.audio/se_system49/]
@@ -58,7 +61,8 @@ URL：[https://sounds.udonko.net/sounds/mp3/Powerup57.mp3]
 素材名：いろいろ64.mp3
 URL：[https://sounds.udonko.net/sounds/mp3/Randomize64.mp3]
 
-###ゲーム内音
+ゲーム内音
+
 効果音：魔王魂
 素材名：爆発07
 URL：[https://maou.audio/se_battle_explosion07/]
@@ -110,3 +114,11 @@ URL：[https://sounds.udonko.net/sounds/mp3/Randomize62.mp3]
 効果音：8BITSOUNDS
 素材名：攻撃34.mp3
 URL：[https://sounds.udonko.net/sounds/mp3/Hit_Hurt34.mp3]
+
+効果音：8BITSOUNDS
+素材名：攻撃90.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Hit_Hurt90.mp3]
+
+効果音：8BITSOUNDS
+素材名：レーザー38.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Laser_Shoot38.mp3]

@@ -7,7 +7,7 @@ using UnityEngine;
 public enum DiamondState
 {
     Wait,
-    Attack1,
+    NormalBullet,
     Attack2,
     Attack3,
     Attack4,
@@ -19,6 +19,8 @@ public enum DiamondState
 public class Enemy_Diamond : Enemy
 {
     private CameraManager _cameraManager;
+
+    private SoundManager _soundManager;
 
     private Player _player;
 
@@ -135,7 +137,7 @@ public class Enemy_Diamond : Enemy
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
-                case DiamondState.Attack1:
+                case DiamondState.NormalBullet:
                 //3つの頂点から平行に射撃.1セットごとに移動．
                 {
                     Debug.Log("Attack:" + CurrentState);
@@ -231,6 +233,9 @@ public class Enemy_Diamond : Enemy
         Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.Euler(0, 0, 270));
 
         for(int i = 0; i <= 100; ++i){
+            if(i == 30)
+                _PlaySound("Spawn4");
+
             transform.localScale = new Vector3(0.02f * i, 0.02f * i, 0.01f * i);
             transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
             yield return new WaitForSeconds(0.025f);
@@ -259,6 +264,8 @@ public class Enemy_Diamond : Enemy
 
             yield return new WaitForSeconds(0.1f);
         }
+
+        _PlaySound("Explosion1");
         Instantiate(_explodePrefab, transform.position, Quaternion.identity);
 
         yield return new WaitForSeconds(0.5f); //Sample
@@ -284,6 +291,7 @@ public class Enemy_Diamond : Enemy
         EnemyBullet bullet3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
         //弾を発射
+        _PlaySound("NormalBullet");
         bullet.GetComponent<Rigidbody2D>().velocity = power;
         bullet2.GetComponent<Rigidbody2D>().velocity = power;
         bullet3.GetComponent<Rigidbody2D>().velocity = power;
@@ -304,12 +312,14 @@ public class Enemy_Diamond : Enemy
         if(rnd_x == 1)
         {
             Vector3 pos = new Vector3(transform.position.x - 4.0f, transform.position.y - (1.0f * rnd_y) , _laserPrefab.transform.position.z);
+            _PlaySound("Spawn3");
             Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 270));
             Enemy_Diamond_LeftCanon canon = Instantiate(_leftCanonPrefab, pos, Quaternion.Euler(0, 0, 270));
         }
         else
         {
             Vector3 pos = new Vector3(transform.position.x + 4.0f, transform.position.y - (1.0f * rnd_y) , _laserPrefab.transform.position.z);
+            _PlaySound("Spawn3");
             Instantiate(_generateEffectPrefab, pos, Quaternion.Euler(0, 0, 90));
             Enemy_Diamond_RightCanon canon = Instantiate(_rightCanonPrefab, pos, Quaternion.Euler(0, 0, 90));
         }
@@ -348,6 +358,7 @@ public class Enemy_Diamond : Enemy
             float angle_r = Mathf.Atan2(aim_r.x, aim_r.y);
 
             //砲台生成
+            _PlaySound("Spawn3");
             Enemy_Diamond_Bit leftbit = Instantiate(_bitPrefab, pos_l, Quaternion.AngleAxis(angle_l * Mathf.Rad2Deg, Vector3.back));
             Enemy_Diamond_Bit rightbit = Instantiate(_bitPrefab, pos_r, Quaternion.AngleAxis(angle_r * Mathf.Rad2Deg, Vector3.back));
 
@@ -368,6 +379,7 @@ public class Enemy_Diamond : Enemy
                 EnemyBullet laser_r = Instantiate(_laserPrefab, pos_r, Quaternion.AngleAxis(angle_r * Mathf.Rad2Deg, Vector3.back));
 
                 //ビームを発射
+                _PlaySound("Laser");
                 laser_l.GetComponent<Rigidbody2D>().velocity = power_l;
                 laser_c.GetComponent<Rigidbody2D>().velocity = power_c;
                 laser_r.GetComponent<Rigidbody2D>().velocity = power_r;
@@ -412,6 +424,7 @@ public class Enemy_Diamond : Enemy
             Enemy_Scope scope = Instantiate(_scopePrefab, target, Quaternion.identity);
 
             //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
+            _PlaySound("NormalBullet");
             bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 8.0f;
 
             yield return new WaitForSeconds(0.4f);
@@ -450,7 +463,7 @@ public class Enemy_Diamond : Enemy
         for(int i = 0; i <= 200; ++i)
         {
             transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.005f);
         }
 
         //乱射
@@ -480,6 +493,7 @@ public class Enemy_Diamond : Enemy
             }
 
             //弾を発射
+            _PlaySound("NormalBullet");
             bullet.GetComponent<Rigidbody2D>().velocity = power;
 
             if(i % 5 == 0)
@@ -492,6 +506,7 @@ public class Enemy_Diamond : Enemy
                 float angle = Mathf.Atan2(aim.x, aim.y);
                 EnemyBullet laser = Instantiate(_laserPrefab, pos, Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.back));
 
+                _PlaySound("Laser");
                 laser.GetComponent<Rigidbody2D>().velocity = aim * 6.0f;
             }
 
@@ -575,16 +590,19 @@ public class Enemy_Diamond : Enemy
             EnemyBullet bullet_l3 = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
             //各部分の直進する弾を発射
+            _PlaySound("NormalBullet");
             bullet_c1.GetComponent<Rigidbody2D>().velocity = power_c;
             bullet_c2.GetComponent<Rigidbody2D>().velocity = power_c;
             bullet_c3.GetComponent<Rigidbody2D>().velocity = power_c;
 
             //各部分の右側へ向かう弾を発射
+            _PlaySound("NormalBullet");
             bullet_r1.GetComponent<Rigidbody2D>().velocity = power_r;
             bullet_r2.GetComponent<Rigidbody2D>().velocity = power_r;
             bullet_r3.GetComponent<Rigidbody2D>().velocity = power_r;
 
             //各部分の左側へ向かう弾を発射
+            _PlaySound("NormalBullet");
             bullet_l1.GetComponent<Rigidbody2D>().velocity = power_l;
             bullet_l2.GetComponent<Rigidbody2D>().velocity = power_l;
             bullet_l3.GetComponent<Rigidbody2D>().velocity = power_l;
@@ -615,11 +633,22 @@ public class Enemy_Diamond : Enemy
             Enemy_Scope scope = Instantiate(_scopePrefab, target, Quaternion.identity);
 
             //弾を発射 正規化した位置ベクトルに乱数を乗算して速さを調整．
+            _PlaySound("NormalBullet");
             bullet.GetComponent<Rigidbody2D>().velocity = power * rnd;
 
             yield return new WaitForSeconds(0.4f);
         }
 
         yield return null;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

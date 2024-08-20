@@ -6678,6 +6678,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _playerDefeatEffectPrefab: {fileID: 6141918197384672487, guid: 81dc31714e5750049b9d7ffe0fb94ee6, type: 3}
   _playerDeathExplodeEffectPrefab: {fileID: 6141918197384672487, guid: 901bc8a14565d0a4aaa7a3f4d689810f, type: 3}
+  _playerTransformableEffectPrefab: {fileID: 6141918197384672487, guid: 4601eaf1fcc44c3409210eb20636cf8b, type: 3}
   _ownShapes:
   - {fileID: 1287317979}
   - {fileID: 1960416857}
@@ -8323,6 +8324,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
+  _ownShapes:
+  - {fileID: 1287317979}
+  - {fileID: 1960416857}
+  - {fileID: 159084274}
+  _soundManager: {fileID: 0}
+  _playerAvailableSpecialCircleEffectPrefab: {fileID: 8126227476472299824, guid: 79d314297f2a0954883f2f8364ae6dd6, type: 3}
+  _playerAvailableSpecialTriangleEffectPrefab: {fileID: 7193807113427077339, guid: 331c06c718128f64a8b991dec8a12556, type: 3}
+  _playerAvailableSpecialSquareEffectPrefab: {fileID: 8004955029674975597, guid: 5a2b7b686efd30e4ab88504fe8bb3dea, type: 3}
 --- !u!1 &917855019
 GameObject:
   m_ObjectHideFlags: 0

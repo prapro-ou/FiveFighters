@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TitleManager : MonoBehaviour
 {
@@ -13,7 +14,19 @@ public class TitleManager : MonoBehaviour
 
     private Canvas _volumeSliderCanvas;
 
+    [SerializeField]
     private Canvas _tutorialCanvas;
+
+    [SerializeField]
+    private List<GameObject> _images;
+
+    private int page = 0;
+
+    [SerializeField]
+    private GameObject _previousButton;
+
+    [SerializeField]
+    private GameObject _nextButton;
 
     [SerializeField]
     private GameObject _transitionObject;
@@ -25,6 +38,13 @@ public class TitleManager : MonoBehaviour
     {
         _transitionCanvas.SetActive(true);
         _transitionAnimator = _transitionObject.GetComponent<Animator>();
+
+        //チュートリアル用のCanvasを非表示に
+        _tutorialCanvas.enabled = false;
+        for(int i = 0; i < 10; ++i)
+        {
+            _images[i].SetActive(false);
+        }
 
         StartCoroutine(_OpenTransition());
     }
@@ -44,12 +64,6 @@ public class TitleManager : MonoBehaviour
             _volumeSliderCanvas = GameObject.Find("Canvas_VolumeSlider").GetComponent<Canvas>();
         }
         _volumeSliderCanvas.enabled = true;
-
-        if(_tutorialCanvas == null)
-        {
-            _tutorialCanvas = GameObject.Find("Canvas_Tutorial").GetComponent<Canvas>();
-        }
-        _tutorialCanvas.enabled = false;
 
         AnimatorStateInfo animationState = _transitionAnimator.GetCurrentAnimatorStateInfo(0);
         float animationLength = animationState.length;
@@ -83,5 +97,46 @@ public class TitleManager : MonoBehaviour
         _volumeSliderCanvas.enabled = false;
 
         _sceneController.LoadNextScene(1);
+    }
+
+    public void ShiftToTutorial()
+    {
+        page = 0;
+        _previousButton.SetActive(false);
+        _tutorialCanvas.enabled = true;
+        _images[page].SetActive(true);
+
+    }
+
+    public void PreviousSlide()
+    {
+        if(page == _images.Count - 1)
+            _nextButton.SetActive(true);
+
+        _images[page].SetActive(false);
+        page -= 1;
+        _images[page].SetActive(true);
+
+        if(page == 0)
+            _previousButton.SetActive(false);
+    }
+
+    public void NextSlide()
+    {
+        if(page == 0)
+            _previousButton.SetActive(true);
+
+        _images[page].SetActive(false);
+        page += 1;
+        _images[page].SetActive(true);
+
+        if(page == _images.Count - 1)
+            _nextButton.SetActive(false);
+    }
+
+    public void EndTutorial()
+    {
+        _tutorialCanvas.enabled = false;
+        _images[page].SetActive(false);
     }
 }

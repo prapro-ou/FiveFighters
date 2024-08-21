@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 public class TitleManager : MonoBehaviour
 {
     [SerializeField]
     private SceneController _sceneController;
+
+    [SerializeField]
+    private EventSystem _eventSystem;
 
     [SerializeField]
     private GameObject _transitionCanvas;
@@ -105,7 +109,7 @@ public class TitleManager : MonoBehaviour
         _previousButton.SetActive(false);
         _tutorialCanvas.enabled = true;
         _images[page].SetActive(true);
-
+        _eventSystem.SetSelectedGameObject(_nextButton);
     }
 
     public void PreviousSlide()
@@ -118,7 +122,10 @@ public class TitleManager : MonoBehaviour
         _images[page].SetActive(true);
 
         if(page == 0)
+        {
             _previousButton.SetActive(false);
+            _eventSystem.SetSelectedGameObject(_nextButton);
+        }
     }
 
     public void NextSlide()
@@ -131,7 +138,10 @@ public class TitleManager : MonoBehaviour
         _images[page].SetActive(true);
 
         if(page == _images.Count - 1)
+        {
             _nextButton.SetActive(false);
+            _eventSystem.SetSelectedGameObject(_previousButton);
+        }
     }
 
     public void EndTutorial()

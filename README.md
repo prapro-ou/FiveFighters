@@ -86,6 +86,14 @@ URL：[https://sounds.udonko.net/sounds/mp3/Powerup57.mp3]
 素材名：いろいろ64.mp3
 URL：[https://sounds.udonko.net/sounds/mp3/Randomize64.mp3]
 
+効果音：8BITSOUNDS
+素材名：いろいろ47.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize47.mp3]
+
+効果音：8BITSOUNDS
+素材名：いろいろ12.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize12.mp3]
+
 ゲーム内音
 
 効果音：魔王魂

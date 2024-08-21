@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 596567025347641698}
   m_Layer: 10
   m_Name: HeartExplosionBullet
-  m_TagString: EnemyBullet
+  m_TagString: HeartExplosionBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,4 +175,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec7fa99cc63716046b6553c68d0a89e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageValue: 30
+  _explosionValue: 30
+  _heartExplosionEffect: {fileID: 9188024120375569061, guid: a4a80380ae004464b8870934bcdbb183, type: 3}

@@ -6,6 +6,9 @@ public class EnemyStanBullet : EnemySpeedChangeBullet
 {
     private Player _player;
 
+    [SerializeField]
+    private GameObject _heartStanEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +25,10 @@ public class EnemyStanBullet : EnemySpeedChangeBullet
     {
         if ((collider.gameObject.tag == "DamageCollider") && !IsSpeedChanged)
         {
-            _player.Speed *= 0.01f;
+            _player.Speed *= 0f;
+            GameObject effect = Instantiate(_heartStanEffect, _player.transform.position, Quaternion.identity, _player.transform);
             IsSpeedChanged = true;
+            Destroy(effect, 0.5f);
             Invoke("ReturnOriginalSpeed", 3f);
         }
     }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6253588940605063297}
   - component: {fileID: 5190831490129006249}
   - component: {fileID: 7884483311338311016}
-  - component: {fileID: -5588554605817919354}
+  - component: {fileID: 9214510916750246734}
   m_Layer: 10
   m_Name: DamageLineHeartBullet
   m_TagString: EnemyBullet
@@ -196,7 +196,7 @@ PolygonCollider2D:
       - {x: 0.38, y: -0.84}
       - {x: 0.62, y: -0.59}
   m_UseDelaunayMesh: 0
---- !u!114 &-5588554605817919354
+--- !u!114 &9214510916750246734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3010555941276799066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79901b7ecb95a164687e4116afd6c292, type: 3}
+  m_Script: {fileID: 11500000, guid: b3049dd7010c5a141b3f19b476f8d6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _damageValue: 20

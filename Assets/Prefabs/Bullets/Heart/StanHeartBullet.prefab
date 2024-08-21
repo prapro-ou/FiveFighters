@@ -210,3 +210,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageValue: 5
   _originalSpeed: 5
+  _heartStanEffect: {fileID: 3851108948756488862, guid: 41f4c9fbfd6c35a4799adcf1e5f79903, type: 3}

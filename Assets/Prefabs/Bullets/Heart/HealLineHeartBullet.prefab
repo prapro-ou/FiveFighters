@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2810354955438859488}
   m_Layer: 10
   m_Name: HealLineHeartBullet
-  m_TagString: EnemyHealBullet
+  m_TagString: HeartHealBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,3 +209,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _healValue: 5
+  _heartHealEffect: {fileID: 8376380884212135376, guid: b56b4f41f993be84397f540262e13c88, type: 3}

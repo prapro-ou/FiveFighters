@@ -209,5 +209,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageValue: 5
-  _fastValue: 1.25
   _originalSpeed: 5
+  _fastValue: 1.25
+  _heartFastEffect: {fileID: 8376380884212135376, guid: e5a140fbbf324d2408d108fdf0c7e9ef, type: 3}

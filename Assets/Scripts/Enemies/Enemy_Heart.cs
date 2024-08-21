@@ -64,13 +64,22 @@ public class Enemy_Heart : Enemy
     private EnemyBullet _fastHeartBullet;
 
     [SerializeField]
-    private EnemyBullet _explosionHeartBullet;
+    private EnemyExplosionBullet _explosionHeartBullet;
 
     [SerializeField]
     private EnemyBullet _stanHeartBullet;
 
     [SerializeField]
     private EnemyStuckBullet _halfHeartBullet;
+
+    [SerializeField]
+    private GameObject _heartSpawnEffect;
+
+    [SerializeField]
+    private GameObject _heartDeathEffect;
+
+    [SerializeField]
+    private GameObject _heartSimpleEfect;
 
     // Start is called before the first frame update
     void Start()
@@ -167,8 +176,10 @@ public class Enemy_Heart : Enemy
         Debug.Log("StartSpawnAnimation");
 
         // エネミーを画面外の下から登場させる
-        Vector3 startPosition = new Vector3(transform.position.x, -6.0f, transform.position.z);
+        Vector3 startPosition = new Vector3(transform.position.x, -5f, transform.position.z);
         Vector3 endPosition = transform.position;
+        Vector3 startScale = new Vector3(0.1f, 0.1f, 1f);
+        Vector3 endScale = new Vector3(0.7f, 0.7f, 1f);
 
         transform.position = startPosition;
 
@@ -176,21 +187,39 @@ public class Enemy_Heart : Enemy
         float elapsedTime = 0f;
 
         // カメラをズームインさせながらエネミーを登場させる
-        //StartCoroutine(_cameraManager.SetSizeOnCurve(3.5f, duration));
+        yield return new WaitForSeconds(0.1f);
 
+        StartCoroutine(_cameraManager.SetSizeOnCurve(3.5f, duration));
         while (elapsedTime < duration)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
+            GameObject simpleEffect = Instantiate(_heartSimpleEfect, transform.position, Quaternion.identity);
+            Destroy(simpleEffect, 0.3f);
             yield return null;
         }
 
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(transform.position));
+        GameObject spawnEffect = Instantiate(_heartSpawnEffect, transform.position, Quaternion.identity);
+        // エフェクトを徐々に小さくする処理
+        float shrinkDuration = 1f;
+        float shrinkElapsedTime = 0f;
+        Vector3 initialScale = spawnEffect.transform.localScale;
+
+        while (shrinkElapsedTime < shrinkDuration)
+        {
+            transform.localScale = Vector3.Lerp(startScale, endScale, shrinkElapsedTime / shrinkDuration);
+            spawnEffect.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, shrinkElapsedTime / shrinkDuration);
+            shrinkElapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(spawnEffect);
         // 振動演出を加える
         yield return StartCoroutine(_cameraManager.Vibrate(0.3f, 0.2f));
 
         // エネミーが定位置に到達した後にカメラを元に戻す
         StartCoroutine(_cameraManager.SetSizeOnCurve(5f));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(Vector3.zero));
 
         yield return new WaitForSeconds(1f); // アニメーション後の待機時間
     }
@@ -199,13 +228,55 @@ public class Enemy_Heart : Enemy
     //死亡したときの演出をこのメソッドに記述しよう。アニメーション自体はスクリプトで書かず、アニメーター(アニメーション)コンポーネントで実装することもできる。
     public override IEnumerator StartDeathAnimation()
     {
+        float dissolveDuration = 2f; // 消滅するまでの時間
+        float sinkSpeed = 1f; // 沈む速度
+        float expandDuration = 0.5f; // 拡大する時間
+        float maxScaleFactor = 1.2f; // 最大スケールファクター（拡大率）
+
         Debug.Log("StartDeathAnimation");
 
-        yield return new WaitForSeconds(2); //Sample
+        Vector3 startPosition = transform.position;
+        Vector3 startScale = transform.localScale;
+        Vector3 expandedScale = startScale * maxScaleFactor; // 拡大後のスケール
+        float elapsedTime = 0f;
 
-        Destroy(this.gameObject);
+        GameObject effect = Instantiate(_heartDeathEffect, transform.position,Quaternion.identity);
 
-        yield return new WaitForSeconds(1); //Sample
+        // 最初の拡大アニメーション
+        while (elapsedTime < expandDuration)
+        {
+            float t = elapsedTime / expandDuration;
+            transform.localScale = Vector3.Lerp(startScale, expandedScale, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localScale = expandedScale; // 最終的な拡大スケールを設定
+
+        // 拡大後、再度消滅アニメーションを開始
+        elapsedTime = 0f;
+        while (elapsedTime < dissolveDuration)
+        {
+            float t = elapsedTime / dissolveDuration;
+
+            // オブジェクトを下に移動
+            transform.position = startPosition + Vector3.down * sinkSpeed * Time.deltaTime;
+
+            // スケールを徐々に縮小
+            transform.localScale = Vector3.Lerp(expandedScale, Vector3.zero, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        Destroy(effect);
+
+        // 最後に位置とスケールを完全にセット
+        transform.position = startPosition + Vector3.down * sinkSpeed * (dissolveDuration - elapsedTime);
+        transform.localScale = Vector3.zero;
+
+        // オブジェクトを削除
+        Destroy(gameObject);
     }
 
     private IEnumerator _3BurstShot()
@@ -320,8 +391,11 @@ public class Enemy_Heart : Enemy
         // 弾を生成して発射
         EnemyBullet bullet = Instantiate(bulletPrefab, pos, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().AddForce(direction * 5, ForceMode2D.Impulse);
-    }
 
+        Vector3 effectPosition = bullet.transform.position + direction * 1f;
+        GameObject effect = Instantiate(_heartSimpleEfect, effectPosition, Quaternion.identity);
+        Destroy(effect.gameObject, 0.5f);
+    }
 
     private IEnumerator _FlashAndExplosionShot()
     {
@@ -403,7 +477,7 @@ public class Enemy_Heart : Enemy
             float elapsedTime = 0f;
 
             // 弾を一定時間動かす
-            while (elapsedTime < 1.5f)
+            while (elapsedTime < 1.539f)
             {
                 bullet1.transform.Translate(Vector3.right * 2.6f * Time.deltaTime);
                 bullet2.transform.Translate(Vector3.right * 2.6f * Time.deltaTime);
@@ -411,6 +485,7 @@ public class Enemy_Heart : Enemy
                 elapsedTime += Time.deltaTime;
                 yield return null;  // 次のフレームまで待機
             }
+            yield return StartCoroutine(_cameraManager.Vibrate(0.2f, 0.1f));
             if (bullet1 != null)
             {
                 Destroy(bullet1.gameObject);

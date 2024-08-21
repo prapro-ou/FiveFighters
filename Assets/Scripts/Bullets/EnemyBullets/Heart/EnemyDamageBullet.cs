@@ -2,15 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealBullet : MonoBehaviour
+public class EnemyDamageBullet : EnemyBullet
 {
     private Player _player;
-
-    [SerializeField]
-    private int _healValue;
-
-    [SerializeField]
-    private GameObject _heartHealEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -41,16 +35,5 @@ public class EnemyHealBullet : MonoBehaviour
 
         // 最後のサイズを正確に設定
         transform.localScale = endScale;
-    }
-
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.tag == "DamageCollider")
-        {
-            _player.HitPoint += _healValue;
-            GameObject effect = Instantiate(_heartHealEffect, _player.transform.position, Quaternion.identity, _player.transform);
-            Destroy(effect, 0.5f);
-            Debug.Log($"Heal PlayerHP {_healValue}");
-        }
     }
 }

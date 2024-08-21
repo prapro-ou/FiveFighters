@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3272907055645760240}
   m_Layer: 10
   m_Name: HalfHeartBullet
-  m_TagString: EnemyStuckBullet
+  m_TagString: HeartStuckBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

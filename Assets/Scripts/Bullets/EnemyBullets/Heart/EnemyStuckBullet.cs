@@ -20,8 +20,8 @@ public class EnemyStuckBullet : MonoBehaviour
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _isDamaged = false;
-        _bulletTop = this.transform.position.y + 1f;
-        _bulletBottom = this.transform.position.y -1.5f;
+        _bulletTop = this.transform.position.y + 1.1f;
+        _bulletBottom = this.transform.position.y -1.8f;
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class EnemyStuckBullet : MonoBehaviour
     {
         if(!_isDamaged){
             //ここでPlayerとこいつの座標からDamageを与える
-            if ((Mathf.Abs(this.transform.position.x) < 1.5f) && (Mathf.Abs(_player.transform.position.x) < Mathf.Abs(this.transform.position.x)))
+            if ((Mathf.Abs(this.transform.position.x) < 1.3f) && (Mathf.Abs(_player.transform.position.x) < Mathf.Abs(this.transform.position.x)))
             {
                 if ((_player.transform.position.y < _bulletTop) && (_player.transform.position.y > _bulletBottom))
                 {

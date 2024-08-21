@@ -9,6 +9,9 @@ public class EnemyFastBullet : EnemySpeedChangeBullet
     [SerializeField]
     private float _fastValue;
 
+    [SerializeField]
+    private GameObject _heartFastEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +29,9 @@ public class EnemyFastBullet : EnemySpeedChangeBullet
         if ((collider.gameObject.tag == "DamageCollider") && !IsSpeedChanged)
         {
             _player.Speed *= _fastValue;
+            GameObject effect = Instantiate(_heartFastEffect, _player.transform.position, Quaternion.identity, _player.transform);
             IsSpeedChanged = true;
+            Destroy(effect, 1.5f);
             Invoke("ReturnOriginalSpeed", 3f);
         }
     }

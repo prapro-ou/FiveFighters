@@ -61,6 +61,7 @@ public class UIObject_Seller_Graze : UIObject
         if(IsSoldOut)
         {
             Debug.Log("Sold out!");
+            PlaySound("CannotBuy");
             return;
         }
 
@@ -74,6 +75,7 @@ public class UIObject_Seller_Graze : UIObject
         else
         {
             //購入不可の時の処理(お金UIを揺らす、効果音を鳴らす等)
+            PlaySound("CannotBuy");
             Debug.Log("Player does not have enough money!");
         }
     }

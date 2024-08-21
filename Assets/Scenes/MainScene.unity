@@ -2176,6 +2176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f9e782f4f017e043b49872a7a394800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 0}
   _buyCount: 1
   _player: {fileID: 691294819}
   _moneyText: {fileID: 1955487946}
@@ -3602,6 +3603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e37948cf0979be4f939aeadc6edb3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 0}
   _buyCount: 1
   _player: {fileID: 691294819}
   _moneyText: {fileID: 1278224291}
@@ -4325,7 +4327,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u4F53\u529B\u3092\nn\u5897\u52A0\u3055\u305B\u308B"
+  m_text: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u4F53\u529B\u304C\n10\u5897\u52A0\u3059\u308B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
   m_sharedMaterial: {fileID: -7980660139348290943, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
@@ -7047,8 +7049,8 @@ GameObject:
   m_Component:
   - component: {fileID: 722456443}
   - component: {fileID: 722456446}
-  - component: {fileID: 722456445}
   - component: {fileID: 722456447}
+  - component: {fileID: 722456448}
   m_Layer: 17
   m_Name: DestroyField_Top
   m_TagString: Untagged
@@ -7071,19 +7073,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 466225691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &722456445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 722456442}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grazeValue: 0
 --- !u!61 &722456446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7156,6 +7145,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &722456448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722456442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d6f8bc7a5a3d24b88d291d850a58e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &814342638
 GameObject:
   m_ObjectHideFlags: 0
@@ -8328,7 +8329,6 @@ MonoBehaviour:
   - {fileID: 1287317979}
   - {fileID: 1960416857}
   - {fileID: 159084274}
-  _soundManager: {fileID: 0}
   _playerAvailableSpecialCircleEffectPrefab: {fileID: 8126227476472299824, guid: 79d314297f2a0954883f2f8364ae6dd6, type: 3}
   _playerAvailableSpecialTriangleEffectPrefab: {fileID: 7193807113427077339, guid: 331c06c718128f64a8b991dec8a12556, type: 3}
   _playerAvailableSpecialSquareEffectPrefab: {fileID: 8004955029674975597, guid: 5a2b7b686efd30e4ab88504fe8bb3dea, type: 3}
@@ -9436,6 +9436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df31ef3bf42ddb740aac36803317d829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 0}
   _buyCount: 1
   _player: {fileID: 691294819}
   _moneyText: {fileID: 266912677}
@@ -10624,8 +10625,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1118359382}
   - component: {fileID: 1118359385}
-  - component: {fileID: 1118359384}
   - component: {fileID: 1118359386}
+  - component: {fileID: 1118359387}
   m_Layer: 17
   m_Name: DestroyField_Left
   m_TagString: Untagged
@@ -10648,19 +10649,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 466225691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1118359384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1118359381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grazeValue: 0
 --- !u!61 &1118359385
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10733,6 +10721,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1118359387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118359381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d6f8bc7a5a3d24b88d291d850a58e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1125220144
 GameObject:
   m_ObjectHideFlags: 0
@@ -10831,8 +10831,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1125719091}
   - component: {fileID: 1125719094}
-  - component: {fileID: 1125719093}
   - component: {fileID: 1125719095}
+  - component: {fileID: 1125719096}
   m_Layer: 17
   m_Name: DestroyField_Right
   m_TagString: Untagged
@@ -10855,19 +10855,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 466225691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1125719093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1125719090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grazeValue: 0
 --- !u!61 &1125719094
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10940,6 +10927,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1125719096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125719090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d6f8bc7a5a3d24b88d291d850a58e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1140440394
 GameObject:
   m_ObjectHideFlags: 0
@@ -14315,7 +14314,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u4E0E\u3048\u308B\u30C0\u30E1\u30FC\u30B8\u304C\n1.1\u500D\u306B\u306A\u308B"
+  m_text: "\u4E0E\u3048\u308B\u30C0\u30E1\u30FC\u30B8\u304C\n+1.1\u500D\u3055\u308C\u308B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
   m_sharedMaterial: {fileID: -7980660139348290943, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
@@ -20108,8 +20107,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1951958437}
   - component: {fileID: 1951958440}
-  - component: {fileID: 1951958439}
   - component: {fileID: 1951958441}
+  - component: {fileID: 1951958442}
   m_Layer: 17
   m_Name: DestroyField_Bottom
   m_TagString: Untagged
@@ -20132,19 +20131,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 466225691}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1951958439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1951958436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b99a83db90eb57b4f9db18f904b50362, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _grazeValue: 0
 --- !u!61 &1951958440
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20217,6 +20203,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1951958442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951958436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d6f8bc7a5a3d24b88d291d850a58e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1955487944
 GameObject:
   m_ObjectHideFlags: 0
@@ -21124,6 +21122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b82f33a32ff6a4b895e12a0411331b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 0}
   _gameManager: {fileID: 555237763}
 --- !u!212 &2078782062
 SpriteRenderer:

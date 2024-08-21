@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 2747690628134850419, guid: b670ab75dde984907b8570040daa08c5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6410805, g: 0.5330188, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -179,6 +179,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Hexagon
+  _backgroundColor: {r: 0.150865, g: 0.07079922, b: 0.4056604, a: 1}
+  _bgmName: Battle1
   _maxHitPoint: 2000
   _damageTextPrefab: {fileID: 1357132420661731487, guid: 3602cd5f5faf8574ab9bda571d05f0d8, type: 3}
   _animator: {fileID: -5226222719145971260}

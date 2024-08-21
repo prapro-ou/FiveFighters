@@ -536,7 +536,7 @@ public class Player : MonoBehaviour
         }
 
         MyShape = _ownShapes[mode];
-        _PlaySound("Transform");
+        // _PlaySound("Transform");
 
         MyShape.ShiftSkill();
 

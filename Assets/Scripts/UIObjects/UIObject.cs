@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class UIObject : MonoBehaviour
 {
+    public SoundManager soundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,4 +19,14 @@ public abstract class UIObject : MonoBehaviour
     }
 
     public abstract void InvokeUIAction();
+
+    public void PlaySound(string name)
+    {
+        if(soundManager == null)
+        {
+            soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        soundManager.PlaySound(name);
+    }
 }

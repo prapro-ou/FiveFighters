@@ -49,7 +49,7 @@ public class Shape_Circle : PlayerShape
 
     public override void ShiftSkill()
     {
-        _PlaySound("ExplodeSpecialCircleBullet");
+        _PlaySound("Explosion2");
 
         _circleDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity);
         Destroy(_circleDestroyField, 1.5f);

@@ -17,6 +17,24 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     private string _name;
 
+    [SerializeField]
+    private Color _backgroundColor = new Color(0, 0, 0, 1);
+
+    public Color BackgroundColor
+    {
+        get {return _backgroundColor;}
+        set {_backgroundColor = value;}
+    }
+
+    [SerializeField]
+    private string _bgmName;
+
+    public string BgmName
+    {
+        get {return _bgmName;}
+        set {_bgmName = value;}
+    }
+
     public string Name
     {
         get {return _name;}

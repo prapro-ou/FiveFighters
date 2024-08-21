@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private OverlayManager _overlayManager;
 
+    private SoundManager _soundManager;
+
     private Enemy _currentEnemy;
 
     public Enemy CurrentEnemy
@@ -230,6 +232,10 @@ public class GameManager : MonoBehaviour
 
         _player.Money = _firstMoney;
 
+        _PlaySound("Transition");
+
+        // _PlayBGM("Shop");
+
         StartCoroutine(_overlayManager.OpenTransition());
     }
 
@@ -239,6 +245,8 @@ public class GameManager : MonoBehaviour
         _player.ResetStatusInShop();
 
         yield return StartCoroutine(_overlayManager.CloseTransition());
+
+        _PlayBGM("Shop");
 
         _ShiftObjects(0);
 
@@ -265,7 +273,11 @@ public class GameManager : MonoBehaviour
 
         Enemy nextEnemy = _enemies[Random.Range(0, _enemies.Count)];
 
+        _PlaySound("Transition");
+
         yield return StartCoroutine(_overlayManager.CloseTransition());
+
+        _StopBGM();
 
         _ShiftObjects(1, nextEnemy);
 
@@ -287,6 +299,11 @@ public class GameManager : MonoBehaviour
         //登場演出を挟む
         yield return StartCoroutine(CurrentEnemy.StartSpawnAnimation());
 
+        if(CurrentEnemy.BgmName != null)
+        {
+            _PlayBGM(CurrentEnemy.BgmName);
+        }
+        
         CurrentEnemy.StartAttacking();
 
         TimerCoroutine = StartCoroutine(_StartTimer());
@@ -326,7 +343,7 @@ public class GameManager : MonoBehaviour
                 _player.transform.position = _battlePlayerTransform.position;
 
                 //背景色の変更
-                _backgroundImage.color = _battleImageColor;
+                _backgroundImage.color = enemy.BackgroundColor;
 
                 //右側UIの表示
                 _overlayManager.EnableRightUICanvas();
@@ -396,6 +413,9 @@ public class GameManager : MonoBehaviour
         //振動
         StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
 
+        //BGMを止める
+        _StopBGM();
+
         //消滅演出待ち
         yield return StartCoroutine(CurrentEnemy.StartDeathAnimation());
 
@@ -407,6 +427,9 @@ public class GameManager : MonoBehaviour
         //ゲームクリアか分岐
         if(StateNumber != MaxStateNumber)
         {
+            //クリア音
+            _PlaySound("StageClear");
+
             //「Stage Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
             _overlayManager.SpawnStageClearText();
             yield return new WaitForSeconds(1.5f);
@@ -428,6 +451,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            //ゲームクリア音
+            _PlaySound("GameClear");
+
             //「Game Clear」を出現させる(アニメーションを仕込み、左から右に移動させる)
             _overlayManager.SpawnGameClearText();
             yield return new WaitForSeconds(1.5f);
@@ -451,6 +477,9 @@ public class GameManager : MonoBehaviour
         _inputManager.SwitchCurrentActionMap("Player");
 
         _clearResultCanvas.gameObject.SetActive(false);
+
+        //トランジション音
+        _PlaySound("Transition");
 
         StartCoroutine(ShiftToShop());
     }
@@ -493,6 +522,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_cameraManager.SetSizeOnCurve(5));
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(new Vector3(0, 0, -10)));
 
+        //ゲームオーバー音
+        _PlaySound("Death");
+
         //「Game Over」を出現させる(アニメーションを仕込み、左から右に移動させる)
         _overlayManager.SpawnGameOverText();
         yield return new WaitForSeconds(1.5f);
@@ -531,6 +563,9 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator _LoadSceneAfterTransition(int number)
     {
+        //トランジション音
+        _PlaySound("Transition");
+
         yield return StartCoroutine(_overlayManager.CloseTransition());
 
         _sceneController.LoadNextScene(number);
@@ -570,5 +605,35 @@ public class GameManager : MonoBehaviour
         int milliseconds = Mathf.FloorToInt((time * 100F) % 100F);
 
         return string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, milliseconds);
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
+    }
+
+    private void _PlayBGM(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlayBGM(name);
+    }
+
+    private void _StopBGM()
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.StopBGM();
     }
 }

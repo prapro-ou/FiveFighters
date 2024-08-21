@@ -13,6 +13,8 @@ public class SoundManager : MonoBehaviour
     {
         public string name;
         public AudioClip audioClip;
+        [Range(0,1)]
+        public float volume;
     }
 
     [System.Serializable]
@@ -99,6 +101,7 @@ public class SoundManager : MonoBehaviour
         if(_bgmDictionary.TryGetValue(name, out BGMData bgmData))
         {
             _bgmAudioSource.clip = bgmData.audioClip;
+            _bgmAudioSource.volume = bgmData.volume;
             _bgmAudioSource.Play();
         }
         else

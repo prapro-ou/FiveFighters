@@ -35,6 +35,31 @@ URL：[URL]
 URL：[URL]
 
 ## 音声
+BGM
+
+BGM：DOVA-SYNDROME
+素材名：迷宮 - 8bit
+URL：[https://dova-s.jp/bgm/download12379.html]
+
+BGM：DOVA-SYNDROME
+素材名：迫り来る危機
+URL：[https://dova-s.jp/bgm/download12875.html]
+
+BGM：DOVA-SYNDROME
+素材名：魔女のレベル上げ
+URL：[https://dova-s.jp/bgm/download12521.html]
+
+BGM：DOVA-SYNDROME
+素材名：8bitファンタジック窟
+URL：[https://dova-s.jp/bgm/download1733.html]
+
+BGM：DOVA-SYNDROME
+素材名：よぞらのなみだ
+URL：[https://dova-s.jp/bgm/download882.html]
+
+
+SE
+
 システム音
 
 効果音：魔王魂

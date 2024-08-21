@@ -13,6 +13,8 @@ public class SpecialSquareBullet : MonoBehaviour
         set {_direction = value;}
     }
 
+    private SoundManager _soundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,8 @@ public class SpecialSquareBullet : MonoBehaviour
         Destroy(collider.gameObject);
         _player.PrimaryGrazeCount += 3;
         _player.SpecialGrazeCount += 10;
+
+        _PlaySound("DestroyBullet");
     }
 
     private IEnumerator ScaleUp()
@@ -114,5 +118,15 @@ public class SpecialSquareBullet : MonoBehaviour
         }
 
         Destroy(this.gameObject);
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

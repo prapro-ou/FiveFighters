@@ -7,6 +7,9 @@ public class GrazeCollider_SmallTriangle : MonoBehaviour
     private Player _player;
 
     private int _grazeCount;
+
+    private SoundManager _soundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +25,10 @@ public class GrazeCollider_SmallTriangle : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(_grazeCount >= 1)
+        {
+            _PlaySound("Graze");
+        }
         _player.PrimaryGrazeCount += _grazeCount;
     }
 
@@ -33,5 +40,15 @@ public class GrazeCollider_SmallTriangle : MonoBehaviour
     void OnTriggerExit2D(Collider2D collider)
     {
         _grazeCount -= 1;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

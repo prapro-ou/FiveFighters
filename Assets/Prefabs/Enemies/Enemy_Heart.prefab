@@ -208,8 +208,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d27e5a703de55c249b31da0293e0db0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _name: Heart
+  _backgroundColor: {r: 0.26415092, g: 0, b: 0.14832102, a: 1}
+  _bgmName: 
   _maxHitPoint: 1000
-  _explodePrefab: {fileID: 0}
+  _damageTextPrefab: {fileID: 1357132420661731487, guid: 3602cd5f5faf8574ab9bda571d05f0d8, type: 3}
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _attackCooltime: 1
   _healHeartBullet: {fileID: 9211066548178489693, guid: 9af061b92a3ccea498a1072d63d5e1c9, type: 3}

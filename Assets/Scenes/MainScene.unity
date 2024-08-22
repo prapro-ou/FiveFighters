@@ -5144,6 +5144,7 @@ MonoBehaviour:
   _enemies:
   - {fileID: -8352821498467316285, guid: bf23582edfd82a24fa1c0419dbd9f711, type: 3}
   - {fileID: 8178231971346529793, guid: 9aa55f5bac0c39e4185235f4f6fa828a, type: 3}
+  - {fileID: 8540764026639631987, guid: 365f2c35c2151284790af5173d6e8c1a, type: 3}
   _moneysPerBattle: 050000000a0000000f0000001400000019000000
   _moneyPerBonusTime: 2
   _bonusTimeBorder: 150

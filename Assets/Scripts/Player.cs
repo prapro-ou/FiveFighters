@@ -142,6 +142,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _defaultSpeed;
 
+    public float DefaultSpeed
+    {
+        get {return _defaultSpeed;}
+        set
+        {
+            // _speed = Mathf.Max(0, value);
+            _defaultSpeed = value;
+        }
+    }
+
     private float _currentSpeed;
 
     public float CurrentSpeed

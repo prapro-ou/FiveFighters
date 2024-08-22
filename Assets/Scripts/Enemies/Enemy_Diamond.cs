@@ -144,19 +144,19 @@ public class Enemy_Diamond : Enemy
                     CurrentCoroutine = StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(1.5f);
                     yield return StartCoroutine(_Move('l'));
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(1.5f);
                     yield return StartCoroutine(_Move('r'));
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(1.5f);
                     yield return StartCoroutine(_Move('r'));
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
-                    yield return new WaitForSeconds(1);
+                    yield return new WaitForSeconds(1.5f);
                     yield return StartCoroutine(_Move('l'));
                     yield return StartCoroutine(_3VerticesShoot());
                     yield return StartCoroutine(_3VerticesShoot());
@@ -192,7 +192,7 @@ public class Enemy_Diamond : Enemy
                     break;
                 }
                 case DiamondState.Attack5:
-                //画面中央で乱れ撃ち.ビームも混入
+                //画面中央で全方位に射撃.ホーミングするビームも混入
                 {
                     Debug.Log("Attack:" + CurrentState);
                     CurrentCoroutine = StartCoroutine(_RandomShoot());
@@ -353,14 +353,14 @@ public class Enemy_Diamond : Enemy
                 aim_c = _player.transform.position - transform.position;
             float angle_c = Mathf.Atan2(aim_c.x, aim_c.y);
 
-            Vector3 aim_l = (_player.transform.position - pos_l).normalized;
+            Vector3 aim_l = (_player.transform.position - pos_l - new Vector3(0.9f, 0, 0)).normalized;
             if(aim_l == Vector3.zero)
-                aim_l = _player.transform.position - pos_l;
+                aim_l = _player.transform.position - pos_l - new Vector3(0.9f, 0, 0);
             float angle_l = Mathf.Atan2(aim_l.x, aim_l.y);
 
-            Vector3 aim_r = (_player.transform.position - pos_r).normalized;
+            Vector3 aim_r = (_player.transform.position - pos_r + new Vector3(0.9f, 0, 0)).normalized;
             if(aim_r == Vector3.zero)
-                aim_r = _player.transform.position - pos_r;
+                aim_r = _player.transform.position - pos_r + new Vector3(0.9f, 0, 0);
             float angle_r = Mathf.Atan2(aim_r.x, aim_r.y);
 
             //砲台生成
@@ -444,7 +444,7 @@ public class Enemy_Diamond : Enemy
 
     private IEnumerator _Flashing(EnemyBullet bullet)
     {
-        var v = bullet.GetComponent<SpriteRenderer>();
+        var sr = bullet.GetComponent<SpriteRenderer>();
 
         //0.2秒おきにSpriteRendererの有効・無効を切り替えて点滅させる
         for(int i = 0; i < 15; i++)
@@ -453,16 +453,16 @@ public class Enemy_Diamond : Enemy
                 break;
 
             if(i % 2 == 1)
-                v.enabled = false;
+                sr.enabled = false;
             else
-                v.enabled = true;
+                sr.enabled = true;
 
             yield return new WaitForSeconds(0.2f);
         }
 
         yield return null;
     }
-
+/*
     private IEnumerator _RandomShoot()
     {
         //攻撃開始時点での敵の位置を保存
@@ -525,6 +525,68 @@ public class Enemy_Diamond : Enemy
             yield return new WaitForSeconds(0.2f);
         }
 
+        //元の位置に戻る
+        yield return StartCoroutine(_Move('b'));
+        yield return new WaitForSeconds(1);
+
+        yield return null;
+    }
+*/
+    private IEnumerator _RandomShoot()
+    {
+        //攻撃開始時点での敵の位置を保存
+        Vector3 startPos = this.transform.position;
+
+        //画面中央に移動
+        yield return StartCoroutine(_Move('f'));
+        yield return new WaitForSeconds(1.5f);
+
+        for(int i = 0; i <= 200; ++i)
+        {
+            transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
+            yield return new WaitForSeconds(0.005f);
+        }
+
+        Vector3[] directions = new Vector3[]
+        {
+            Vector3.up,
+            new Vector3(1, 1, 0).normalized,
+            Vector3.right,
+            new Vector3(1, -1, 0).normalized,
+            Vector3.down,
+            new Vector3(-1, -1, 0).normalized,
+            Vector3.left,
+            new Vector3(-1, 1, 0)
+        };
+
+        for(int i = 0; i < 20; ++i)
+        {
+            _PlaySound("NormalBullet");
+            foreach(Vector3 direction in directions)
+            {
+                float angle = Mathf.Atan2(direction.x, direction.y);
+                EnemyBullet bullet = Instantiate(_circleBulletPrefab, this.transform.position, Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.back));
+                bullet.GetComponent<Rigidbody2D>().velocity = direction * 6.0f;
+
+                yield return new WaitForSeconds(0.05f);
+            }
+
+            if(i % 5 == 0)
+            {
+                Vector3 aim = (_player.transform.position - this.transform.position).normalized;
+                //正規化の結果零ベクトルとなった場合，正規化しない．
+                if(aim == Vector3.zero)
+                    aim = _player.transform.position - this.transform.position;
+
+                Enemy_Scope scope = Instantiate(_scopePrefab, _player.transform.position, Quaternion.identity);
+
+                float angle_l = Mathf.Atan2(aim.x, aim.y);
+                EnemyBullet laser = Instantiate(_laserPrefab, this.transform.position, Quaternion.AngleAxis(angle_l * Mathf.Rad2Deg, Vector3.back));
+
+                _PlaySound("Laser");
+                laser.GetComponent<Rigidbody2D>().velocity = aim * 5.0f;
+            }
+        }
         //元の位置に戻る
         yield return StartCoroutine(_Move('b'));
         yield return new WaitForSeconds(1);

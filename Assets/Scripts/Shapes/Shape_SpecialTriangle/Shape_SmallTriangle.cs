@@ -5,6 +5,9 @@ using UnityEngine;
 public class Shape_SmallTriangle : MonoBehaviour
 {
     private Player _player;
+    
+    private SoundManager _soundManager;
+
 
     [SerializeField]
     private int _primaryAttackDamage;
@@ -24,7 +27,7 @@ public class Shape_SmallTriangle : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        IsRight = false;
+        // IsRight = false;
     }
 
     // Update is called once per frame
@@ -44,6 +47,7 @@ public class Shape_SmallTriangle : MonoBehaviour
             _player.SmallRightTriangle = null;
         }
         
+        _PlaySound("Damage");
         Destroy(this.gameObject);
     }
 
@@ -52,5 +56,15 @@ public class Shape_SmallTriangle : MonoBehaviour
         PlayerBullet triangleSubBullet = Instantiate(_primaryTriangleSubBullet, this.transform.position, Quaternion.identity);
         triangleSubBullet.DamageValue = _primaryAttackDamage/2;
         Debug.Log($"Shape_SmallTriangle.PrimaryAttack {_primaryAttackDamage/2}");
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

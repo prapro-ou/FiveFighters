@@ -1,15 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public abstract class Enemy : MonoBehaviour
 {
     private GameManager _gameManager;
 
+    private Player _playerForStatus;
+
     private Collider2D _collider;
+
+    private SpriteRenderer _sr;
+
+    [SerializeField]
+    private string _name;
+
+    [SerializeField]
+    private Color _backgroundColor = new Color(0, 0, 0, 1);
+
+    public Color BackgroundColor
+    {
+        get {return _backgroundColor;}
+        set {_backgroundColor = value;}
+    }
+
+    [SerializeField]
+    private string _bgmName;
+
+    public string BgmName
+    {
+        get {return _bgmName;}
+        set {_bgmName = value;}
+    }
+
+    public string Name
+    {
+        get {return _name;}
+        set {_name = value;}
+    }
 
     [SerializeField]
     private int _maxHitPoint;
+
+    private Slider _hitPointBar;
 
     public int MaxHitPoint
     {
@@ -28,6 +63,13 @@ public abstract class Enemy : MonoBehaviour
         set
         {
             _hitPoint = Mathf.Clamp(value, 0, MaxHitPoint);
+            
+            if(_hitPointBar == null)
+            {
+                _hitPointBar = GameObject.Find("EnemyHpBar").GetComponent<Slider>();
+            }
+            _hitPointBar.value = (float)_hitPoint / (float)MaxHitPoint;
+
             Debug.Log($"EnemyHP: {HitPoint}");
 
             if(_hitPoint <= 0)
@@ -40,13 +82,17 @@ public abstract class Enemy : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject _explodePrefab;
+    private GameObject _damageTextPrefab;
 
     void Awake()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
+        _playerForStatus = GameObject.Find("Player").GetComponent<Player>();
+
         _collider = GetComponent<Collider2D>();
+
+        _sr = GetComponent<SpriteRenderer>();
 
         HitPoint = MaxHitPoint;
     }
@@ -68,22 +114,41 @@ public abstract class Enemy : MonoBehaviour
         PlayerBullet bullet = collider.gameObject.GetComponent<PlayerBullet>();
         if(bullet != null)
         {
-            //Vector3 pos = new Vector3(bullet.transform.position.x, bullet.transform.position.y, bullet.transform.position.z);
-            //MakeDamageParticle(pos);
             bullet.DestroyWithParticle();
-            TakeDamage(bullet.DamageValue);
-            //Destroy(bullet.gameObject);
+            TakeDamage((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier));
+            GenerateDamageText((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier), bullet.transform.position);
         }
     }
 
-    public void TakeDamage(int value)
+    public void TakeDamage(int damage)
     {
-        HitPoint -= value;
+        HitPoint -= damage;
+        StartCoroutine("DamageAction");
     }
 
-    public void MakeDamageParticle(Vector3 pos)
+    public void GenerateDamageText(int damage, Vector3 pos)
     {
-        Instantiate(_explodePrefab, pos, Quaternion.identity);
+        _damageTextPrefab.GetComponent<TextMeshPro>().text = damage.ToString();
+        GameObject text = Instantiate(_damageTextPrefab, pos, Quaternion.identity);
+    }
+
+    public IEnumerator DamageAction()
+    {
+        for(int i = 0; i < 100; ++i)
+        {
+            _sr.material.color -= new Color32(0, 0, 0, 1);
+        }
+
+        yield return new WaitForSeconds(0.05f);
+
+        for(int j = 0; j < 100; ++j)
+        {
+            _sr.material.color += new Color32(0, 0, 0, 1);
+        }
+
+        yield return new WaitForSeconds(0.05f);
+
+        yield break;
     }
 
     public abstract void StartAttacking();

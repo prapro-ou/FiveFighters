@@ -29,7 +29,7 @@ public class EnemySlowBullet : EnemySpeedChangeBullet
     {
         if ((collider.gameObject.tag == "DamageCollider") && !IsSpeedChanged)
         {
-            _player.Speed *= _slowValue;
+            _player.CurrentSpeed *= _slowValue;
             GameObject effect = Instantiate(_heartSlowEffect, _player.transform.position, Quaternion.Euler(180, 0, 0), _player.transform);
             IsSpeedChanged = true;
             Destroy(effect, 1.5f);
@@ -39,7 +39,7 @@ public class EnemySlowBullet : EnemySpeedChangeBullet
 
     public void ReturnOriginalSpeed()
     {
-        _player.Speed = _originalSpeed;
+        _player.CurrentSpeed = _player.DefaultSpeed;
         IsSpeedChanged = false;
         Debug.Log($"Return original speed");
     }

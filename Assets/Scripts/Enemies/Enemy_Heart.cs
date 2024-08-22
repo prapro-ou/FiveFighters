@@ -453,7 +453,7 @@ public class Enemy_Heart : Enemy
         }
 
         yield return new WaitForSeconds(2f);
-        _player.Speed = 5f;
+        _player.CurrentSpeed = 5f;
         Debug.Log("Return original speed");      
 
         Debug.Log("Finish _BulletRainShot");

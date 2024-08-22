@@ -28,7 +28,7 @@ public class EnemyFastBullet : EnemySpeedChangeBullet
     {
         if ((collider.gameObject.tag == "DamageCollider") && !IsSpeedChanged)
         {
-            _player.Speed *= _fastValue;
+            _player.CurrentSpeed *= _fastValue;
             GameObject effect = Instantiate(_heartFastEffect, _player.transform.position, Quaternion.identity, _player.transform);
             IsSpeedChanged = true;
             Destroy(effect, 1.5f);
@@ -38,7 +38,7 @@ public class EnemyFastBullet : EnemySpeedChangeBullet
 
     private void ReturnOriginalSpeed()
     {
-        _player.Speed = _originalSpeed;
+        _player.CurrentSpeed = _player.DefaultSpeed;
         IsSpeedChanged = false;
         Debug.Log($"Return original speed");
     }

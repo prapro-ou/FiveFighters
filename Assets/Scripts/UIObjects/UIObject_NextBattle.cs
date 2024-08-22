@@ -30,6 +30,8 @@ public class UIObject_NextBattle : UIObject
             _sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();
         }
 
+        PlaySound("Submit");
+
         StartCoroutine(_gameManager.ShiftToBattle());
     }
 }

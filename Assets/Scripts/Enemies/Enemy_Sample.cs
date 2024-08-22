@@ -26,6 +26,14 @@ public class Enemy_Sample : Enemy
         set {_currentState = value;}
     }
 
+    private Coroutine _currentCoroutine;
+
+    public Coroutine CurrentCoroutine
+    {
+        get {return _currentCoroutine;}
+        set {_currentCoroutine = value;}
+    }
+
     private int _numberOfAttacks;
 
     public int NumberOfAttacks
@@ -93,13 +101,15 @@ public class Enemy_Sample : Enemy
                 }
                 case SampleState.Attack1:
                 {
-                    yield return StartCoroutine(_SingleShoot());
+                    CurrentCoroutine = StartCoroutine(_SingleShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = SampleState.Wait;
                     break;
                 }
                 case SampleState.Attack2:
                 {
-                    yield return StartCoroutine(_BurstShoot());
+                    CurrentCoroutine = StartCoroutine(_BurstShoot());
+                    yield return CurrentCoroutine;
                     CurrentState = SampleState.Wait;
                     break;
                 }
@@ -121,6 +131,8 @@ public class Enemy_Sample : Enemy
     public override IEnumerator StartDeathAnimation()
     {
         Debug.Log("StartDeathAnimation");
+
+        StopCoroutine(CurrentCoroutine);
 
         yield return new WaitForSeconds(2); //Sample
 

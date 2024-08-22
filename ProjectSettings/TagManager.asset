@@ -76,6 +76,12 @@ TagManager:
   - name: Player
     uniqueID: 305734323
     locked: 0
+  - name: OverPlayerEffect
+    uniqueID: 3859826335
+    locked: 0
+  - name: OverEnemyEffect
+    uniqueID: 800770597
+    locked: 0
   - name: EnemyUI
     uniqueID: 1510093857
     locked: 0

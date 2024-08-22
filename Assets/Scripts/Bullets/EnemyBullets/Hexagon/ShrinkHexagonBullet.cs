@@ -10,6 +10,14 @@ public class ShrinkHexagonBullet : EnemyBullet
     [SerializeField]
     private float _rotateSpeed;
 
+    private bool _isRight;
+    
+    public bool IsRight
+    {
+        get {return _isRight;}
+        set {_isRight = value;}
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,10 +46,7 @@ public class ShrinkHexagonBullet : EnemyBullet
 
     private IEnumerator _Rotate()
     {
-        // Debug.Log("Shrink");
-        bool isRight = Random.Range(0,2) == 0;
-
-        if(isRight)
+        if(IsRight)
         {
             for(;;)
             {

@@ -23,6 +23,27 @@ public class Player : MonoBehaviour
     [SerializeField]
     private CameraManager _cameraManager;
 
+    [SerializeField]
+    private OverlayManager _overlayManager;
+
+    [SerializeField]
+    private SoundManager _soundManager;
+
+    [SerializeField]
+    private AnimationCurve _vibrateCurveX;
+
+    [SerializeField]
+    private AnimationCurve _vibrateCurveY;
+
+    [SerializeField]
+    private GameObject _playerDefeatEffectPrefab;
+
+    [SerializeField]
+    private GameObject _playerDeathExplodeEffectPrefab;
+
+    [SerializeField]
+    private GameObject _playerTransformableEffectPrefab;
+
     private PlayerHpBar _playerHpBar;
 
     private PlayerPrimaryGrazeBar _playerPrimaryGrazeBar;
@@ -36,6 +57,12 @@ public class Player : MonoBehaviour
     private PlayerSpecialText _playerSpecialGrazeText;
 
     private TMP_Text _moneyText;
+
+    private TMP_Text _powerText;
+
+    private PlayerPowerTile _powerTile;
+
+    private PlayerShiftCooltimeImage _cooltimeImage;
 
     [SerializeField]
     private List<PlayerShape> _ownShapes;
@@ -73,7 +100,7 @@ public class Player : MonoBehaviour
     public PlayerShape MyShape
     {
         get {return _myShape;}
-        set 
+        set
         {
             _myShape = value;
             _ShiftShapeOfColliders(MyShape);
@@ -113,15 +140,27 @@ public class Player : MonoBehaviour
     }
 
     [SerializeField]
-    private float _speed;
+    private float _defaultSpeed;
 
-    public float Speed
+    public float DefaultSpeed
     {
-        get {return _speed;}
+        get {return _defaultSpeed;}
         set
         {
             // _speed = Mathf.Max(0, value);
-            _speed = value;
+            _defaultSpeed = value;
+        }
+    }
+
+    private float _currentSpeed;
+
+    public float CurrentSpeed
+    {
+        get {return _currentSpeed;}
+        set
+        {
+            // _speed = Mathf.Max(0, value);
+            _currentSpeed = value;
         }
     }
 
@@ -166,7 +205,7 @@ public class Player : MonoBehaviour
     {
         get {return _isInShiftCooldown;}
         set {_isInShiftCooldown = value;}
-    }   
+    }
 
     [SerializeField]
     private float _slowDownRate;
@@ -185,7 +224,7 @@ public class Player : MonoBehaviour
     {
         get {return _isDead;}
         set {_isDead = value;}
-    }    
+    }
 
     private int _money = 0;
 
@@ -210,7 +249,23 @@ public class Player : MonoBehaviour
     public float PowerMultiplier
     {
         get {return _powerMultiplier;}
-        set {_powerMultiplier = value;}
+        set
+        {
+            _powerMultiplier = value;
+
+            if(_powerText == null)
+            {
+                _powerText = GameObject.Find("PlayerPowerText").GetComponent<TMP_Text>();
+            }
+
+            _powerText.SetText($"×{_powerMultiplier:.0}");
+
+            if(_powerTile == null)
+            {
+                _powerTile = GameObject.Find("PowerTile").GetComponent<PlayerPowerTile>();
+            }
+            _powerTile.UpdatePowerTile();
+        }
     }
 
     [SerializeField]
@@ -227,7 +282,7 @@ public class Player : MonoBehaviour
     public int PrimaryGrazeCount
     {
         get {return _primaryGrazeCount;}
-        set 
+        set
         {
             _primaryGrazeCount = value;
 
@@ -291,6 +346,8 @@ public class Player : MonoBehaviour
 
         MyShape = _ownShapes[0];
 
+        CurrentSpeed = _defaultSpeed;
+
         PrimaryGrazeCount = 0;
         SpecialGrazeCount = 0;
 
@@ -325,7 +382,7 @@ public class Player : MonoBehaviour
 
     // 方向入力を受ける関数
     public void OnMove(InputAction.CallbackContext context)
-    {  
+    {
         //[TODO]アニメーションを入れる
 
         //十字キーを放したときに方向をリセット
@@ -351,11 +408,11 @@ public class Player : MonoBehaviour
         //Directionから次の位置に移動
         if(IsSlowingDown == false)
         {
-            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (_speed * Time.fixedDeltaTime)));
+            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (CurrentSpeed * Time.fixedDeltaTime)));
         }
         else
         {
-            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (_speed * Time.fixedDeltaTime * _slowDownRate))); 
+            _rigidbody.MovePosition(transform.position + ((Vector3)Direction * (CurrentSpeed * Time.fixedDeltaTime * _slowDownRate))); 
         }
     }
 
@@ -364,6 +421,8 @@ public class Player : MonoBehaviour
         HitPoint -= value;
 
         StartCoroutine(_cameraManager.Vibrate(0.2f, 0.1f));
+
+        _PlaySound("Damage");
         
         Debug.Log($"TakeDamage HP: {HitPoint}(Damage:{HitPoint})");
     }
@@ -383,7 +442,7 @@ public class Player : MonoBehaviour
 
         for(float i = 0f; i < DashTime; i += Time.deltaTime)
         {
-            _rigidbody.MovePosition(transform.position + (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.deltaTime * DashSpeed));
+            _rigidbody.MovePosition(transform.position + (new Vector3(currentDirection.x, currentDirection.y, 0) * Time.fixedDeltaTime * DashSpeed));
             yield return null;
         }
 
@@ -404,11 +463,32 @@ public class Player : MonoBehaviour
         _gameManager.DiePlayer();
     }
 
+    public IEnumerator StartDeathAnimation()
+    {
+        Debug.Log("StartDeathAnimation: Player");
+        yield return new WaitForSeconds(1.5f);
+
+        for(int i = 0; i < 2; i++)
+        {
+            _PlaySound("Damage");
+            Instantiate(_playerDeathExplodeEffectPrefab, transform.position, Quaternion.identity);
+            yield return StartCoroutine(_Vibrate(0.5f, 0.2f));
+        }
+
+        _PlaySound("Explosion1");
+        StartCoroutine(_cameraManager.Vibrate(2f, 2f));
+
+        Instantiate(_playerDefeatEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
+
+        yield return new WaitForSeconds(1.5f);
+    }
+
     //通常攻撃
     public void PrimaryAttack()
     {
         MyShape.PrimaryAttack();
-        
+
         if (SmallRightTriangle != null)
         {
             SmallRightTriangle.PrimaryAttack();
@@ -466,6 +546,7 @@ public class Player : MonoBehaviour
         }
 
         MyShape = _ownShapes[mode];
+        // _PlaySound("Transform");
 
         MyShape.ShiftSkill();
 
@@ -491,6 +572,7 @@ public class Player : MonoBehaviour
         MyShape.SpecialSkill();
 
         SpecialGrazeCount = 0;
+        _grazeCollider.SpecialSkillFlag = false;
     }
 
     private IEnumerator StartShiftCooldown()
@@ -498,9 +580,20 @@ public class Player : MonoBehaviour
         Debug.Log("Start ShiftCooldown");
         IsInShiftCooldown = true;
 
-        yield return new WaitForSeconds(ShiftCooldown);
+        if(_cooltimeImage == null)
+        {
+            _cooltimeImage = GameObject.Find("CooltimeImage").GetComponent<PlayerShiftCooltimeImage>();
+        }
+
+        for(float time = 0; time <= ShiftCooldown; time += Time.deltaTime)
+        {
+            _cooltimeImage.UpdateCooltimeImage(time / ShiftCooldown);
+            yield return null;
+        }
 
         Debug.Log("Finish ShiftCooldown");
+        GameObject transEffect = Instantiate(_playerTransformableEffectPrefab, this.transform.position, Quaternion.identity, this.transform);
+        _PlaySound("Transformable");
         IsInShiftCooldown = false;
     }
 
@@ -546,6 +639,7 @@ public class Player : MonoBehaviour
     public void AddMoney(int reward)
     {
         Money += reward;
+        _PlaySound("GetMoney");
     }
 
     public void UseMoney(int cost)
@@ -557,11 +651,19 @@ public class Player : MonoBehaviour
     {
         MaxHitPoint += boost;
         HitPoint += boost;
+        _PlaySound("PowerUp");
     }
 
     public void EnhancePower(float coefficient)
     {
         PowerMultiplier += coefficient;
+        _PlaySound("PowerUp");
+    }
+
+    public void EnhanceGrazeCollider(float coefficient)
+    {
+        ExpansionValue += coefficient;
+        _PlaySound("PowerUp");
     }
 
     public void OnSubmit(InputAction.CallbackContext context)
@@ -584,8 +686,36 @@ public class Player : MonoBehaviour
         HitPoint = MaxHitPoint;
         PrimaryGrazeCount = 0;
         SpecialGrazeCount = 0;
+        CurrentSpeed = _defaultSpeed;
 
         if(SmallLeftTriangle != null) Destroy(SmallLeftTriangle.gameObject);
         if(SmallRightTriangle != null) Destroy(SmallRightTriangle.gameObject);
+    }
+
+    private IEnumerator _Vibrate(float duration, float power)
+    {
+        Vector3 startPosition = transform.position;
+
+        Vector3 nextPosition = startPosition;
+
+        for(float i = 0; i <= duration; i += Time.deltaTime)
+        {
+            nextPosition.x = startPosition.x + (_vibrateCurveX.Evaluate(i / duration) * power);
+            nextPosition.y = startPosition.y + (_vibrateCurveY.Evaluate(i / duration) * power);
+            transform.position = nextPosition;
+            yield return null;
+        }
+
+        transform.position = startPosition;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

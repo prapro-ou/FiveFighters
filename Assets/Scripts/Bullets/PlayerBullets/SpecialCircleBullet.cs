@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpecialCircleBullet : MonoBehaviour
 {
+    private SoundManager _soundManager;
+    
     [SerializeField]
     private GameObject _specialCircleBullet;
 
@@ -40,10 +42,21 @@ public class SpecialCircleBullet : MonoBehaviour
         
         if (Vector3.Distance(transform.position, screenCenter) < 0.1f && !_isExplosion)
         {
+            _PlaySound("ExplodeSpecialCircleBullet");
             _specialCircleExplodeObject = Instantiate(_specialCircleExplode.gameObject, transform.position, Quaternion.identity);
             _isExplosion = true;
             Destroy(this.gameObject);
             Destroy(_specialCircleExplodeObject, _explosionTime);
         }
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

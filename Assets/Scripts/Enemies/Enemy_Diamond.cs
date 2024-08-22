@@ -433,7 +433,8 @@ public class Enemy_Diamond : Enemy
             _PlaySound("NormalBullet");
             if(bullet == null)
                 break;
-            bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 8.0f;
+            else
+                bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 8.0f;
 
             yield return new WaitForSeconds(0.4f);
         }
@@ -448,6 +449,9 @@ public class Enemy_Diamond : Enemy
         //0.2秒おきにSpriteRendererの有効・無効を切り替えて点滅させる
         for(int i = 0; i < 15; i++)
         {
+            if(bullet == null)
+                break;
+
             if(i % 2 == 1)
                 v.enabled = false;
             else

@@ -227,6 +227,7 @@ public class Enemy_Diamond : Enemy
     public override IEnumerator StartSpawnAnimation()
     {
         Debug.Log("StartSpawnAnimation");
+
         Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.identity);
         Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.Euler(0, 0, 90));
         Instantiate(_flashEffectPrefab, new Vector3(0f, 3.0f, 0), Quaternion.Euler(0, 0, 180));
@@ -240,6 +241,11 @@ public class Enemy_Diamond : Enemy
             transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
             yield return new WaitForSeconds(0.025f);
         }
+        Vector3 startPos = _cameraManager.transform.position;
+        StartCoroutine(_cameraManager.SetSizeOnCurve(2.0f));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(this.transform.position));
+        StartCoroutine(_cameraManager.SetSizeOnCurve(5f));
+        yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(startPos, 0.5f));
 
         yield return new WaitForSeconds(3);
         yield break;
@@ -425,6 +431,8 @@ public class Enemy_Diamond : Enemy
 
             //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
             _PlaySound("NormalBullet");
+            if(bullet == null)
+                break;
             bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 8.0f;
 
             yield return new WaitForSeconds(0.4f);

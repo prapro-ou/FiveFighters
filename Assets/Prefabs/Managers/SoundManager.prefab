@@ -63,7 +63,7 @@ MonoBehaviour:
   _seDatas:
   - name: Submit
     audioClip: {fileID: 8300000, guid: 4f37c76666245734384879ce4a226b14, type: 3}
-    delay: 1
+    delay: 0.3
   - name: CannotBuy
     audioClip: {fileID: 8300000, guid: bd38e7054ec04d1458f6421291557d01, type: 3}
     delay: 0.3
@@ -145,6 +145,9 @@ MonoBehaviour:
   - name: Graze
     audioClip: {fileID: 8300000, guid: 21d4442fc3051c14daad4f507668e83f, type: 3}
     delay: 0.08
+  - name: Caution1
+    audioClip: {fileID: 8300000, guid: 2eb171f62eeca1840a276ba32d0cf237, type: 3}
+    delay: 0.1
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

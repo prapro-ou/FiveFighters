@@ -5145,8 +5145,13 @@ MonoBehaviour:
   - {fileID: -8352821498467316285, guid: bf23582edfd82a24fa1c0419dbd9f711, type: 3}
   - {fileID: 8178231971346529793, guid: 9aa55f5bac0c39e4185235f4f6fa828a, type: 3}
   _moneysPerBattle: 050000000a0000000f0000001400000019000000
-  _moneyPerBonusTime: 2
-  _bonusTimeBorder: 150
+  _hpMultiplyRatioPerBattle:
+  - 1
+  - 1.5
+  - 2
+  - 3
+  _moneyPerBonusTime: 60
+  _bonusTimeBorder: 120
   _firstMoney: 5
   _backgroundImage: {fileID: 1494604933}
   _battleImageColor: {r: 0.26415092, g: 0.07600568, b: 0.07600568, a: 1}
@@ -8332,6 +8337,7 @@ MonoBehaviour:
   _playerAvailableSpecialCircleEffectPrefab: {fileID: 8126227476472299824, guid: 79d314297f2a0954883f2f8364ae6dd6, type: 3}
   _playerAvailableSpecialTriangleEffectPrefab: {fileID: 7193807113427077339, guid: 331c06c718128f64a8b991dec8a12556, type: 3}
   _playerAvailableSpecialSquareEffectPrefab: {fileID: 8004955029674975597, guid: 5a2b7b686efd30e4ab88504fe8bb3dea, type: 3}
+  _maxGrazeCount: 4
 --- !u!1 &917855019
 GameObject:
   m_ObjectHideFlags: 0

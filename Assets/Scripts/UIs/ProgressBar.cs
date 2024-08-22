@@ -14,6 +14,8 @@ public class ProgressBar : MonoBehaviour
     [SerializeField]
     private AnimationCurve _curve;
 
+    private SoundManager _soundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +55,7 @@ public class ProgressBar : MonoBehaviour
 
         for(float i = 0; i <= duration; i += Time.deltaTime)
         {
+            _PlaySound("Graze");
             _slider.value = Mathf.Lerp(startRatio, endRatio, _curve.Evaluate(i / duration));
             yield return null;
         }
@@ -60,5 +63,13 @@ public class ProgressBar : MonoBehaviour
         _slider.value = endRatio;
     }
 
-    
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
+    }
 }

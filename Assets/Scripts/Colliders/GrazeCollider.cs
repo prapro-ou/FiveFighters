@@ -31,6 +31,9 @@ public class GrazeCollider : MonoBehaviour
         set {_grazeCount = value;}
     }
 
+    [SerializeField]
+    private int _maxGrazeCount;
+
     private bool _specialSkillFlag = false;
     public bool SpecialSkillFlag
     {
@@ -55,8 +58,8 @@ public class GrazeCollider : MonoBehaviour
         {
             _PlaySound("Graze");
         }
-        _player.PrimaryGrazeCount += GrazeCount;
-        _player.SpecialGrazeCount += GrazeCount;
+        _player.PrimaryGrazeCount += Mathf.Clamp(GrazeCount, 0, _maxGrazeCount);
+        _player.SpecialGrazeCount += Mathf.Clamp(GrazeCount, 0, _maxGrazeCount);
 
         if(_player.SpecialGrazeCount >= _player.MyShape.SpecialSkillCost && SpecialSkillFlag == false)
         {

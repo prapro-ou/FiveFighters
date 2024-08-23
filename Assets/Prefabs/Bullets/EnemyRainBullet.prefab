@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7025472455355567281}
   - component: {fileID: -6450398580459616629}
   m_Layer: 10
-  m_Name: EnemyCircleBullet
+  m_Name: EnemyRainBullet
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +137,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1.2
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

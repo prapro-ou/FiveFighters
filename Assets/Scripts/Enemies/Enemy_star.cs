@@ -9,7 +9,9 @@ public enum StarState
     Wait,
     Attack1,
     Attack2,
-    Attack3
+    Attack3,
+    Attack4,
+    Attack5
 }
 
 public class Enemy_Star : Enemy
@@ -18,6 +20,15 @@ public class Enemy_Star : Enemy
 
     [SerializeField]
     private EnemyBullet _circleBulletPrefab;
+
+    [SerializeField]
+    private EnemyBullet _rainBulletPrefab;
+
+    [SerializeField]
+    private EnemyBullet _starBulletPrefab;
+
+    [SerializeField]
+    private EnemyBullet _starstarBulletPrefab;
 
     private StarState _currentState;
 
@@ -96,10 +107,10 @@ public class Enemy_Star : Enemy
                     break;
                 }
                 case StarState.Attack1:
-                //動きが反転するランダム弾
+                //ランダム弾
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    yield return StartCoroutine(_random_back());
+                    yield return StartCoroutine(_random());
                     CurrentState = StarState.Wait;
                     break;
                 }
@@ -125,7 +136,25 @@ public class Enemy_Star : Enemy
                     CurrentState = StarState.Wait;
                     break;
                 }
-                
+                case StarState.Attack4:
+                //ランダム2回分裂
+                {
+                    Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_random_star());
+
+                    CurrentState = StarState.Wait;
+                    break;
+                }
+
+                case StarState.Attack5:
+                //雨
+                {
+                    Debug.Log("Attack:" + CurrentState);
+                    yield return StartCoroutine(_rain());
+                    CurrentState = StarState.Wait;
+                    break;
+                }
+
             }
         }
     }
@@ -152,18 +181,18 @@ public class Enemy_Star : Enemy
         yield return new WaitForSeconds(1); //Sample
     }
 
-    private IEnumerator _random_back()
+    private IEnumerator _random()
     {
-       for(int i = 0; i < 150; i++){
-            StartCoroutine(_random_back_ballet());
-            yield return new WaitForSeconds(0.2f);
+       for(int i = 0; i < 500; i++){
+            StartCoroutine(_random_ballet());
+            yield return new WaitForSeconds(0.03f);
        }
        yield return new WaitForSeconds(0.5f);
 
        yield return null;
     }
 
-    private IEnumerator _random_back_ballet()
+    private IEnumerator _random_ballet()
     {
         int rnd_x = Random.Range(0, 2);
         int rnd_y = Random.Range(0, 2);
@@ -192,10 +221,6 @@ public class Enemy_Star : Enemy
             //弾を発射
         bullet.GetComponent<Rigidbody2D>().velocity = power;
 
-        //Addforceによって反転を行う
-
-        bullet.GetComponent<Rigidbody2D>().AddForce(power * 0.1f);
-
         yield return null;
     }
 
@@ -213,7 +238,7 @@ public class Enemy_Star : Enemy
         //弾を敵の位置に生成
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
 
-        for(int i = 0; i < 30 ; i++)
+        for(int i = 0; i < 60 ; i++)
         {
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
@@ -224,7 +249,7 @@ public class Enemy_Star : Enemy
             //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
             bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 4.0f;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.25f);
         }
 
         end = true;
@@ -285,7 +310,7 @@ public class Enemy_Star : Enemy
 
             //斜め上に
             Vector3 pos = new Vector3(2.4f + rnd_x * 0.1f, 3.0f + rnd_y * 0.1f, _circleBulletPrefab.transform.position.z);
-            EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet = Instantiate(_starBulletPrefab, pos, Quaternion.identity);
 
             Vector3 power;
 
@@ -313,7 +338,7 @@ public class Enemy_Star : Enemy
 
             //斜め上に
             Vector3 pos = new Vector3(-2.4f - rnd_x * 0.1f, 3.0f + rnd_y * 0.1f, _circleBulletPrefab.transform.position.z);
-            EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
+            EnemyBullet bullet = Instantiate(_starBulletPrefab, pos, Quaternion.identity);
 
             Vector3 power;
 
@@ -326,6 +351,92 @@ public class Enemy_Star : Enemy
             yield return new WaitForSeconds(0.2f);
 
         }
+
+        yield return null;
+    }
+
+    private IEnumerator _random_star()
+    {
+       for(int i = 0; i < 100; i++){
+            StartCoroutine(_random_ballet_star());
+            yield return new WaitForSeconds(0.2f);
+       }
+       yield return new WaitForSeconds(2.0f);
+
+       yield return null;
+    }
+
+    private IEnumerator _random_ballet_star()
+    {
+        int rnd_x = Random.Range(0, 2);
+        int rnd_y = Random.Range(0, 2);
+
+        //自機の位置に弾を生成
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        EnemyBullet bullet = Instantiate(_starstarBulletPrefab, pos, Quaternion.identity);
+
+        Vector3 power;
+
+        if(rnd_x == 0)
+            {
+            if(rnd_y == 0)
+                power = new Vector3(Random.Range(0, 8), -5.0f, 0);
+            else
+                power = new Vector3(Random.Range(0, 8), 5.0f, 0);
+            }
+            else
+            {
+            if(rnd_y == 0)
+                power = new Vector3(Random.Range(-8, 0), -5.0f, 0);
+            else
+                power = new Vector3(Random.Range(-8, 0), 5.0f, 0);
+            }
+
+            //弾を発射
+        bullet.GetComponent<Rigidbody2D>().velocity = power;
+
+        yield return null;
+    }
+
+private IEnumerator _rain()
+    {
+       for(int i = 0; i < 300; i++){
+            StartCoroutine(_rain_ballet());
+            yield return new WaitForSeconds(0.07f);
+       }
+       yield return new WaitForSeconds(0.5f);
+
+       yield return null;
+    }
+
+    private IEnumerator _rain_ballet()
+    {
+        int rnd_x = Random.Range(0, 2);
+        int rnd_y = Random.Range(0, 2);
+
+        //自機の位置に弾を生成
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        EnemyBullet bullet = Instantiate(_rainBulletPrefab, pos, Quaternion.identity);
+
+        Vector3 power;
+
+        if(rnd_x == 0)
+            {
+            if(rnd_y == 0)
+                power = new Vector3(Random.Range(0, 8), -5.0f, 0);
+            else
+                power = new Vector3(Random.Range(0, 8), 5.0f, 0);
+            }
+            else
+            {
+            if(rnd_y == 0)
+                power = new Vector3(Random.Range(-8, 0), -5.0f, 0);
+            else
+                power = new Vector3(Random.Range(-8, 0), 5.0f, 0);
+            }
+
+            //弾を発射
+        bullet.GetComponent<Rigidbody2D>().velocity = power;
 
         yield return null;
     }

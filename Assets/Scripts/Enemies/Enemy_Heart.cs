@@ -445,10 +445,13 @@ public class Enemy_Heart : Enemy
 
             yield return new WaitForSeconds(0.3f);
 
-            Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
-            if (bulletRb != null)
+            if (bullet != null)
             {
-                bulletRb.gravityScale = 2f;
+                Rigidbody2D bulletRb = bullet.GetComponent<Rigidbody2D>();
+                if (bulletRb != null)
+                {
+                    bulletRb.gravityScale = 2f;
+                }
             }
         }
 

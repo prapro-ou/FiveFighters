@@ -241,7 +241,7 @@ public class Enemy_Hexagon : Enemy
         Vector3[] positions = {new Vector3(0, 10, 0), new Vector3(8.66f, 5, 0), new Vector3(8.66f, -5, 0), new Vector3(0, -10, 0), new Vector3(-8.66f, -5, 0), new Vector3(-8.66f, 5, 0)};
         for(int i = 0; i < 6; i++)
         {
-            EnemyBullet bullet = Instantiate(_hexagonTriangleBullet, positions[i], Quaternion.Euler(0, 0, 180 + (60 * i)));
+            EnemyBullet bullet = Instantiate(_hexagonTriangleBullet, positions[i], Quaternion.Euler(0, 0, 180 - (60 * i)));
             rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = positions[i].normalized * -10;
             Destroy(bullet.gameObject, 1f);

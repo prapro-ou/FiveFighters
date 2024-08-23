@@ -9,6 +9,8 @@ public class Shape_Square : PlayerShape
     private GameObject _squareDestroyField;
 
     private SoundManager _soundManager;
+    
+    private DamageCollider _damageCollider;
 
     [SerializeField]
     private PrimarySquareBullet _primarySquareBullet;
@@ -64,6 +66,13 @@ public class Shape_Square : PlayerShape
         GameObject bullet;
 
         _PlaySound("Shield");
+
+        if(_damageCollider == null)
+        {
+            _damageCollider = GameObject.Find("DamageCollider").GetComponent<DamageCollider>();
+        }
+
+        _damageCollider.BeInvincibleWithSkill();
 
         _squareDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
         Destroy(_squareDestroyField, 0.5f);

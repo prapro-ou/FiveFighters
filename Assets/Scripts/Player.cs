@@ -420,8 +420,7 @@ public class Player : MonoBehaviour
     public void Dash()
     {
         Debug.Log("Dash");
-        _damageCollider.BeInvincibleWithDash();
-
+        
         StartCoroutine(StartDash());
     }
 

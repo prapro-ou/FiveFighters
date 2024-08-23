@@ -16341,8 +16341,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 691294819}
-  _damageInvincibleTime: 2
-  _dashInvincibleTime: 1
+  _damageInvincibleTime: 1
+  _damageInvincibleTimeDecreaseRatio: 0.5
+  _skillInvincibleTime: 0.8
 --- !u!1 &1597363601
 GameObject:
   m_ObjectHideFlags: 0

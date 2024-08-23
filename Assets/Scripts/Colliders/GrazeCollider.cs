@@ -21,9 +21,9 @@ public class GrazeCollider : MonoBehaviour
 
     private GameObject _shapeEffect;
 
-    private int _grazeCount;
-
     private SoundManager _soundManager;
+
+    private int _grazeCount;
 
     public int GrazeCount
     {

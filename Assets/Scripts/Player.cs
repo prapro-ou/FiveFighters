@@ -527,11 +527,13 @@ public class Player : MonoBehaviour
         if(MyShape == _ownShapes[mode])
         {
             Debug.Log("Shifting to same shape");
+            _PlaySound("CannotBuy");
             return;
         }
 
         if(IsInShiftCooldown)
         {
+            _PlaySound("CannotBuy");
             return;
         }
 
@@ -556,6 +558,7 @@ public class Player : MonoBehaviour
         if (SpecialGrazeCount < MyShape.SpecialSkillCost)
         {
             Debug.Log($"Player does not have enough SPGrazeCount");
+            _PlaySound("CannotBuy");
             return;
         }
 

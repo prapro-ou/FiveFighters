@@ -804,12 +804,16 @@ public class Enemy_Hexagon : Enemy
         //Playerを親にエフェクト
         GameObject playerEffect = Instantiate(_hexagonTeleportEffectPrefab, _player.transform.position , Quaternion.identity, _player.transform);
 
+        _PlaySound("Spawn4");
+
         //中心にエフェクト
         Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
 
         yield return new WaitForSeconds(1f);
 
         //中心にPlayerをテレポート
+        // _PlaySound("Spawn2");
+
         playerEffect.transform.parent = null;
         float currentSpeed = _player.CurrentSpeed;
         _player.transform.position = Vector3.zero;

@@ -7,7 +7,7 @@ using UnityEngine;
 public enum DiamondState
 {
     Wait,
-    NormalBullet,
+    Attack1,
     Attack2,
     Attack3,
     Attack4,
@@ -32,6 +32,9 @@ public class Enemy_Diamond : Enemy
 
     [SerializeField]
     private EnemyBullet _reduceBulletPrefab;
+
+    [SerializeField]
+    private EnemyBullet _diamondBullet;
 
     [SerializeField]
     private Enemy_Diamond_LeftCanon _leftCanonPrefab;
@@ -137,7 +140,7 @@ public class Enemy_Diamond : Enemy
                     yield return new WaitForSeconds(AttackCooltime);
                     break;
                 }
-                case DiamondState.NormalBullet:
+                case DiamondState.Attack1:
                 //3つの頂点から平行に射撃.1セットごとに移動．
                 {
                     Debug.Log("Attack:" + CurrentState);
@@ -169,6 +172,7 @@ public class Enemy_Diamond : Enemy
                 {
                     Debug.Log("Attack:" + CurrentState);
                     CurrentCoroutine = StartCoroutine(_GenerateCanon());
+                    EnemyBullet shapeBullet = Instantiate(_diamondBullet, this.transform.position + new Vector3(0, -2.0f, 0), Quaternion.identity);
                     yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
@@ -462,76 +466,7 @@ public class Enemy_Diamond : Enemy
 
         yield return null;
     }
-/*
-    private IEnumerator _RandomShoot()
-    {
-        //攻撃開始時点での敵の位置を保存
-        Vector3 startPos = this.transform.position;
 
-        //画面中央に移動
-        yield return StartCoroutine(_Move('f'));
-        yield return new WaitForSeconds(1.5f);
-
-        for(int i = 0; i <= 200; ++i)
-        {
-            transform.localEulerAngles = new Vector3(0, 0, 3.6f * i);
-            yield return new WaitForSeconds(0.005f);
-        }
-
-        //乱射
-        for(int i = 0; i < 30; ++i)
-        {
-            int rnd_x = Random.Range(0, 2);
-            int rnd_y = Random.Range(0, 2);
-
-            //自機の位置に弾を生成
-            Vector3 pos = transform.position;
-            EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
-
-            Vector3 power;
-            if(rnd_x == 0)
-            {
-                if(rnd_y == 0)
-                    power = new Vector3(Random.Range(0, 8), -5.0f, 0);
-                else
-                    power = new Vector3(Random.Range(0, 8), 5.0f, 0);
-            }
-            else
-            {
-                if(rnd_y == 0)
-                    power = new Vector3(Random.Range(-8, 0), -5.0f, 0);
-                else
-                    power = new Vector3(Random.Range(-8, 0), 5.0f, 0);
-            }
-
-            //弾を発射
-            _PlaySound("NormalBullet");
-            bullet.GetComponent<Rigidbody2D>().velocity = power;
-
-            if(i % 5 == 0)
-            {
-                Vector3 aim = (_player.transform.position - transform.position).normalized;
-                //正規化の結果零ベクトルとなった場合，正規化しない．
-                if(aim == Vector3.zero)
-                    aim = _player.transform.position - transform.position;
-
-                float angle = Mathf.Atan2(aim.x, aim.y);
-                EnemyBullet laser = Instantiate(_laserPrefab, pos, Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.back));
-
-                _PlaySound("Laser");
-                laser.GetComponent<Rigidbody2D>().velocity = aim * 6.0f;
-            }
-
-            yield return new WaitForSeconds(0.2f);
-        }
-
-        //元の位置に戻る
-        yield return StartCoroutine(_Move('b'));
-        yield return new WaitForSeconds(1);
-
-        yield return null;
-    }
-*/
     private IEnumerator _RandomShoot()
     {
         //攻撃開始時点での敵の位置を保存

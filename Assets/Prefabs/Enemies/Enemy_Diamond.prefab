@@ -183,6 +183,7 @@ MonoBehaviour:
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _laserPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}
   _reduceBulletPrefab: {fileID: 1347029831895677856, guid: 0fd17d92bbf593b4a9071eabcbf4daeb, type: 3}
+  _diamondBullet: {fileID: 4311875441538615672, guid: 206264a4775f421418054b8e3e183c0a, type: 3}
   _leftCanonPrefab: {fileID: 7128881001000578774, guid: 9b57f8f1880659b4b8eea79794e12e1d, type: 3}
   _rightCanonPrefab: {fileID: 7911420778804385291, guid: 6918a7b4b5a03974e9843e014afced4b, type: 3}
   _bitPrefab: {fileID: -2057636919555189189, guid: 0239195c37b70d444bf2dd0a5002cb49, type: 3}

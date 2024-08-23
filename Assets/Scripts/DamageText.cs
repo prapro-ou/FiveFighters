@@ -36,7 +36,7 @@ public class DamageText : MonoBehaviour
 
         float fadePoint = _duration / 2;
 
-        byte fadeRatio = (byte)(Time.deltaTime * 510);
+        float fadeRatio = Time.deltaTime * 2;
 
         for(float i = 0; i < _duration; i += Time.deltaTime)
         {
@@ -48,7 +48,7 @@ public class DamageText : MonoBehaviour
 
             //しばらくたってから透明度を下げ始める
             if(i > (fadePoint))
-                _text.color -= new Color32(0, 0, 0, fadeRatio);
+                _text.color -= new Color(0, 0, 0, fadeRatio);
 
             // //ループの中間で下降開始
             // if(i == 43)

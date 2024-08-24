@@ -151,9 +151,6 @@ MonoBehaviour:
   - name: Graze
     audioClip: {fileID: 8300000, guid: 21d4442fc3051c14daad4f507668e83f, type: 3}
     delay: 0.08
-  - name: Caution1
-    audioClip: {fileID: 8300000, guid: 2eb171f62eeca1840a276ba32d0cf237, type: 3}
-    delay: 0.1
   - name: SpeedUp
     audioClip: {fileID: 8300000, guid: 3ad3a6018a7d3284f946db456d280bf8, type: 3}
     delay: 0.7
@@ -166,6 +163,9 @@ MonoBehaviour:
   - name: Caution1
     audioClip: {fileID: 8300000, guid: 5a5783c2739a1454d8948ffd07cdb0f7, type: 3}
     delay: 0
+  - name: Caution2
+    audioClip: {fileID: 8300000, guid: 2eb171f62eeca1840a276ba32d0cf237, type: 3}
+    delay: 0.1
   - name: ShootHeartBullet1
     audioClip: {fileID: 8300000, guid: 3d2a8a72b63f7e24da1b820ab466777d, type: 3}
     delay: 0

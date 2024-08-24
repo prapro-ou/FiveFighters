@@ -227,7 +227,7 @@ public class Enemy_Hexagon : Enemy
 
         yield return new WaitForSeconds(2f);
 
-        _PlaySound("Caution1");
+        _PlaySound("Caution2");
         Vector3[] cautionPositions = {new Vector3(0, 4, 0), new Vector3(3.4f, 2f, 0), new Vector3(3.4f, -2f, 0), new Vector3(0, -4, 0), new Vector3(-3.4f, -2f, 0), new Vector3(-3.4f, 2f, 0)};
         for(int ic = 0; ic < 6; ic++)
         {
@@ -458,7 +458,7 @@ public class Enemy_Hexagon : Enemy
             speed = Random.Range(30f, 60f);
             int direction = (Random.Range(0, 2) == 0) ? -1 : 1;
 
-            _PlaySound("Caution1");
+            _PlaySound("Caution2");
 
             yield return StartCoroutine(_RotateOnCurve(direction * 180f, 1f));
 
@@ -509,7 +509,7 @@ public class Enemy_Hexagon : Enemy
             _ShuffleTransformList(pointTransforms1);
             _ShuffleTransformList(pointTransforms2);
 
-            _PlaySound("Caution1");
+            _PlaySound("Caution2");
 
             Instantiate(_hexagonCautionEffectPrefab, pointTransforms1[0].position, Quaternion.identity);
             Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[0].position, Quaternion.identity);
@@ -525,7 +525,7 @@ public class Enemy_Hexagon : Enemy
 
             for(int i = 1; i < 6; i++)
             {
-                _PlaySound("Caution1");
+                _PlaySound("Caution2");
                 Instantiate(_hexagonCautionEffectPrefab, pointTransforms1[i].position, Quaternion.identity);
                 Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[i].position, Quaternion.identity);
                 yield return new WaitForSeconds(0.8f);
@@ -698,7 +698,7 @@ public class Enemy_Hexagon : Enemy
 
     private IEnumerator _Laser(Vector3 position, Quaternion rotation)
     {
-        _PlaySound("Caution1");
+        _PlaySound("Caution2");
         Instantiate(_hexagonCautionEffectPrefab, position, rotation);
         EnemyBullet laserCaution = Instantiate(_hexagonLaserCautionPrefab, position, rotation);
 

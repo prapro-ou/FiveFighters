@@ -93,8 +93,6 @@ public abstract class Enemy : MonoBehaviour
         _collider = GetComponent<Collider2D>();
 
         _sr = GetComponent<SpriteRenderer>();
-
-        HitPoint = MaxHitPoint;
     }
 
     // Start is called before the first frame update
@@ -115,14 +113,15 @@ public abstract class Enemy : MonoBehaviour
         if(bullet != null)
         {
             bullet.DestroyWithParticle();
-            TakeDamage((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier));
+            TakeDamage(bullet.DamageValue);
             GenerateDamageText((int)(bullet.DamageValue * _playerForStatus.PowerMultiplier), bullet.transform.position);
         }
     }
 
     public void TakeDamage(int damage)
     {
-        HitPoint -= damage;
+        int multipliedDamage = (int)(damage * _playerForStatus.PowerMultiplier);
+        HitPoint -= multipliedDamage;
         StartCoroutine("DamageAction");
     }
 
@@ -149,6 +148,12 @@ public abstract class Enemy : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
 
         yield break;
+    }
+
+    public void ResetHp()
+    {
+        HitPoint = MaxHitPoint;
+        Debug.Log($"ResetHP: {HitPoint}");
     }
 
     public abstract void StartAttacking();

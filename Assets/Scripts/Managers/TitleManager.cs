@@ -7,6 +7,8 @@ using TMPro;
 
 public class TitleManager : MonoBehaviour
 {
+    public static bool alreadyViedManual;
+
     [SerializeField]
     private SceneController _sceneController;
 
@@ -22,6 +24,9 @@ public class TitleManager : MonoBehaviour
     private Canvas _tutorialCanvas;
 
     [SerializeField]
+    private Canvas _cautionCanvas;
+
+    [SerializeField]
     private List<GameObject> _images;
 
     private int page = 0;
@@ -33,15 +38,24 @@ public class TitleManager : MonoBehaviour
     private GameObject _nextButton;
 
     [SerializeField]
+    private GameObject _startGameButton;
+
+    [SerializeField]
+    private GameObject _cautionButton;
+
+    [SerializeField]
     private GameObject _transitionObject;
 
     private Animator _transitionAnimator;
+
+    private SoundManager _soundManager;
 
     // Start is called before the first frame update
     void Start()
     {
         _transitionCanvas.SetActive(true);
         _transitionAnimator = _transitionObject.GetComponent<Animator>();
+        _eventSystem.SetSelectedGameObject(_startGameButton);
 
         //チュートリアル用のCanvasを非表示に
         _tutorialCanvas.enabled = false;
@@ -51,6 +65,8 @@ public class TitleManager : MonoBehaviour
         }
 
         StartCoroutine(_OpenTransition());
+
+        _PlayBGM("Shop");
     }
 
     // Update is called once per frame
@@ -87,7 +103,30 @@ public class TitleManager : MonoBehaviour
 
     public void ShiftToGame()
     {
+        if(alreadyViedManual == false)
+        {
+            OpenCautionPanel();
+            return;
+        }
+
+        _StopBGM();
         StartCoroutine(_StartShiftToGame());
+    }
+
+    public void ShiftToGameWithCaution()
+    {
+        _cautionCanvas.enabled = false;
+
+        _StopBGM();
+        StartCoroutine(_StartShiftToGame());
+    }
+
+    public void OpenCautionPanel()
+    {
+        alreadyViedManual = true;
+
+        _cautionCanvas.enabled = true;
+        _eventSystem.SetSelectedGameObject(_cautionButton);
     }
 
     private IEnumerator _StartShiftToGame()
@@ -105,15 +144,24 @@ public class TitleManager : MonoBehaviour
 
     public void ShiftToTutorial()
     {
+        _PlaySound("Submit");
         page = 0;
+        alreadyViedManual = true;
         _previousButton.SetActive(false);
         _tutorialCanvas.enabled = true;
         _images[page].SetActive(true);
         _eventSystem.SetSelectedGameObject(_nextButton);
     }
 
+    public void ShiftToTutorialWithCaution()
+    {
+        _cautionCanvas.enabled = false;
+        ShiftToTutorial();
+    }
+
     public void PreviousSlide()
     {
+        _PlaySound("Submit");
         if(page == _images.Count - 1)
             _nextButton.SetActive(true);
 
@@ -130,6 +178,7 @@ public class TitleManager : MonoBehaviour
 
     public void NextSlide()
     {
+        _PlaySound("Submit");
         if(page == 0)
             _previousButton.SetActive(true);
 
@@ -146,7 +195,39 @@ public class TitleManager : MonoBehaviour
 
     public void EndTutorial()
     {
+        _PlaySound("Submit");
         _tutorialCanvas.enabled = false;
         _images[page].SetActive(false);
+        _eventSystem.SetSelectedGameObject(_startGameButton);
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
+    }
+
+    private void _PlayBGM(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlayBGM(name);
+    }
+
+    private void _StopBGM()
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.StopBGM();
     }
 }

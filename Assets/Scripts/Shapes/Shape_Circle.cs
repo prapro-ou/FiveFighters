@@ -9,6 +9,8 @@ public class Shape_Circle : PlayerShape
     private GameObject _circleDestroyField;
 
     private SoundManager _soundManager;
+    
+    private DamageCollider _damageCollider;
 
     [SerializeField]
     private PrimaryCircleBullet _primaryCircleBullet;
@@ -52,6 +54,14 @@ public class Shape_Circle : PlayerShape
         _PlaySound("Explosion2");
 
         _circleDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity);
+
+        if(_damageCollider == null)
+        {
+            _damageCollider = GameObject.Find("DamageCollider").GetComponent<DamageCollider>();
+        }
+
+        _damageCollider.BeInvincibleWithSkill();
+
         Destroy(_circleDestroyField, 1.5f);
         Debug.Log($"ShiftSkill {name}");
     }

@@ -63,7 +63,7 @@ MonoBehaviour:
   _seDatas:
   - name: Submit
     audioClip: {fileID: 8300000, guid: 4f37c76666245734384879ce4a226b14, type: 3}
-    delay: 1
+    delay: 0.3
   - name: CannotBuy
     audioClip: {fileID: 8300000, guid: bd38e7054ec04d1458f6421291557d01, type: 3}
     delay: 0.3
@@ -163,6 +163,9 @@ MonoBehaviour:
   - name: Caution1
     audioClip: {fileID: 8300000, guid: 5a5783c2739a1454d8948ffd07cdb0f7, type: 3}
     delay: 0
+  - name: Caution2
+    audioClip: {fileID: 8300000, guid: 2eb171f62eeca1840a276ba32d0cf237, type: 3}
+    delay: 0.1
   - name: ShootHeartBullet1
     audioClip: {fileID: 8300000, guid: 3d2a8a72b63f7e24da1b820ab466777d, type: 3}
     delay: 0

@@ -173,6 +173,10 @@ URL：[https://maou.audio/se_8bit13/]
 URL：[https://sounds.udonko.net/sounds/mp3/Randomize94.mp3]
 
 効果音：8BITSOUNDS
+素材名：ジャンプ77.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/jump77.mp3]
+
+効果音：8BITSOUNDS
 素材名：パワーアップ6.mp3
 URL：[https://sounds.udonko.net/sounds/mp3/Powerup6.mp3]
 

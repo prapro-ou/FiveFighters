@@ -171,3 +171,7 @@ URL：[https://maou.audio/se_8bit13/]
 効果音：8BITSOUNDS
 素材名：いろいろ94.mp3
 URL：[https://sounds.udonko.net/sounds/mp3/Randomize94.mp3]
+
+効果音：8BITSOUNDS
+素材名：いろいろ14.mp3
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize14.mp3]

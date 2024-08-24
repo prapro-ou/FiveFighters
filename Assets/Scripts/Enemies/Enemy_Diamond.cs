@@ -14,6 +14,7 @@ public enum DiamondState
     Attack5,
     Attack6,
     Attack7
+    //Attack8
 }
 
 public class Enemy_Diamond : Enemy
@@ -172,7 +173,6 @@ public class Enemy_Diamond : Enemy
                 {
                     Debug.Log("Attack:" + CurrentState);
                     CurrentCoroutine = StartCoroutine(_GenerateCanon());
-                    EnemyBullet shapeBullet = Instantiate(_diamondBullet, this.transform.position + new Vector3(0, -2.0f, 0), Quaternion.identity);
                     yield return CurrentCoroutine;
                     CurrentState = DiamondState.Wait;
                     break;
@@ -222,6 +222,14 @@ public class Enemy_Diamond : Enemy
                     CurrentState = DiamondState.Wait;
                     break;
                 }
+/*                case DiamondState.Attack8:
+                {
+                    Debug.Log("Attack:" + CurrentState);
+                    CurrentCoroutine = StartCoroutine(_SpecialBullet());
+                    yield return CurrentCoroutine;
+                    CurrentState = DiamondState.Wait;
+                    break;
+                }*/
             }
         }
     }
@@ -252,6 +260,7 @@ public class Enemy_Diamond : Enemy
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(startPos, 0.5f));
 
         yield return new WaitForSeconds(3);
+
         yield break;
     }
 
@@ -268,6 +277,7 @@ public class Enemy_Diamond : Enemy
         Color endColor = Color.black;
         SpriteRenderer rend = this.GetComponent<SpriteRenderer>();
 
+        _PlaySound("DeathDiamond");
         for(float i = 0.0f; i < 30.0f; ++i)
         {
             rend.material.color = Color.Lerp(startColor, endColor, i / 30.0f);
@@ -650,6 +660,25 @@ public class Enemy_Diamond : Enemy
 
         yield return null;
     }
+/*
+    private IEnumerator _SpecialBullet()
+    {
+        EnemyBullet shapeBullet = Instantiate(_diamondBullet, this.transform.position + new Vector3(0, -1.5f, 0), Quaternion.identity);
+        EnemyBullet shapeBullet2 = Instantiate(_diamondBullet, this.transform.position + new Vector3(0, 1.5f, 0), Quaternion.identity);
+        EnemyBullet shapeBullet3 = Instantiate(_diamondBullet, this.transform.position + new Vector3(-1.5f, 0, 0), Quaternion.Euler(0, 0, 90));
+        EnemyBullet shapeBullet4 = Instantiate(_diamondBullet, this.transform.position + new Vector3(1.5f, 0, 0), Quaternion.Euler(0, 0, 90));
+
+        for(int i = 0; i < 360; ++i)
+        {
+            shapeBullet.transform.RotateAround(this.transform.position, Vector3.forward, 7.0f);
+            shapeBullet2.transform.RotateAround(this.transform.position, Vector3.forward, 7.0f);
+            shapeBullet3.transform.RotateAround(this.transform.position, Vector3.forward, 7.0f);
+            shapeBullet4.transform.RotateAround(this.transform.position, Vector3.forward, 7.0f);
+
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+    */
 
     private void _PlaySound(string name)
     {

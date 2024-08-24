@@ -7,6 +7,8 @@ using TMPro;
 
 public class TitleManager : MonoBehaviour
 {
+    public static bool alreadyViedManual;
+
     [SerializeField]
     private SceneController _sceneController;
 
@@ -22,6 +24,9 @@ public class TitleManager : MonoBehaviour
     private Canvas _tutorialCanvas;
 
     [SerializeField]
+    private Canvas _cautionCanvas;
+
+    [SerializeField]
     private List<GameObject> _images;
 
     private int page = 0;
@@ -34,6 +39,9 @@ public class TitleManager : MonoBehaviour
 
     [SerializeField]
     private GameObject _startGameButton;
+
+    [SerializeField]
+    private GameObject _cautionButton;
 
     [SerializeField]
     private GameObject _transitionObject;
@@ -95,8 +103,30 @@ public class TitleManager : MonoBehaviour
 
     public void ShiftToGame()
     {
+        if(alreadyViedManual == false)
+        {
+            OpenCautionPanel();
+            return;
+        }
+
         _StopBGM();
         StartCoroutine(_StartShiftToGame());
+    }
+
+    public void ShiftToGameWithCaution()
+    {
+        _cautionCanvas.enabled = false;
+
+        _StopBGM();
+        StartCoroutine(_StartShiftToGame());
+    }
+
+    public void OpenCautionPanel()
+    {
+        alreadyViedManual = true;
+
+        _cautionCanvas.enabled = true;
+        _eventSystem.SetSelectedGameObject(_cautionButton);
     }
 
     private IEnumerator _StartShiftToGame()
@@ -116,10 +146,17 @@ public class TitleManager : MonoBehaviour
     {
         _PlaySound("Submit");
         page = 0;
+        alreadyViedManual = true;
         _previousButton.SetActive(false);
         _tutorialCanvas.enabled = true;
         _images[page].SetActive(true);
         _eventSystem.SetSelectedGameObject(_nextButton);
+    }
+
+    public void ShiftToTutorialWithCaution()
+    {
+        _cautionCanvas.enabled = false;
+        ShiftToTutorial();
     }
 
     public void PreviousSlide()

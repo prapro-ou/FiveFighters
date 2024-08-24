@@ -665,7 +665,7 @@ public class Enemy_Hexagon : Enemy
 
     private IEnumerator _ShootHexagonShotWithCaution(Vector3 position, float speed)
     {
-        _PlaySound("Caution1");
+        _PlaySound("NormalBullet");
         Instantiate(_hexagonCautionEffectPrefab, position, Quaternion.identity);
         
         yield return new WaitForSeconds(1f);

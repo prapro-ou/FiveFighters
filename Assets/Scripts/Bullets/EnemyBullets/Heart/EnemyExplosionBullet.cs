@@ -12,6 +12,8 @@ public class EnemyExplosionBullet : MonoBehaviour
 
     private CameraManager _cameraManager;
 
+    private SoundManager _soundManager;
+
     [SerializeField]
     private int _explosionValue;
 
@@ -63,6 +65,7 @@ public class EnemyExplosionBullet : MonoBehaviour
         _explosionCollider.enabled = true;
         yield return new WaitForSeconds(0.05f);
         GameObject effect = Instantiate(_heartExplosionEffect, transform.position, Quaternion.identity);
+        _PlaySound("Explosion5");
         _isExplode = true; //ここで爆発
         yield return new WaitForSeconds(0.1f);
         _isExplode = false; //ここで鎮火
@@ -81,5 +84,15 @@ public class EnemyExplosionBullet : MonoBehaviour
             Debug.Log($"Heart explosion damage {_explosionValue}");
             _isExplode = false;
         }
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

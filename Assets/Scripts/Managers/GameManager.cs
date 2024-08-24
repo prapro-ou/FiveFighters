@@ -112,6 +112,9 @@ public class GameManager : MonoBehaviour
     private List<int> _moneysPerBattle;
 
     [SerializeField]
+    private List<float> _hpMultiplyRatioPerBattle;
+
+    [SerializeField]
     private int _moneyPerBonusTime;
 
     [SerializeField]
@@ -234,7 +237,7 @@ public class GameManager : MonoBehaviour
 
         _PlaySound("Transition");
 
-        // _PlayBGM("Shop");
+        _PlayBGM("Shop");
 
         StartCoroutine(_overlayManager.OpenTransition());
     }
@@ -287,12 +290,12 @@ public class GameManager : MonoBehaviour
         if(_lockedEnemy != -1) //DEBUG!!!!!!!!!!!!!!!
         {
             Debug.Log($"DEBUG: SpawnLockedEnemy: {_enemies[_lockedEnemy]}");
-            _SpawnEnemy(_enemies[_lockedEnemy]);
+            _SpawnEnemy(_enemies[_lockedEnemy], _hpMultiplyRatioPerBattle[StateNumber]);
             _lockedEnemy = -1;
         }
         else
         {
-            _SpawnEnemy(nextEnemy);
+            _SpawnEnemy(nextEnemy, _hpMultiplyRatioPerBattle[StateNumber]);
             _enemies.Remove(nextEnemy);
         }
         
@@ -373,9 +376,11 @@ public class GameManager : MonoBehaviour
         Debug.Log($"DEBUG: KillEnemy(HugeDamage)");
     }
 
-    private void _SpawnEnemy(Enemy enemy)
+    private void _SpawnEnemy(Enemy enemy, float hpMultiplyRatio = 1f)
     {
         CurrentEnemy = Instantiate(enemy, _battleEnemyTransform.position, Quaternion.identity);
+        CurrentEnemy.MaxHitPoint = (int)(CurrentEnemy.MaxHitPoint * hpMultiplyRatio);
+        CurrentEnemy.ResetHp();
     }
 
     public void ClearStage()
@@ -435,7 +440,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
 
             //リザルトキャンバスを表示する(リザルトキャンバスの情報を更新する)
-            _clearCoinText.SetText($"獲得コイン：{CalculateGiveMoney()} ({_moneysPerBattle[StateNumber]}+{(int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime))})");
+            _clearCoinText.SetText($"獲得コイン：{CalculateGiveMoney()} ({_moneysPerBattle[StateNumber]}×{(1 + (Mathf.Max(0, (-(TimerValue - _bonusTimeBorder))) / _moneyPerBonusTime)):0.00})");
             
             _clearResultCanvas.gameObject.SetActive(true);
 
@@ -514,6 +519,9 @@ public class GameManager : MonoBehaviour
         //振動
         StartCoroutine(_cameraManager.Vibrate(0.4f, 0.2f));
 
+        //BGMを止める
+        _StopBGM();
+
         //Playerの演出を待つ
         yield return StartCoroutine(_player.StartDeathAnimation());
 
@@ -579,7 +587,7 @@ public class GameManager : MonoBehaviour
 
     private int CalculateGiveMoney()
     {
-        return _moneysPerBattle[StateNumber] + (int)(Mathf.Max(0, (-(TimerValue - _bonusTimeBorder)) / _moneyPerBonusTime));
+        return (int)(_moneysPerBattle[StateNumber] * (1 + (Mathf.Max(0, (-(TimerValue - _bonusTimeBorder))) / _moneyPerBonusTime)));
     }
 
     private IEnumerator _StartTimer()

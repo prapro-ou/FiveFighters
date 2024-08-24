@@ -17,6 +17,14 @@ public class DamageCollider : MonoBehaviour
         set {_inInvincible = value;}
     }
 
+    private int _touchCount;
+
+    public int TouchCount
+    {
+        get {return _touchCount;}
+        set {_touchCount = value;}
+    }
+
     private int _invincibleNumber;
 
     public int InvincibleNumber
@@ -35,12 +43,23 @@ public class DamageCollider : MonoBehaviour
     }
 
     [SerializeField]
-    private float _dashInvincibleTime;
+    private float _damageInvincibleTimeDecreaseRatio;
 
-    public float DashInvincibleTime
+    private float _currentDamageInvincibleTime;
+    
+    public float CurrentDamageInvincibleTime
     {
-        get {return _dashInvincibleTime;}
-        set {_dashInvincibleTime = value;}
+        get {return _currentDamageInvincibleTime;}
+        set {_currentDamageInvincibleTime = value;}
+    }
+
+    [SerializeField]
+    private float _skillInvincibleTime;
+
+    public float SkillInvincibleTime
+    {
+        get {return _skillInvincibleTime;}
+        set {_skillInvincibleTime = value;}
     }
 
     // Start is called before the first frame update
@@ -48,6 +67,8 @@ public class DamageCollider : MonoBehaviour
     {
         InInvincible = false;
         InvincibleNumber = 0;
+
+        CurrentDamageInvincibleTime = DamageInvincibleTime;
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
@@ -60,6 +81,8 @@ public class DamageCollider : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+        TouchCount += 1;
+
         if(InInvincible) {return;}
 
         if(_player.IsDead) {return;}
@@ -74,12 +97,17 @@ public class DamageCollider : MonoBehaviour
 
         _player.TakeDamage(enemyBullet.DamageValue);
 
-        StartCoroutine(StartInvincible(DamageInvincibleTime));
+        StartCoroutine(StartInvincible(CurrentDamageInvincibleTime));
     }
 
-    public void BeInvincibleWithDash()
+    void OnTriggerExit2D(Collider2D collider)
     {
-        StartCoroutine(StartInvincible(DashInvincibleTime));
+        TouchCount -= 1;
+    }
+
+    public void BeInvincibleWithSkill()
+    {
+        StartCoroutine(StartInvincible(SkillInvincibleTime));
     }
 
     private IEnumerator StartInvincible(float time)
@@ -103,11 +131,27 @@ public class DamageCollider : MonoBehaviour
             InInvincible = false;
             InvincibleNumber -= 1;
             Debug.Log("Not InInvincible");
+            
+            if(TouchCount <= 0)
+            {
+                _ResetDamageInvincibleTime();
+            }
+            else
+            {
+                CurrentDamageInvincibleTime *= _damageInvincibleTimeDecreaseRatio;
+                Debug.Log($"CurrentDamageInvincibleTime is decreased: {CurrentDamageInvincibleTime}");
+            }
         }
         else
         {
             InvincibleNumber -= 1;
             Debug.Log("InvincibleCoroutine ends but other is running");
         }
+    }
+
+    private void _ResetDamageInvincibleTime()
+    {
+        CurrentDamageInvincibleTime = DamageInvincibleTime;
+        Debug.Log($"Reset CurrentDamageInvincibleTime: {CurrentDamageInvincibleTime}");
     }
 }

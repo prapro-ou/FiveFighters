@@ -6,6 +6,8 @@ public class EnemyHealBullet : MonoBehaviour
 {
     private Player _player;
 
+    private SoundManager _soundManager;
+
     [SerializeField]
     private int _healValue;
 
@@ -47,10 +49,21 @@ public class EnemyHealBullet : MonoBehaviour
     {
         if (collider.gameObject.tag == "DamageCollider")
         {
+            _PlaySound("Heal");
             _player.HitPoint += _healValue;
             GameObject effect = Instantiate(_heartHealEffect, _player.transform.position, Quaternion.identity, _player.transform);
             Destroy(effect, 0.5f);
             Debug.Log($"Heal PlayerHP {_healValue}");
         }
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

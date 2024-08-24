@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HexagonMine : EnemyBullet
 {
+    private SoundManager _soundManager;
+
     [SerializeField]
     private float _delay;
 
@@ -51,6 +53,7 @@ public class HexagonMine : EnemyBullet
 
         for(int i = 0; i < _times; i++)
         {
+            _PlaySound("NormalBullet");
             yield return StartCoroutine(_SetScaleOnCurve(_currentScale + _segmentValue, _duration));
             // yield return StartCoroutine(_SetScaleOnCurve(_currentScale, 0.2f));
             _currentScale += _segmentValue;
@@ -86,5 +89,15 @@ public class HexagonMine : EnemyBullet
         }
 
         transform.localScale = new Vector3(endScale, endScale, 1);
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

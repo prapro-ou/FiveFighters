@@ -11,6 +11,8 @@ public class Shape_Triangle : PlayerShape
     
     [SerializeField]
     private Shape_SmallTriangle _smallTriangle;
+    
+    private DamageCollider _damageCollider;
 
     // private Shape_SmallTriangle _smallRightTriangle;
     // private Shape_SmallTriangle _smallLeftTriangle;
@@ -78,6 +80,13 @@ public class Shape_Triangle : PlayerShape
         _triangleDestroyField = Instantiate(_destroyField.gameObject, _player.transform.position, Quaternion.identity, _player.transform);
         Destroy(_triangleDestroyField, _player.DashTime);
 
+        if(_damageCollider == null)
+        {
+            _damageCollider = GameObject.Find("DamageCollider").GetComponent<DamageCollider>();
+        }
+
+        _damageCollider.BeInvincibleWithSkill();
+        
         _player.Dash();
 
         Debug.Log($"ShiftSkill {name}");

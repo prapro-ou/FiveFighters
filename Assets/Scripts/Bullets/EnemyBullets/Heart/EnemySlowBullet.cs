@@ -6,6 +6,8 @@ public class EnemySlowBullet : EnemySpeedChangeBullet
 {
     private Player _player;
 
+    private SoundManager _soundManager;
+
     [SerializeField]
     private float _slowValue;
 
@@ -29,6 +31,7 @@ public class EnemySlowBullet : EnemySpeedChangeBullet
     {
         if ((collider.gameObject.tag == "DamageCollider") && !IsSpeedChanged)
         {
+            _PlaySound("SpeedDown");
             _player.CurrentSpeed *= _slowValue;
             GameObject effect = Instantiate(_heartSlowEffect, _player.transform.position, Quaternion.Euler(180, 0, 0), _player.transform);
             IsSpeedChanged = true;
@@ -42,5 +45,15 @@ public class EnemySlowBullet : EnemySpeedChangeBullet
         _player.CurrentSpeed = _player.DefaultSpeed;
         IsSpeedChanged = false;
         Debug.Log($"Return original speed");
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

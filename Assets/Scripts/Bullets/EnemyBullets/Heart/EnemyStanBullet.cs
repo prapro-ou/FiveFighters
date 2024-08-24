@@ -6,6 +6,8 @@ public class EnemyStanBullet : EnemySpeedChangeBullet
 {
     private Player _player;
 
+    private SoundManager _soundManager;
+
     [SerializeField]
     private GameObject _heartStanEffect;
 
@@ -25,6 +27,7 @@ public class EnemyStanBullet : EnemySpeedChangeBullet
     {
         if ((collider.gameObject.tag == "DamageCollider") && !IsSpeedChanged)
         {
+            _PlaySound("Stan");
             _player.CurrentSpeed *= 0f;
             GameObject effect = Instantiate(_heartStanEffect, _player.transform.position, Quaternion.identity, _player.transform);
             IsSpeedChanged = true;
@@ -38,5 +41,15 @@ public class EnemyStanBullet : EnemySpeedChangeBullet
         _player.CurrentSpeed = _player.DefaultSpeed;
         IsSpeedChanged = false;
         Debug.Log($"Return original speed");
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

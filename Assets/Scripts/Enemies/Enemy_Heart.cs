@@ -19,6 +19,10 @@ public class Enemy_Heart : Enemy
 {
     private Player _player;
 
+    private SpriteRenderer _spriteRenderer;
+
+    private SoundManager _soundManager;
+
     private CameraManager _cameraManager;
 
     [SerializeField]
@@ -93,6 +97,7 @@ public class Enemy_Heart : Enemy
         _player = GameObject.Find("Player").GetComponent<Player>();
         _player.CurrentEnemy = this;
 
+        _spriteRenderer = GetComponent<SpriteRenderer>();
         _cameraManager = GameObject.Find("CameraManager").GetComponent<CameraManager>();
     }
 
@@ -190,9 +195,12 @@ public class Enemy_Heart : Enemy
         yield return new WaitForSeconds(0.1f);
 
         StartCoroutine(_cameraManager.SetSizeOnCurve(3.5f, duration));
+
         while (elapsedTime < duration)
         {
-            transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / duration);
+            float t = elapsedTime / duration;
+            transform.position = Vector3.Lerp(startPosition, endPosition, t);
+
             elapsedTime += Time.deltaTime;
             GameObject simpleEffect = Instantiate(_heartSimpleEfect, transform.position, Quaternion.identity);
             Destroy(simpleEffect, 0.3f);
@@ -200,20 +208,33 @@ public class Enemy_Heart : Enemy
         }
 
         yield return StartCoroutine(_cameraManager.MoveToPointOnCurve(transform.position));
+
         GameObject spawnEffect = Instantiate(_heartSpawnEffect, transform.position, Quaternion.identity);
+
         // エフェクトを徐々に小さくする処理
         float shrinkDuration = 1f;
         float shrinkElapsedTime = 0f;
         Vector3 initialScale = spawnEffect.transform.localScale;
+        
+        // 色の初期値と最終値
+        Color startColor = Color.white; // #FFFFFF
+        Color endColor = new Color(1f, 0.54f, 0.8f); // #FF8ACC
 
+        _PlaySound("Spawn5");
         while (shrinkElapsedTime < shrinkDuration)
         {
-            transform.localScale = Vector3.Lerp(startScale, endScale, shrinkElapsedTime / shrinkDuration);
-            spawnEffect.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, shrinkElapsedTime / shrinkDuration);
+            float t = shrinkElapsedTime / shrinkDuration;
+            
+            _spriteRenderer.color = Color.Lerp(startColor, endColor, t);
+            transform.localScale = Vector3.Lerp(startScale, endScale, t);
+            spawnEffect.transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, t);
             shrinkElapsedTime += Time.deltaTime;
             yield return null;
         }
+
         Destroy(spawnEffect);
+
+        _PlaySound("Spawn3");
         // 振動演出を加える
         yield return StartCoroutine(_cameraManager.Vibrate(0.3f, 0.2f));
 
@@ -229,41 +250,34 @@ public class Enemy_Heart : Enemy
     public override IEnumerator StartDeathAnimation()
     {
         float dissolveDuration = 2f; // 消滅するまでの時間
-        float sinkSpeed = 1f; // 沈む速度
-        float expandDuration = 0.5f; // 拡大する時間
-        float maxScaleFactor = 1.2f; // 最大スケールファクター（拡大率）
 
         Debug.Log("StartDeathAnimation");
 
         Vector3 startPosition = transform.position;
         Vector3 startScale = transform.localScale;
-        Vector3 expandedScale = startScale * maxScaleFactor; // 拡大後のスケール
         float elapsedTime = 0f;
+        float sinkSpeed = 1f;
+        
+        Color startColor = new Color(1f, 0.54f, 0.8f); // #FF8ACC
+        Color endColor = Color.white; // #FFFFFF
 
-        GameObject effect = Instantiate(_heartDeathEffect, transform.position,Quaternion.identity);
+        GameObject effect = Instantiate(_heartDeathEffect, transform.position, Quaternion.identity);
 
-        // 最初の拡大アニメーション
-        while (elapsedTime < expandDuration)
-        {
-            float t = elapsedTime / expandDuration;
-            transform.localScale = Vector3.Lerp(startScale, expandedScale, t);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.localScale = expandedScale; // 最終的な拡大スケールを設定
-
-        // 拡大後、再度消滅アニメーションを開始
-        elapsedTime = 0f;
+        _PlaySound("DeathHeart");
+        // 消滅アニメーションを開始
         while (elapsedTime < dissolveDuration)
         {
             float t = elapsedTime / dissolveDuration;
 
-            // オブジェクトを下に移動
-            transform.position = startPosition + Vector3.down * sinkSpeed * Time.deltaTime;
+            _spriteRenderer.color = Color.Lerp(startColor, endColor, t);
 
             // スケールを徐々に縮小
-            transform.localScale = Vector3.Lerp(expandedScale, Vector3.zero, t);
+            transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
+
+            // 少しずつ透明にする
+            Color newColor = _spriteRenderer.color;
+            newColor.a = Mathf.Lerp(1f, 0f, t);
+            _spriteRenderer.color = newColor;
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -283,6 +297,17 @@ public class Enemy_Heart : Enemy
     {
         Debug.Log("Start 3BurstShot");
 
+        for (int k = 0; k < 3; k++)
+        {
+            _PlaySound("Caution1");
+            Color color = _spriteRenderer.color;
+            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 0.1f);
+            yield return new WaitForSeconds(0.2f);
+
+            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1.0f);
+            yield return new WaitForSeconds(0.2f);
+        }
+
         for (int j = 0; j < 15; j++)
         {
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
@@ -292,6 +317,7 @@ public class Enemy_Heart : Enemy
 
             for (int i = 0; i < 3; i++)
             {
+                _PlaySound("NormalBullet");
                 EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
                 bullet.GetComponent<Rigidbody2D>().AddForce(power.normalized * 10, ForceMode2D.Impulse);
                 yield return new WaitForSeconds(0.05f);
@@ -332,6 +358,7 @@ public class Enemy_Heart : Enemy
                 Rigidbody2D rb = heart.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
+                    _PlaySound("ShootHeartBullet2");
                     rb.velocity = new Vector2(0, -3.0f); // 同時に前方向に発射
                 }
                 Destroy(heart, 3.0f);
@@ -393,6 +420,7 @@ public class Enemy_Heart : Enemy
         bullet.GetComponent<Rigidbody2D>().AddForce(direction * 5, ForceMode2D.Impulse);
 
         Vector3 effectPosition = bullet.transform.position + direction * 1f;
+        _PlaySound("ShootHeartBullet1");
         GameObject effect = Instantiate(_heartSimpleEfect, effectPosition, Quaternion.identity);
         Destroy(effect.gameObject, 0.5f);
     }
@@ -403,6 +431,7 @@ public class Enemy_Heart : Enemy
 
         for (int i = 0; i < 10; i++)
         {
+            _PlaySound("ShootHeartBullet1");
             Instantiate(_explosionHeartBullet, _player.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(0.5f);
         }
@@ -441,6 +470,7 @@ public class Enemy_Heart : Enemy
             Vector2 spawnPosition = new Vector2(spawnX, spawnY);
 
             // 弾の生成
+            _PlaySound("NormalBullet");
             EnemyBullet bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
 
             yield return new WaitForSeconds(0.3f);
@@ -473,6 +503,7 @@ public class Enemy_Heart : Enemy
             Vector2 spawnPosition1 = new Vector2(-5f, spawnY);
             Vector2 spawnPosition2 = new Vector2(5f, spawnY);
 
+            _PlaySound("ShootHeartBullet3");
             EnemyStuckBullet bullet1 = Instantiate(bulletPrefab, spawnPosition1, Quaternion.identity);
             EnemyStuckBullet bullet2 = Instantiate(bulletPrefab, spawnPosition2, Quaternion.Euler(0, 180, 0));
             yield return new WaitForSeconds(0.2f);
@@ -482,13 +513,20 @@ public class Enemy_Heart : Enemy
             // 弾を一定時間動かす
             while (elapsedTime < 1.539f)
             {
-                bullet1.transform.Translate(Vector3.right * 2.6f * Time.deltaTime);
-                bullet2.transform.Translate(Vector3.right * 2.6f * Time.deltaTime);
-
+                if (bullet1 != null)
+                {
+                    bullet1.transform.Translate(Vector3.right * 2.6f * Time.deltaTime);
+                }
+                if (bullet2 != null)
+                {
+                    bullet2.transform.Translate(Vector3.right * 2.6f * Time.deltaTime);
+                }
                 elapsedTime += Time.deltaTime;
                 yield return null;  // 次のフレームまで待機
             }
+            _PlaySound("Stuck");
             yield return StartCoroutine(_cameraManager.Vibrate(0.2f, 0.1f));
+
             if (bullet1 != null)
             {
                 Destroy(bullet1.gameObject);
@@ -506,13 +544,13 @@ public class Enemy_Heart : Enemy
 
     }
 
-    //sample
-  /*private IEnumerator 
+    private void _PlaySound(string name)
     {
-        Debug.Log("Start ");
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
 
-        yield return new WaitForSeconds(0.5f);
-
-        Debug.Log("Finish ");
-    }*/
+        _soundManager.PlaySound(name);
+    }
 }

@@ -9,6 +9,9 @@ TagManager:
   - EnemyBullet
   - GrazeCollider
   - DamageCollider
+  - HeartExplosionBullet
+  - HeartHealBullet
+  - HeartStuckBullet
   layers:
   - Default
   - TransparentFX

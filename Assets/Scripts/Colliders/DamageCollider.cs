@@ -87,6 +87,12 @@ public class DamageCollider : MonoBehaviour
 
         if(_player.IsDead) {return;}
 
+        if(collider.gameObject.tag == "HeartHealBullet") {return;}
+
+        if(collider.gameObject.tag == "HeartStuckBullet") {return;}
+
+        if(collider.gameObject.tag == "HeartExplosionBullet") {return;}
+
         EnemyBullet enemyBullet = collider.gameObject.GetComponent<EnemyBullet>();
 
         _player.TakeDamage(enemyBullet.DamageValue);

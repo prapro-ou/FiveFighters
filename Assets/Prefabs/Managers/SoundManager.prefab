@@ -97,6 +97,9 @@ MonoBehaviour:
   - name: Explosion4
     audioClip: {fileID: 8300000, guid: 9d93f957acf01104ea65c8a12c4d40ea, type: 3}
     delay: 0
+  - name: Explosion5
+    audioClip: {fileID: 8300000, guid: 3be60220fa0a6a74fadd567f23562311, type: 3}
+    delay: 0
   - name: Spawn1
     audioClip: {fileID: 8300000, guid: a15e5331d680a6c47bca8003bc6754d4, type: 3}
     delay: 0
@@ -108,6 +111,9 @@ MonoBehaviour:
     delay: 0
   - name: Spawn4
     audioClip: {fileID: 8300000, guid: 032026580ef4049479fdc8ee2f513c17, type: 3}
+    delay: 0
+  - name: Spawn5
+    audioClip: {fileID: 8300000, guid: 48dc39ee3c76a9c4aa516eb543c84e60, type: 3}
     delay: 0
   - name: NormalBullet
     audioClip: {fileID: 8300000, guid: cf5f2ef325780594fadb03b770181fa7, type: 3}
@@ -145,6 +151,36 @@ MonoBehaviour:
   - name: Graze
     audioClip: {fileID: 8300000, guid: 21d4442fc3051c14daad4f507668e83f, type: 3}
     delay: 0.08
+  - name: SpeedUp
+    audioClip: {fileID: 8300000, guid: 3ad3a6018a7d3284f946db456d280bf8, type: 3}
+    delay: 0.7
+  - name: SpeedDown
+    audioClip: {fileID: 8300000, guid: 48dc39ee3c76a9c4aa516eb543c84e60, type: 3}
+    delay: 0.7
+  - name: Heal
+    audioClip: {fileID: 8300000, guid: 15fe8aae1f037d64b958c9af393d6254, type: 3}
+    delay: 0
+  - name: Caution1
+    audioClip: {fileID: 8300000, guid: 5a5783c2739a1454d8948ffd07cdb0f7, type: 3}
+    delay: 0
+  - name: ShootHeartBullet1
+    audioClip: {fileID: 8300000, guid: 3d2a8a72b63f7e24da1b820ab466777d, type: 3}
+    delay: 0
+  - name: ShootHeartBullet2
+    audioClip: {fileID: 8300000, guid: 813ea386575c81b458eb7876c70b7cdd, type: 3}
+    delay: 0
+  - name: ShootHeartBullet3
+    audioClip: {fileID: 8300000, guid: 007f57264ab88334b98608f6cb1875a0, type: 3}
+    delay: 0
+  - name: Stan
+    audioClip: {fileID: 8300000, guid: cf5416d037ab2114eb9b561e6b6b5af4, type: 3}
+    delay: 1
+  - name: Stuck
+    audioClip: {fileID: 8300000, guid: 1a804ca227e2d14428bb120f6f2b198a, type: 3}
+    delay: 1
+  - name: DeathHeart
+    audioClip: {fileID: 8300000, guid: e46d14feaf23c0147b3f9616e6f9664b, type: 3}
+    delay: 0
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

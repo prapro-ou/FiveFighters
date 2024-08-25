@@ -5150,9 +5150,9 @@ MonoBehaviour:
   _moneysPerBattle: 050000000a0000000f0000001400000019000000
   _hpMultiplyRatioPerBattle:
   - 1
-  - 1.5
   - 2
-  - 3
+  - 4
+  - 10
   _moneyPerBonusTime: 60
   _bonusTimeBorder: 120
   _firstMoney: 5

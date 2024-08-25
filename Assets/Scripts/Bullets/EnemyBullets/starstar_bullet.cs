@@ -27,7 +27,7 @@ public class starstar_bullet : MonoBehaviour
 
     private IEnumerator _Explosion()
     {
-        float waittime = Random.Range(3, 17);
+        float waittime = Random.Range(3, 10);
 
         yield return new WaitForSeconds(0.1f * waittime);
 

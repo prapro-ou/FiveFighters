@@ -57,11 +57,17 @@ public class Enemy_Star : Enemy
         set {_attackCooltime = value;}
     }
 
+    [SerializeField]
+    private EnemyBullet _deathBulletPrefab;
+
     private bool end;
+
+    private Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
+        anim = gameObject.GetComponent<Animator>();
         CurrentState = StarState.Wait;
         NumberOfAttacks = System.Enum.GetValues(typeof(StarState)).Length - 1;
 
@@ -127,7 +133,7 @@ public class Enemy_Star : Enemy
                 //斜めからの流星弾
                 {
                     Debug.Log("Attack:" + CurrentState);
-                    for(int i=0;i<3;i++){ 
+                    for(int i=0;i<2;i++){ 
                         yield return StartCoroutine(_commet_right());
                         yield return StartCoroutine(_commet_left());
                     }
@@ -176,11 +182,44 @@ public class Enemy_Star : Enemy
 
         yield return new WaitForSeconds(0.5f); //Sample
 
+        anim.SetBool("Star_Death", true);
+
+        yield return StartCoroutine(_death());
+
         Destroy(this.gameObject);
 
-        yield return new WaitForSeconds(1); //Sample
+        yield return new WaitForSeconds(0.5f); //Sample
     }
 
+
+    private IEnumerator _death()
+    {
+       for(int i = 0; i < 150; i++){
+            StartCoroutine(_death_ballet());
+            yield return new WaitForSeconds(0.01f);
+       }
+
+       yield return null;
+    }
+
+    private IEnumerator _death_ballet()
+    {
+        int rnd_x = Random.Range(-20, 20);
+        int rnd_y = Random.Range(25, 50);
+
+        //自機の位置に弾を生成
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
+        EnemyBullet bullet = Instantiate(_deathBulletPrefab, pos, Quaternion.identity);
+
+        Vector3 power;
+
+        power = new Vector3(rnd_x * 0.1f, rnd_y * 0.1f, 0);
+
+            //弾を発射
+        bullet.GetComponent<Rigidbody2D>().velocity = power;
+
+        yield return null;
+    }
     private IEnumerator _random()
     {
        for(int i = 0; i < 500; i++){
@@ -238,7 +277,7 @@ public class Enemy_Star : Enemy
         //弾を敵の位置に生成
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
 
-        for(int i = 0; i < 60 ; i++)
+        for(int i = 0; i < 40 ; i++)
         {
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
@@ -249,7 +288,7 @@ public class Enemy_Star : Enemy
             //弾を発射 正規化した位置ベクトルに乗算して速さを調整．
             bullet.GetComponent<Rigidbody2D>().velocity = power.normalized * 4.0f;
 
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.4f);
         }
 
         end = true;
@@ -320,9 +359,11 @@ public class Enemy_Star : Enemy
             //弾を発射
             bullet.GetComponent<Rigidbody2D>().velocity = power;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.25f);
 
         }
+        yield return new WaitForSeconds(1);
+
 
         yield return null;
     }
@@ -348,18 +389,21 @@ public class Enemy_Star : Enemy
             //弾を発射
             bullet.GetComponent<Rigidbody2D>().velocity = power;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.25f);
 
         }
+
+        yield return new WaitForSeconds(1);
+
 
         yield return null;
     }
 
     private IEnumerator _random_star()
     {
-       for(int i = 0; i < 100; i++){
+       for(int i = 0; i < 30; i++){
             StartCoroutine(_random_ballet_star());
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.6f);
        }
        yield return new WaitForSeconds(2.0f);
 
@@ -400,9 +444,9 @@ public class Enemy_Star : Enemy
 
 private IEnumerator _rain()
     {
-       for(int i = 0; i < 300; i++){
+       for(int i = 0; i < 220; i++){
             StartCoroutine(_rain_ballet());
-            yield return new WaitForSeconds(0.07f);
+            yield return new WaitForSeconds(0.08f);
        }
        yield return new WaitForSeconds(0.5f);
 

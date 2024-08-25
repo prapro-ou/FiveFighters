@@ -251,6 +251,11 @@ public class Enemy_Heart : Enemy
     {
         float dissolveDuration = 2f; // 消滅するまでの時間
 
+        foreach(GameObject bullet in GameObject.FindGameObjectsWithTag("HeartStuckBullet"))
+        {
+            Destroy(bullet.gameObject);
+        }
+
         Debug.Log("StartDeathAnimation");
 
         Vector3 startPosition = transform.position;

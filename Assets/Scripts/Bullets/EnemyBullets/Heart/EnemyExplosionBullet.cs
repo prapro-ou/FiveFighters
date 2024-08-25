@@ -6,6 +6,8 @@ public class EnemyExplosionBullet : MonoBehaviour
 {
     private Player _player;
 
+    private DamageCollider _damageCollider;
+
     private SpriteRenderer _spriteRenderer;
 
     private Collider2D _explosionCollider;
@@ -26,6 +28,7 @@ public class EnemyExplosionBullet : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _damageCollider = GameObject.FindWithTag("DamageCollider").GetComponent<DamageCollider>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _explosionCollider = GetComponent<Collider2D>();
 
@@ -80,9 +83,15 @@ public class EnemyExplosionBullet : MonoBehaviour
     {
         if (_isExplode)
         {
-            _player.TakeDamage(_explosionValue); //爆発ダメージ
-            Debug.Log($"Heart explosion damage {_explosionValue}");
-            _isExplode = false;
+            if(collider.gameObject.tag == "DamageCollider")
+            {
+                if(!(_damageCollider.InInvincible))
+                {
+                    _player.TakeDamage(_explosionValue); //爆発ダメージ
+                    Debug.Log($"Heart explosion damage {_explosionValue}");
+                    _isExplode = false;
+                }
+            }
         }
     }
 

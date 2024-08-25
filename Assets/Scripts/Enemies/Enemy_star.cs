@@ -16,6 +16,9 @@ public enum StarState
 
 public class Enemy_Star : Enemy
 {
+
+    private SoundManager _soundManager;
+
     private Player _player;
 
     [SerializeField]
@@ -171,7 +174,9 @@ public class Enemy_Star : Enemy
     {
         Debug.Log("StartSpawnAnimation");
 
-        yield return new WaitForSeconds(5); //Sample
+        _PlaySound("Spawn3");
+
+        yield return new WaitForSeconds(4); //Sample
     }
 
 
@@ -183,6 +188,8 @@ public class Enemy_Star : Enemy
         yield return new WaitForSeconds(0.5f); //Sample
 
         anim.SetBool("Star_Death", true);
+
+        _PlaySound("DeathStar");
 
         yield return StartCoroutine(_death());
 
@@ -224,6 +231,7 @@ public class Enemy_Star : Enemy
     {
        for(int i = 0; i < 500; i++){
             StartCoroutine(_random_ballet());
+            _PlaySound("NormalBullet");
             yield return new WaitForSeconds(0.03f);
        }
        yield return new WaitForSeconds(0.5f);
@@ -309,6 +317,8 @@ public class Enemy_Star : Enemy
             Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
             EnemyBullet bullet = Instantiate(_circleBulletPrefab, pos, Quaternion.identity);
 
+            _PlaySound("NormalBullet");
+
             Vector3 power;
 
             if(rnd_x == 0)
@@ -359,6 +369,8 @@ public class Enemy_Star : Enemy
             //弾を発射
             bullet.GetComponent<Rigidbody2D>().velocity = power;
 
+            _PlaySound("Commet");
+
             yield return new WaitForSeconds(0.25f);
 
         }
@@ -389,6 +401,8 @@ public class Enemy_Star : Enemy
             //弾を発射
             bullet.GetComponent<Rigidbody2D>().velocity = power;
 
+            _PlaySound("Commet");
+
             yield return new WaitForSeconds(0.25f);
 
         }
@@ -403,6 +417,7 @@ public class Enemy_Star : Enemy
     {
        for(int i = 0; i < 30; i++){
             StartCoroutine(_random_ballet_star());
+            _PlaySound("NormalBullet");
             yield return new WaitForSeconds(0.6f);
        }
        yield return new WaitForSeconds(2.0f);
@@ -458,6 +473,8 @@ private IEnumerator _rain()
         int rnd_x = Random.Range(0, 2);
         int rnd_y = Random.Range(0, 2);
 
+        _PlaySound("Rain");
+
         //自機の位置に弾を生成
         Vector3 pos = new Vector3(transform.position.x, transform.position.y, _circleBulletPrefab.transform.position.z);
         EnemyBullet bullet = Instantiate(_rainBulletPrefab, pos, Quaternion.identity);
@@ -484,4 +501,15 @@ private IEnumerator _rain()
 
         yield return null;
     }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
+    }
+
 }

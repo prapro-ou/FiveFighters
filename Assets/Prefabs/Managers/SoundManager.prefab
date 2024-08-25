@@ -187,6 +187,18 @@ MonoBehaviour:
   - name: DeathHeart
     audioClip: {fileID: 8300000, guid: e46d14feaf23c0147b3f9616e6f9664b, type: 3}
     delay: 0
+  - name: Rupture
+    audioClip: {fileID: 8300000, guid: dec3abaac67cb9d4fa6af7d3c63411d2, type: 3}
+    delay: 0
+  - name: Commet
+    audioClip: {fileID: 8300000, guid: bb621bd9e9f29514c8773210b87942bb, type: 3}
+    delay: 0
+  - name: Rain
+    audioClip: {fileID: 8300000, guid: 9f2d60b735dd32a4e94d636f0b5a28e9, type: 3}
+    delay: 0
+  - name: DeathStar
+    audioClip: {fileID: 8300000, guid: b04e8642a3a43f247aafadc751f491ec, type: 3}
+    delay: 0
   _mixer: {fileID: 24100000, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _bgmAudioMixerGroup: {fileID: 1375469059434132727, guid: 603afb763e6f2214181c14da060c5224, type: 2}
   _seAudioMixerGroup: {fileID: 4018416982901741703, guid: 603afb763e6f2214181c14da060c5224, type: 2}

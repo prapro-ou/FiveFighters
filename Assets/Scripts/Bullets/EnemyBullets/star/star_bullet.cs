@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class star_bullet : MonoBehaviour
 {
+    private SoundManager _soundManager;
+
+
     [SerializeField]
     private EnemyBullet _circleBulletPrefab;
 
@@ -41,6 +44,18 @@ public class star_bullet : MonoBehaviour
         bullet2.GetComponent<Rigidbody2D>().velocity = power2;
         bullet3.GetComponent<Rigidbody2D>().velocity = power3;
 
+        _PlaySound("Rupture");
+
         yield return null;
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

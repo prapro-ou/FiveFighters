@@ -178,7 +178,7 @@ URL：[https://sounds.udonko.net/sounds/mp3/Randomize14.mp3]
 
 効果音：8BITSOUNDS
 素材名：ジャンプ77.mp3
-URL：[https://sounds.udonko.net/sounds/mp3/jump77.mp3]
+URL：[https://sounds.udonko.net/sounds/mp3/Jump77.mp3]
 
 効果音：8BITSOUNDS
 素材名：パワーアップ6.mp3

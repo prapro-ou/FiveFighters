@@ -196,6 +196,7 @@ public class TitleManager : MonoBehaviour
     public void EndTutorial()
     {
         _PlaySound("Submit");
+        _nextButton.SetActive(true);
         _tutorialCanvas.enabled = false;
         _images[page].SetActive(false);
         _eventSystem.SetSelectedGameObject(_startGameButton);

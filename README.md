@@ -1,10 +1,10 @@
 # 概要
-「ShapeGrazer」は、敵の弾をギリギリで避けることで攻撃を行うローグライトシューティングゲームです。
+「ShapeGrazer」は、敵の弾をギリギリで避けることで攻撃を行うローグライト・シューティングゲームです。
 
 # ゲームの始め方
 GitHub Pagesによって作成したWebページにアクセスすることでプレイできます。
 
-URL: https://prapro-ou.github.io/FiveFighters/ (テストビルド)
+URL: https://prapro-ou.github.io/FiveFighters/
 
 # 操作方法
 ## メニュー操作
@@ -25,14 +25,6 @@ SIL Open Font License Version 1.1に準拠
 URL：https://fonts.google.com/specimen/M+PLUS+1?query=m+Plus+1
 Copyright 2021 The M+ FONTS Project Authors (https://github.com/coz-m/MPLUS_FONTS)
 
-## 画像
-素材名：[素材名]
-使用用途：[使用用途]
-URL：[URL]
-
-素材名：[素材名]
-使用用途：[使用用途]
-URL：[URL]
 
 ## 音声
 BGM

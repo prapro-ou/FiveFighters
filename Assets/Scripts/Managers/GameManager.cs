@@ -16,6 +16,14 @@ public class GameManager : MonoBehaviour
         set {_stateNumber = value;}
     }
 
+    private bool _isInClearOrDeath;
+
+    public bool IsInClearOrDeath
+    {
+        get {return _isInClearOrDeath;}
+        set {_isInClearOrDeath = value;}
+    }
+
     [SerializeField]
     private int _maxStateNumber;
 
@@ -385,7 +393,19 @@ public class GameManager : MonoBehaviour
 
     public void ClearStage()
     {
+        if(IsInClearOrDeath)
+        {
+            Debug.Log("Already running Clear or Death");
+            return;
+        }
+
         Debug.Log("ClearStage");
+        IsInClearOrDeath = true;
+
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("PlayerBullet"))
+        {
+            Destroy(obj);
+        }
 
         foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EnemyBullet"))
         {
@@ -423,6 +443,8 @@ public class GameManager : MonoBehaviour
 
         //消滅演出待ち
         yield return StartCoroutine(CurrentEnemy.StartDeathAnimation());
+
+        IsInClearOrDeath = false;
 
         //カメラを戻す
         StartCoroutine(_overlayManager.AppearUICanvas(0.2f));
@@ -491,10 +513,27 @@ public class GameManager : MonoBehaviour
 
     public void DiePlayer()
     {
+        if(IsInClearOrDeath)
+        {
+            Debug.Log("Already running Clear or Death");
+            return;
+        }
+
         Debug.Log("DiePlayer");
+        IsInClearOrDeath = true;
 
         _StopTimer();
         TimerSumValue += TimerValue;
+
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("PlayerBullet"))
+        {
+            Destroy(obj);
+        }
+
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("EnemyBullet"))
+        {
+            Destroy(obj);
+        }
 
         StartCoroutine(_PopUpOnDeath());
     }
@@ -532,6 +571,8 @@ public class GameManager : MonoBehaviour
 
         //ゲームオーバー音
         _PlaySound("Death");
+
+        IsInClearOrDeath = false;
 
         //「Game Over」を出現させる(アニメーションを仕込み、左から右に移動させる)
         _overlayManager.SpawnGameOverText();

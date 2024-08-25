@@ -12,6 +12,7 @@ TagManager:
   - HeartExplosionBullet
   - HeartHealBullet
   - HeartStuckBullet
+  - PlayerBullet
   layers:
   - Default
   - TransparentFX

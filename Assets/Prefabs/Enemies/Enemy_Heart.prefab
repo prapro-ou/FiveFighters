@@ -211,7 +211,7 @@ MonoBehaviour:
   _name: Heart
   _backgroundColor: {r: 0.38679248, g: 0.14778392, b: 0.38679248, a: 1}
   _bgmName: Battle4
-  _maxHitPoint: 1000
+  _maxHitPoint: 2000
   _damageTextPrefab: {fileID: 1357132420661731487, guid: 3602cd5f5faf8574ab9bda571d05f0d8, type: 3}
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _attackCooltime: 1

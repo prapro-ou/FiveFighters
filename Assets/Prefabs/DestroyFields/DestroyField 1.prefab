@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4564249215877132643}
   - component: {fileID: 2554290049987188946}
   - component: {fileID: 8351723773996737352}
+  - component: {fileID: -1664684816400067146}
   m_Layer: 8
   m_Name: DestroyField 1
   m_TagString: Untagged
@@ -73,11 +74,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1168431581
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: 305734323
+  m_SortingLayer: 9
+  m_SortingOrder: 5
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9150943, g: 0.78501123, b: 0.5481933, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -175,3 +176,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grazeValue: 2
+--- !u!95 &-1664684816400067146
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4295965349057360858}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3a26f2b26abba0b44970366fcc28bc2f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

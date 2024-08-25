@@ -59,7 +59,7 @@ public class TitleManager : MonoBehaviour
 
         //チュートリアル用のCanvasを非表示に
         _tutorialCanvas.enabled = false;
-        for(int i = 0; i < 10; ++i)
+        for(int i = 0; i < _images.Count; ++i)
         {
             _images[i].SetActive(false);
         }

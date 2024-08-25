@@ -66,7 +66,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "GAME\n   OVER"
+  m_text: 'GAME
+
+    OVER'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
   m_sharedMaterial: {fileID: -7980660139348290943, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}

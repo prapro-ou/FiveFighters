@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: -8792252088933982547}
   - component: {fileID: 8382845163705311989}
   - component: {fileID: 8178231971346529793}
-  - component: {fileID: -2191553245202046547}
   m_Layer: 11
   m_Name: Enemy_Diamond
   m_TagString: Enemy
@@ -78,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 3625043607559282579, guid: 19fb86013d8c24d6cb8410c0aadf30fa, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.90943396, g: 0.8548845, b: 0.5336489, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -176,10 +175,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7361cc111a7a242843235511806746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHitPoint: 1000
+  _name: Diamond
+  _backgroundColor: {r: 0.3735848, g: 0.3304509, b: 0.18256314, a: 1}
+  _bgmName: Battle3
+  _maxHitPoint: 2000
+  _damageTextPrefab: {fileID: 1357132420661731487, guid: 3602cd5f5faf8574ab9bda571d05f0d8, type: 3}
   _circleBulletPrefab: {fileID: -6450398580459616629, guid: 9328c0ce86fd1f7428f14cd6839b964b, type: 3}
   _laserPrefab: {fileID: 5418414919140564186, guid: 5c595022f3b4aed469c8ce4e1bf4affc, type: 3}
   _reduceBulletPrefab: {fileID: 1347029831895677856, guid: 0fd17d92bbf593b4a9071eabcbf4daeb, type: 3}
+  _diamondBullet: {fileID: 2096590973492925725, guid: 206264a4775f421418054b8e3e183c0a, type: 3}
   _leftCanonPrefab: {fileID: 7128881001000578774, guid: 9b57f8f1880659b4b8eea79794e12e1d, type: 3}
   _rightCanonPrefab: {fileID: 7911420778804385291, guid: 6918a7b4b5a03974e9843e014afced4b, type: 3}
   _bitPrefab: {fileID: -2057636919555189189, guid: 0239195c37b70d444bf2dd0a5002cb49, type: 3}
@@ -188,24 +192,3 @@ MonoBehaviour:
   _explodePrefab: {fileID: 3230799239743624, guid: f00adec8820e8494eb5fae2abf212651, type: 3}
   _scopePrefab: {fileID: 4511148257293849951, guid: d76576b39aeffa14cbc017f0faa26799, type: 3}
   _attackCooltime: 3
---- !u!95 &-2191553245202046547
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2697574256219995099}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 055520c84bc828043a6032f9aa0b2ede, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0

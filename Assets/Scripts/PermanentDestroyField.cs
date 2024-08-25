@@ -1,20 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class PlayerPowerBar : MonoBehaviour
+public class PermanentDestroyField : MonoBehaviour
 {
-    [SerializeField]
     private Player _player;
-
-    [SerializeField]
-    private Slider _powerBarSlider;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -23,8 +18,9 @@ public class PlayerPowerBar : MonoBehaviour
         
     }
 
-    public void UpdatePowerMultiplier()
+    //触れてきた弾を破壊
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        _powerBarSlider.value = (float)_player.PowerMultiplier / (float)100;
+        Destroy(collider.gameObject);
     }
 }

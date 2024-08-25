@@ -30,6 +30,8 @@ public class Enemy_Hexagon : Enemy
 
     private CameraManager _cameraManager;
 
+    private SoundManager _soundManager;
+
     [SerializeField]
     private AnimationCurve _movingCurve;
 
@@ -225,6 +227,7 @@ public class Enemy_Hexagon : Enemy
 
         yield return new WaitForSeconds(2f);
 
+        _PlaySound("Caution2");
         Vector3[] cautionPositions = {new Vector3(0, 4, 0), new Vector3(3.4f, 2f, 0), new Vector3(3.4f, -2f, 0), new Vector3(0, -4, 0), new Vector3(-3.4f, -2f, 0), new Vector3(-3.4f, 2f, 0)};
         for(int ic = 0; ic < 6; ic++)
         {
@@ -233,11 +236,12 @@ public class Enemy_Hexagon : Enemy
 
         yield return new WaitForSeconds(1.5f);
 
+        _PlaySound("Spawn2");
         Rigidbody2D rb; 
         Vector3[] positions = {new Vector3(0, 10, 0), new Vector3(8.66f, 5, 0), new Vector3(8.66f, -5, 0), new Vector3(0, -10, 0), new Vector3(-8.66f, -5, 0), new Vector3(-8.66f, 5, 0)};
         for(int i = 0; i < 6; i++)
         {
-            EnemyBullet bullet = Instantiate(_hexagonTriangleBullet, positions[i], Quaternion.Euler(0, 0, 180 + (60 * i)));
+            EnemyBullet bullet = Instantiate(_hexagonTriangleBullet, positions[i], Quaternion.Euler(0, 0, 180 - (60 * i)));
             rb = bullet.GetComponent<Rigidbody2D>();
             rb.velocity = positions[i].normalized * -10;
             Destroy(bullet.gameObject, 1f);
@@ -245,6 +249,7 @@ public class Enemy_Hexagon : Enemy
         yield return new WaitForSeconds(1f);
 
         // Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
+        _PlaySound("Spawn3");
         StartCoroutine(_BeatOnCurve(0.5f, 1f));
 
         // StartCoroutine(_cameraManager.Vibrate(0.5f, 1f));
@@ -252,6 +257,8 @@ public class Enemy_Hexagon : Enemy
         _animator.SetTrigger("Appear");
 
         StartCoroutine(_cameraManager.SetSizeOnCurve(3f, 0.2f));
+
+        yield return new WaitForSeconds(1);
 
         // StartCoroutine(_cameraManager.RotateOnCurve(10, 10f));
 
@@ -272,6 +279,7 @@ public class Enemy_Hexagon : Enemy
     //死亡したときの演出をこのメソッドに記述しよう。アニメーション自体はスクリプトで書かず、アニメーター(アニメーション)コンポーネントで実装することもできる。
     public override IEnumerator StartDeathAnimation()
     {
+        _PlaySound("Explosion1");
         Debug.Log("StartDeathAnimation");
 
         if(_hexagonWall != null)
@@ -296,12 +304,13 @@ public class Enemy_Hexagon : Enemy
 
         yield return new WaitForSeconds(1.5f); //Sample
 
+        _PlaySound("Explosion3");
         _animator.SetTrigger("Defeat");
-        StartCoroutine(_Vibrate(2.5f, 0.2f));
+        StartCoroutine(_Vibrate(2f, 0.2f));
 
-        Instantiate(_hexagonDefeatEffectPrefab, transform.position, Quaternion.identity, transform);
+        Instantiate(_hexagonDefeatEffectPrefab, transform.position, Quaternion.identity);
 
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2f);
 
         Destroy(this.gameObject);
 
@@ -333,6 +342,8 @@ public class Enemy_Hexagon : Enemy
             {
                 //弾
                 bool direction = Random.Range(0,2) == 0;
+
+                _PlaySound("Dash");
 
                 if(direction) {StartCoroutine(_RotateOnCurve(360f, 1f));}
                 else {StartCoroutine(_RotateOnCurve(-360f, 1f));}
@@ -447,6 +458,8 @@ public class Enemy_Hexagon : Enemy
             speed = Random.Range(30f, 60f);
             int direction = (Random.Range(0, 2) == 0) ? -1 : 1;
 
+            _PlaySound("Caution2");
+
             yield return StartCoroutine(_RotateOnCurve(direction * 180f, 1f));
 
             StartCoroutine(_Rotate(duration, direction * speed));
@@ -496,6 +509,8 @@ public class Enemy_Hexagon : Enemy
             _ShuffleTransformList(pointTransforms1);
             _ShuffleTransformList(pointTransforms2);
 
+            _PlaySound("Caution2");
+
             Instantiate(_hexagonCautionEffectPrefab, pointTransforms1[0].position, Quaternion.identity);
             Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[0].position, Quaternion.identity);
             yield return new WaitForSeconds(0.5f);
@@ -510,12 +525,14 @@ public class Enemy_Hexagon : Enemy
 
             for(int i = 1; i < 6; i++)
             {
+                _PlaySound("Caution2");
                 Instantiate(_hexagonCautionEffectPrefab, pointTransforms1[i].position, Quaternion.identity);
                 Instantiate(_hexagonCautionEffectPrefab, pointTransforms2[i].position, Quaternion.identity);
                 yield return new WaitForSeconds(0.8f);
 
                 StartCoroutine(_BeatOnCurve(1f, 0.3f));
 
+                _PlaySound("Dash");
                 StartCoroutine(bullet1.MoveToPointOnCurve(pointTransforms1[i].position, 1f));
                 yield return StartCoroutine(bullet2.MoveToPointOnCurve(pointTransforms2[i].position, 1f));
             }
@@ -601,6 +618,7 @@ public class Enemy_Hexagon : Enemy
 
         foreach(MineCautionTile tile in tileList)
         {
+            _PlaySound("Graze");
             tile.PlayAppearAnimation();
             yield return new WaitForSeconds(0.03f);
         }
@@ -611,6 +629,7 @@ public class Enemy_Hexagon : Enemy
 
         for(int i = 0; i < 19; i++)
         {
+            _PlaySound("NormalBullet");
             StartCoroutine(tileList[i].SpawnMine());
             yield return new WaitForSeconds(delay);
         }
@@ -646,6 +665,7 @@ public class Enemy_Hexagon : Enemy
 
     private IEnumerator _ShootHexagonShotWithCaution(Vector3 position, float speed)
     {
+        _PlaySound("NormalBullet");
         Instantiate(_hexagonCautionEffectPrefab, position, Quaternion.identity);
         
         yield return new WaitForSeconds(1f);
@@ -655,6 +675,7 @@ public class Enemy_Hexagon : Enemy
 
     private GameObject _SummonWall()
     {
+        _PlaySound("Spawn2");
         GameObject wall = Instantiate(_hexagonWallPrefab, Vector3.zero, Quaternion.identity);
 
         return wall;
@@ -662,6 +683,7 @@ public class Enemy_Hexagon : Enemy
 
     private GameObject _SummonLine()
     {
+        _PlaySound("Spawn2");
         GameObject line = Instantiate(_hexagonLinePrefab, Vector3.zero, Quaternion.identity);
 
         return line;
@@ -676,10 +698,13 @@ public class Enemy_Hexagon : Enemy
 
     private IEnumerator _Laser(Vector3 position, Quaternion rotation)
     {
+        _PlaySound("Caution2");
         Instantiate(_hexagonCautionEffectPrefab, position, rotation);
         EnemyBullet laserCaution = Instantiate(_hexagonLaserCautionPrefab, position, rotation);
 
         yield return new WaitForSeconds(1f);
+
+        _PlaySound("Explosion1");
 
         EnemyBullet laser = Instantiate(_hexagonLaserPrefab, position, rotation);
 
@@ -779,12 +804,16 @@ public class Enemy_Hexagon : Enemy
         //Playerを親にエフェクト
         GameObject playerEffect = Instantiate(_hexagonTeleportEffectPrefab, _player.transform.position , Quaternion.identity, _player.transform);
 
+        _PlaySound("Spawn4");
+
         //中心にエフェクト
         Instantiate(_hexagonTeleportEffectPrefab, Vector3.zero, Quaternion.identity);
 
         yield return new WaitForSeconds(1f);
 
         //中心にPlayerをテレポート
+        // _PlaySound("Spawn2");
+
         playerEffect.transform.parent = null;
         float currentSpeed = _player.CurrentSpeed;
         _player.transform.position = Vector3.zero;
@@ -816,5 +845,15 @@ public class Enemy_Hexagon : Enemy
             list[i] = list[j];
             list[j] = tmp;
         }
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

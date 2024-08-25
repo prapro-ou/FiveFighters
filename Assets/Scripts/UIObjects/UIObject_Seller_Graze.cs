@@ -61,19 +61,21 @@ public class UIObject_Seller_Graze : UIObject
         if(IsSoldOut)
         {
             Debug.Log("Sold out!");
+            PlaySound("CannotBuy");
             return;
         }
 
         if(_player.Money >= BuyCount)
         {
             _player.UseMoney(BuyCount);
-            _player.ExpansionValue += 0.2f;
+            _player.EnhanceGrazeCollider(0.2f);
             Test();
             BuyCount++;
         }
         else
         {
             //購入不可の時の処理(お金UIを揺らす、効果音を鳴らす等)
+            PlaySound("CannotBuy");
             Debug.Log("Player does not have enough money!");
         }
     }

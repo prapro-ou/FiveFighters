@@ -9,6 +9,8 @@ public class SpecialCircleExplode : MonoBehaviour
     [SerializeField]
     private int _explosionDamage;
 
+    private SoundManager _soundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,18 @@ public class SpecialCircleExplode : MonoBehaviour
         {
             Destroy(collider.gameObject);
             Debug.Log($"DestroyEnemyBullet");
+
+            _PlaySound("DestroyBullet");
         }
+    }
+
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

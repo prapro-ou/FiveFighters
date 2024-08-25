@@ -9,6 +9,8 @@ public class DestroyField : MonoBehaviour
     [SerializeField]
     private int _grazeValue;
 
+    private SoundManager _soundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,5 +29,17 @@ public class DestroyField : MonoBehaviour
         _player.PrimaryGrazeCount += _grazeValue;
         _player.SpecialGrazeCount += _grazeValue;
         Destroy(collider.gameObject);
+
+        _PlaySound("DestroyBullet");
+    }
+    
+    private void _PlaySound(string name)
+    {
+        if(_soundManager == null)
+        {
+            _soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
+        }
+
+        _soundManager.PlaySound(name);
     }
 }

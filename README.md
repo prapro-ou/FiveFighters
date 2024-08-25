@@ -222,7 +222,7 @@ URL：[https://maou.audio/se_battle07/]
 
 効果音：8BITSOUNDS
 素材名：いろいろ06.mp3
-URL：[https://sounds.udonko.net/sounds/mp3/Randomize06.mp3]
+URL：[https://sounds.udonko.net/sounds/mp3/Randomize6.mp3]
 
 効果音：8BITSOUNDS
 素材名：いろいろ59.mp3

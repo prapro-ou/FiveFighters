@@ -6,6 +6,8 @@ public class EnemyStuckBullet : MonoBehaviour
 {
     private Player _player;
 
+    private DamageCollider _damageCollider;
+
     [SerializeField]
     private int _stuckValue;
 
@@ -19,6 +21,7 @@ public class EnemyStuckBullet : MonoBehaviour
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _damageCollider = GameObject.FindWithTag("DamageCollider").GetComponent<DamageCollider>();
         _isDamaged = false;
         _bulletTop = this.transform.position.y + 1.1f;
         _bulletBottom = this.transform.position.y -1.8f;
@@ -33,9 +36,12 @@ public class EnemyStuckBullet : MonoBehaviour
             {
                 if ((_player.transform.position.y < _bulletTop) && (_player.transform.position.y > _bulletBottom))
                 {
-                    _player.TakeDamage(_stuckValue);
-                    _isDamaged = true;
-                    Debug.Log($"StuckDamage {_stuckValue}");
+                    if(!(_damageCollider.InInvincible))
+                    {
+                        _player.TakeDamage(_stuckValue);
+                        _isDamaged = true;
+                        Debug.Log($"StuckDamage {_stuckValue}");
+                    }
                 }
             }
         }

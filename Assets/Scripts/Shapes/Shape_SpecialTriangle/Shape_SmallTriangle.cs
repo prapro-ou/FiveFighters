@@ -54,7 +54,7 @@ public class Shape_SmallTriangle : MonoBehaviour
     public void PrimaryAttack()
     {
         PlayerBullet triangleSubBullet = Instantiate(_primaryTriangleSubBullet, this.transform.position, Quaternion.identity);
-        triangleSubBullet.DamageValue = _primaryAttackDamage/2;
+        triangleSubBullet.DamageValue = _player.MyShape.PrimaryAttackDamage;
         Debug.Log($"Shape_SmallTriangle.PrimaryAttack {_primaryAttackDamage/2}");
     }
 

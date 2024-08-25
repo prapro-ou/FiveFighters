@@ -59,7 +59,7 @@ public class TitleManager : MonoBehaviour
 
         //チュートリアル用のCanvasを非表示に
         _tutorialCanvas.enabled = false;
-        for(int i = 0; i < 10; ++i)
+        for(int i = 0; i < _images.Count; ++i)
         {
             _images[i].SetActive(false);
         }
@@ -196,6 +196,7 @@ public class TitleManager : MonoBehaviour
     public void EndTutorial()
     {
         _PlaySound("Submit");
+        _nextButton.SetActive(true);
         _tutorialCanvas.enabled = false;
         _images[page].SetActive(false);
         _eventSystem.SetSelectedGameObject(_startGameButton);

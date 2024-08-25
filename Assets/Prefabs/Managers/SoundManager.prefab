@@ -117,7 +117,7 @@ MonoBehaviour:
     delay: 0
   - name: NormalBullet
     audioClip: {fileID: 8300000, guid: cf5f2ef325780594fadb03b770181fa7, type: 3}
-    delay: 0
+    delay: 0.08
   - name: Laser
     audioClip: {fileID: 8300000, guid: ea6c37dd1c445ba498d6773ceaca8a08, type: 3}
     delay: 0

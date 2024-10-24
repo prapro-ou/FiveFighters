@@ -666,6 +666,12 @@ public class GameManager : MonoBehaviour
         _soundManager.PlaySound(name);
     }
 
+    public void QuitGame()
+    {
+        Debug.Log("Quit");
+        Application.Quit();
+    }
+
     private void _PlayBGM(string name)
     {
         if(_soundManager == null)

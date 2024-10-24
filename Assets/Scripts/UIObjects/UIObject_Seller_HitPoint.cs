@@ -30,6 +30,9 @@ public class UIObject_Seller_HitPoint : UIObject
     private TMP_Text _moneyText;
 
     [SerializeField]
+    private Animator _animator;
+
+    [SerializeField]
     private GameObject _soldOutPanel;
 
     private bool _isSoldOut;
@@ -69,6 +72,7 @@ public class UIObject_Seller_HitPoint : UIObject
         {
             _player.UseMoney(BuyCount);
             _player.EnhanceHitPoint(10);
+            _animator.SetTrigger("Buy");
             Test();
             BuyCount++;
         }

@@ -30,6 +30,9 @@ public class UIObject_Seller_Graze : UIObject
     private TMP_Text _moneyText;
 
     [SerializeField]
+    private Animator _animator;
+
+    [SerializeField]
     private GameObject _soldOutPanel;
 
     private bool _isSoldOut;
@@ -69,6 +72,7 @@ public class UIObject_Seller_Graze : UIObject
         {
             _player.UseMoney(BuyCount);
             _player.EnhanceGrazeCollider(0.2f);
+            _animator.SetTrigger("Buy");
             Test();
             BuyCount++;
         }

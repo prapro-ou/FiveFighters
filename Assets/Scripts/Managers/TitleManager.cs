@@ -202,6 +202,12 @@ public class TitleManager : MonoBehaviour
         _eventSystem.SetSelectedGameObject(_startGameButton);
     }
 
+    public void QuitGame()
+    {
+        Debug.Log("Quit");
+        Application.Quit();
+    }
+
     private void _PlaySound(string name)
     {
         if(_soundManager == null)

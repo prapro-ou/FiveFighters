@@ -17392,7 +17392,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "WASD/\u2191\u2190\u2193\u2192:   \t      Move\nShift:\u3000\u3000\u3000  
-    Slow\nJ/K/L:     ShiftSkill\nO:  SpecialSkill"
+    Slow\nJ/K/L:     ShiftSkill\nO:  SpecialSkill\nEsc:\u3000\u3000       Quit"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}
   m_sharedMaterial: {fileID: -7980660139348290943, guid: 86ebdaa47a55dc046a810bb1cc3680ce, type: 2}

@@ -17,6 +17,7 @@ URL: https://prapro-ou.github.io/FiveFighters/
 - スペシャルスキル: Oキー
 - シフトスキル: J, K, Lキー
 - ショップでの決定: Enterキー
+- ゲーム終了: Escapeキー
 
 # 使用素材
 ## フォント

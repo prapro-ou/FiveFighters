@@ -2,6 +2,8 @@
 「Shape Grazer」は、敵の弾をギリギリで避けることで攻撃を行うローグライト・シューティングゲームです。
 
 # ゲームの始め方
+「bin」フォルダ内の「ShapeGrazer.exe」を実行することでプレイできます。
+
 GitHub Pagesによって作成したWebページにアクセスすることでプレイできます。
 
 URL: https://prapro-ou.github.io/FiveFighters/
